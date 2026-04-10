@@ -1,0 +1,63 @@
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Obtiene el contenido actual del repositorio para construir el proyecto.
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      # Configura Node.js y cachea dependencias de npm para builds mas rapidos.
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Instala dependencias exactamente como estan bloqueadas en package-lock.json.
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Genera la carpeta dist con el build de produccion de Vite.
+      - name: Construir aplicacion
+        run: npm run build
+
+      # Prepara el entorno oficial de GitHub Pages para el despliegue.
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      # Sube el contenido de dist como artefacto publicable para Pages.
+      - name: Subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # Publica el artefacto subido por el job de build en GitHub Pages.
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
