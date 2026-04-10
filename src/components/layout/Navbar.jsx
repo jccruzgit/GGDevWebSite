@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import CTAButton from "@/components/ui/CTAButton";
 import logoMark from "@/assets/logo-mark.svg";
+import { buildWhatsAppUrl, buildGeneralWhatsAppMessage } from "@/utils/whatsapp";
 
 const navItems = [
   { label: "Catálogo", to: "/catalogo" },
@@ -13,6 +14,7 @@ const navItems = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const generalWhatsAppUrl = buildWhatsAppUrl(buildGeneralWhatsAppMessage());
 
   const linkClassName = ({ isActive }) =>
     `text-sm font-medium ${
@@ -42,11 +44,7 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:block">
-            <CTAButton
-              href="https://wa.me/50370000000?text=Hola%20GGDev%2C%20quiero%20hacer%20un%20pedido."
-              rel="noreferrer"
-              target="_blank"
-            >
+            <CTAButton href={generalWhatsAppUrl} rel="noreferrer" target="_blank">
               WhatsApp
             </CTAButton>
           </div>
@@ -81,7 +79,7 @@ export default function Navbar() {
             ))}
             <CTAButton
               className="w-full"
-              href="https://wa.me/50370000000?text=Hola%20GGDev%2C%20quiero%20hacer%20un%20pedido."
+              href={generalWhatsAppUrl}
               rel="noreferrer"
               target="_blank"
             >

@@ -12,6 +12,7 @@ const variants = {
 export default function CTAButton({
   children,
   className = "",
+  disabled = false,
   href,
   target,
   rel,
@@ -19,9 +20,11 @@ export default function CTAButton({
   variant = "primary",
   ...props
 }) {
-  const sharedClassName = `inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${variants[variant]} ${className}`;
+  const sharedClassName = `inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${
+    variants[variant]
+  } ${disabled ? "cursor-not-allowed opacity-60 saturate-50 shadow-none" : ""} ${className}`;
 
-  if (to) {
+  if (to && !disabled) {
     return (
       <Link className={sharedClassName} to={to} {...props}>
         {children}
@@ -29,7 +32,7 @@ export default function CTAButton({
     );
   }
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <a className={sharedClassName} href={href} rel={rel} target={target} {...props}>
         {children}
@@ -38,7 +41,7 @@ export default function CTAButton({
   }
 
   return (
-    <button className={sharedClassName} type="button" {...props}>
+    <button className={sharedClassName} disabled={disabled} type="button" {...props}>
       {children}
     </button>
   );

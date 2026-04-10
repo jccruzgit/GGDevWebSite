@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Music2 } from "lucide-react";
 import logoMark from "@/assets/logo-mark.svg";
 import { siteConfig } from "@/data/site";
-import { buildWhatsAppUrl } from "@/utils/whatsapp";
+import { buildGeneralWhatsAppMessage, buildWhatsAppUrl } from "@/utils/whatsapp";
 
 const links = [
   { label: "Inicio", to: "/" },
@@ -12,6 +12,8 @@ const links = [
 ];
 
 export default function Footer() {
+  const whatsappUrl = buildWhatsAppUrl(buildGeneralWhatsAppMessage());
+
   return (
     <footer className="mt-20 border-t border-white/8 pb-10 pt-14">
       <div className="shell">
@@ -21,7 +23,9 @@ export default function Footer() {
               <img alt="Logo GGDev" className="h-12 w-12 rounded-2xl" src={logoMark} />
               <div>
                 <p className="text-lg font-bold text-white">GGDev</p>
-                <p className="text-sm text-slate-400">Camisetas personalizadas con vibra premium</p>
+                <p className="text-sm text-slate-400">
+                  Camisetas personalizadas con vibra premium
+                </p>
               </div>
             </div>
             <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300">
@@ -73,7 +77,7 @@ export default function Footer() {
               <a
                 aria-label="WhatsApp"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-200 hover:border-aqua/30 hover:text-white"
-                href={buildWhatsAppUrl("Hola GGDev, quiero más información sobre sus camisetas.")}
+                href={whatsappUrl}
                 rel="noreferrer"
                 target="_blank"
               >
@@ -84,7 +88,7 @@ export default function Footer() {
           </div>
         </div>
         <p className="mt-6 text-center text-xs uppercase tracking-[0.24em] text-slate-500">
-          GGDev · Diseñado para destacar en publicaciones, historias y calle
+          GGDev - Diseñado para destacar en publicaciones, historias y calle
         </p>
       </div>
     </footer>

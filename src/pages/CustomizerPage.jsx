@@ -1,15 +1,17 @@
 import { useMemo, useState } from "react";
-import CTAButton from "@/components/ui/CTAButton";
 import ColorSelector from "@/components/ui/ColorSelector";
+import InlineNotice from "@/components/ui/InlineNotice";
 import SectionHeading from "@/components/ui/SectionHeading";
 import UploadBox from "@/components/ui/UploadBox";
+import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
+import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
 import CustomizerControls from "@/components/customizer/CustomizerControls";
 import CustomizerMockup from "@/components/customizer/CustomizerMockup";
 import { useCustomizer } from "@/context/CustomizerContext";
 import {
-  buildAdvisoryMessage,
   buildCustomizerMessage,
-  buildWhatsAppUrl,
+  buildSupportMessage,
+  openWhatsApp,
 } from "@/utils/whatsapp";
 
 const garmentOptions = [
@@ -43,23 +45,43 @@ export default function CustomizerPage() {
     [garmentColor]
   );
 
-  const orderUrl = buildWhatsAppUrl(
-    buildCustomizerMessage({
-      placement,
-      garmentColor: selectedGarment.name,
-      fileName,
-      notes,
-    })
-  );
+  const hasReference = Boolean(fileName);
+  const hasNotes = Boolean(notes.trim());
+  const helperMessage =
+    hasReference || hasNotes
+      ? "Tu mensaje saldrá con color, lado del diseño, archivo cargado y notas para agilizar la conversación."
+      : "Puedes seguir sin archivo. Te ayudaremos por WhatsApp a definir tamaño, calidad y ubicación del diseño.";
 
-  const advisoryUrl = buildWhatsAppUrl(
-    buildAdvisoryMessage({
-      subject: "Ayuda para personalizar una camiseta",
-      message:
-        notes ||
-        "No estoy seguro de la calidad de mi imagen, el tamaño o la mejor ubicación del diseño.",
-    })
-  );
+  const handleOrderClick = () => {
+    openWhatsApp(
+      buildCustomizerMessage({
+        placement,
+        garmentColor: selectedGarment.name,
+        fileName,
+        scale,
+        opacity,
+        notes,
+      })
+    );
+  };
+
+  const handleHelpClick = () => {
+    openWhatsApp(
+      buildSupportMessage({
+        intro: "Hola, necesito ayuda para personalizar una camiseta de GGDev.",
+        details: [
+          "Tipo de solicitud: Diseño personalizado",
+          `Color de prenda: ${selectedGarment.name}`,
+          `Lado del diseño: ${placement}`,
+          `Archivo cargado: ${fileName || "Aún no he subido una imagen"}`,
+          `Tamaño aproximado en vista previa: ${Math.round(scale * 100)}%`,
+          `Opacidad de vista previa: ${Math.round(opacity * 100)}%`,
+          `Notas: ${notes.trim() || "Necesito ayuda para organizar mi idea."}`,
+        ],
+        closing: "Necesito ayuda para confirmar tamaño, calidad del archivo y viabilidad del diseño.",
+      })
+    );
+  };
 
   return (
     <div className="shell pt-10">
@@ -116,18 +138,27 @@ export default function CustomizerPage() {
               value={notes}
             />
             <p className="mt-4 text-sm leading-7 text-slate-400">
-              Si no estás seguro de la calidad de tu imagen o tamaño, GGDev te asesora sin costo
-              adicional.
+              Si todavía no estás seguro de la calidad de tu imagen, GGDev te ayuda a preparar el
+              archivo antes de producir.
             </p>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <CTAButton href={orderUrl} rel="noreferrer" target="_blank">
-              Enviar pedido
-            </CTAButton>
-            <CTAButton href={advisoryUrl} rel="noreferrer" target="_blank" variant="secondary">
-              Solicitar ayuda
-            </CTAButton>
+          <div className="space-y-4">
+            <div className="flex flex-col gap-3">
+              <WhatsAppActionButton className="w-full" onClick={handleOrderClick}>
+                Enviar solicitud por WhatsApp
+              </WhatsAppActionButton>
+              <WhatsAppActionButton
+                className="w-full"
+                onClick={handleHelpClick}
+                variant="secondary"
+              >
+                Solicitar ayuda para personalizar
+              </WhatsAppActionButton>
+            </div>
+
+            <InlineNotice>{helperMessage}</InlineNotice>
+            <WhatsAppResponseNote className="text-center sm:text-left" />
           </div>
         </div>
       </section>

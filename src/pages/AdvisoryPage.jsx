@@ -1,9 +1,31 @@
-import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { useMemo, useState } from "react";
 import CTAButton from "@/components/ui/CTAButton";
+import InlineNotice from "@/components/ui/InlineNotice";
 import SectionHeading from "@/components/ui/SectionHeading";
+import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
+import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
 import ResponsePromise from "@/components/advisory/ResponsePromise";
-import { buildAdvisoryMessage, buildWhatsAppUrl } from "@/utils/whatsapp";
+import { buildAdvisoryMessage, openWhatsApp } from "@/utils/whatsapp";
+
+function getInputClassName(hasError) {
+  return `w-full rounded-[24px] border px-4 text-sm text-white placeholder:text-slate-500 focus:outline-none ${
+    hasError
+      ? "border-rose-400/35 bg-rose-500/10 focus:border-rose-300/60"
+      : "border-white/10 bg-white/5 focus:border-aqua/30"
+  }`;
+}
+
+function formatMissingFields(fields) {
+  if (fields.length <= 1) {
+    return fields[0] || "";
+  }
+
+  if (fields.length === 2) {
+    return `${fields[0]} y ${fields[1]}`;
+  }
+
+  return `${fields.slice(0, -1).join(", ")} y ${fields.at(-1)}`;
+}
 
 export default function AdvisoryPage() {
   const [form, setForm] = useState({
@@ -11,16 +33,64 @@ export default function AdvisoryPage() {
     subject: "",
     message: "",
   });
+  const [touched, setTouched] = useState({
+    name: false,
+    subject: false,
+    message: false,
+  });
 
-  const advisoryUrl = buildWhatsAppUrl(buildAdvisoryMessage(form));
+  const formErrors = useMemo(
+    () => ({
+      name: form.name.trim() ? "" : "Escribe tu nombre para iniciar la conversacion.",
+      subject: form.subject.trim() ? "" : "Define el asunto principal de tu consulta.",
+      message: form.message.trim() ? "" : "Describe la duda o problema que quieres resolver.",
+    }),
+    [form]
+  );
+
+  const isFormValid = !Object.values(formErrors).some(Boolean);
+  const missingFields = [];
+
+  if (formErrors.name) {
+    missingFields.push("tu nombre");
+  }
+
+  if (formErrors.subject) {
+    missingFields.push("el asunto");
+  }
+
+  if (formErrors.message) {
+    missingFields.push("el mensaje");
+  }
+
+  const helperMessage = isFormValid
+    ? "Tu consulta llegará ordenada para que podamos responderte con contexto desde el primer mensaje."
+    : `Completa ${formatMissingFields(missingFields)} para abrir WhatsApp con tu solicitud de asesoría.`;
 
   const handleChange = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
   };
 
+  const handleBlur = (field) => () => {
+    setTouched((current) => ({ ...current, [field]: true }));
+  };
+
+  const handleOpenWhatsApp = () => {
+    if (!isFormValid) {
+      setTouched({
+        name: true,
+        subject: true,
+        message: true,
+      });
+      return;
+    }
+
+    openWhatsApp(buildAdvisoryMessage(form));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    window.open(advisoryUrl, "_blank", "noopener,noreferrer");
+    handleOpenWhatsApp();
   };
 
   return (
@@ -50,12 +120,18 @@ export default function AdvisoryPage() {
               Nombre
             </label>
             <input
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
+              className={`h-12 ${getInputClassName(touched.name && Boolean(formErrors.name))}`}
               id="name"
+              onBlur={handleBlur("name")}
               onChange={handleChange("name")}
               placeholder="Tu nombre"
               value={form.name}
             />
+            {touched.name && formErrors.name ? (
+              <InlineNotice className="mt-3" tone="error">
+                {formErrors.name}
+              </InlineNotice>
+            ) : null}
           </div>
 
           <div>
@@ -63,12 +139,18 @@ export default function AdvisoryPage() {
               Asunto
             </label>
             <input
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
+              className={`h-12 ${getInputClassName(touched.subject && Boolean(formErrors.subject))}`}
               id="subject"
+              onBlur={handleBlur("subject")}
               onChange={handleChange("subject")}
               placeholder="Ej. Quiero revisar la calidad de mi imagen"
               value={form.subject}
             />
+            {touched.subject && formErrors.subject ? (
+              <InlineNotice className="mt-3" tone="error">
+                {formErrors.subject}
+              </InlineNotice>
+            ) : null}
           </div>
 
           <div>
@@ -76,20 +158,29 @@ export default function AdvisoryPage() {
               Mensaje
             </label>
             <textarea
-              className="min-h-40 w-full rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
+              className={`min-h-40 py-3 ${getInputClassName(
+                touched.message && Boolean(formErrors.message)
+              )}`}
               id="message"
+              onBlur={handleBlur("message")}
               onChange={handleChange("message")}
               placeholder="Cuéntanos qué quieres imprimir o qué duda necesitas resolver."
               value={form.message}
             />
+            {touched.message && formErrors.message ? (
+              <InlineNotice className="mt-3" tone="error">
+                {formErrors.message}
+              </InlineNotice>
+            ) : null}
           </div>
 
-          <button
-            className="button-glow inline-flex w-full items-center justify-center rounded-full bg-brand-gradient px-5 py-3 text-sm font-semibold text-slate-950"
-            type="submit"
-          >
-            Enviar consulta
-          </button>
+          <div className="space-y-4">
+            <CTAButton className="w-full" disabled={!isFormValid} type="submit">
+              Enviar consulta por WhatsApp
+            </CTAButton>
+            <InlineNotice tone={isFormValid ? "info" : "error"}>{helperMessage}</InlineNotice>
+            <WhatsAppResponseNote className="text-center sm:text-left" />
+          </div>
         </form>
 
         <div className="space-y-6">
@@ -111,10 +202,17 @@ export default function AdvisoryPage() {
             </div>
           </div>
 
-          <CTAButton href={advisoryUrl} rel="noreferrer" target="_blank" variant="secondary">
-            <MessageCircle className="h-4 w-4" />
-            Abrir WhatsApp ahora
-          </CTAButton>
+          <div className="space-y-4">
+            <WhatsAppActionButton
+              className="w-full"
+              disabled={!isFormValid}
+              onClick={handleOpenWhatsApp}
+              variant="secondary"
+            >
+              Abrir WhatsApp ahora
+            </WhatsAppActionButton>
+            <WhatsAppResponseNote className="text-center sm:text-left" />
+          </div>
         </div>
       </section>
     </div>
