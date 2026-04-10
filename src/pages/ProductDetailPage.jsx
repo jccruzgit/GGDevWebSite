@@ -8,8 +8,10 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import SizeSelector from "@/components/ui/SizeSelector";
 import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
+import TrustSection from "@/components/ui/TrustSection";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductSpecs from "@/components/product/ProductSpecs";
+import { productTrustItems } from "@/data/commercial";
 import { products } from "@/data/products";
 import { formatCurrency } from "@/utils/format";
 import {
@@ -185,6 +187,25 @@ export default function ProductDetailPage() {
           <ProductSpecs />
         </div>
       </div>
+
+      <TrustSection
+        className="mt-16"
+        description={`Queremos que pedir ${product.name} se sienta claro desde el primer mensaje hasta la confirmación final.`}
+        eyebrow="Confianza GGDev"
+        items={productTrustItems}
+        note="Si no estás seguro del tamaño o la ubicación del diseño, te ayudamos antes de producir."
+        title="Compra con respaldo visual y acompañamiento real"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <WhatsAppActionButton className="w-full sm:w-auto" onClick={handleHelpClick} variant="secondary">
+            Quiero ayuda antes de pedir
+          </WhatsAppActionButton>
+          <CTAButton className="w-full sm:w-auto" to="/personalizar">
+            Personalizar otra idea
+          </CTAButton>
+        </div>
+        <WhatsAppResponseNote />
+      </TrustSection>
     </div>
   );
 }

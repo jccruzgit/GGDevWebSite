@@ -1,37 +1,17 @@
-import { Link } from "react-router-dom";
-import { ArrowRight, MessageCircle, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CTAButton from "@/components/ui/CTAButton";
-import WhatsAppCTA from "@/components/ui/WhatsAppCTA";
 import CategoryCard from "@/components/home/CategoryCard";
 import ProductCard from "@/components/catalog/ProductCard";
 import TestimonialCard from "@/components/home/TestimonialCard";
-import InfoCard from "@/components/ui/InfoCard";
+import BenefitCard from "@/components/home/BenefitCard";
+import CommercialCTA from "@/components/home/CommercialCTA";
+import ExampleGallery from "@/components/home/ExampleGallery";
+import ProcessSection from "@/components/home/ProcessSection";
 import { categories } from "@/data/categories";
+import { commercialBenefits, commercialSteps, showcaseExamples } from "@/data/commercial";
 import { featuredProducts } from "@/data/products";
-import { processSteps } from "@/data/processSteps";
 import { testimonials } from "@/data/testimonials";
-
-const trustItems = [
-  {
-    icon: Sparkles,
-    title: "Revisión estética incluida",
-    description:
-      "Si tu idea necesita orden visual, nosotros te guiamos antes de producir para que el resultado se vea realmente premium.",
-  },
-  {
-    icon: WandSparkles,
-    title: "Optimización para impresión",
-    description:
-      "Te orientamos sobre tamaño, resolución y contraste para evitar camisetas con acabado improvisado.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Acompañamiento directo",
-    description:
-      "El cierre del pedido es por WhatsApp con asesoría real, sin procesos fríos ni pasos innecesarios.",
-  },
-];
 
 export default function HomePage() {
   return (
@@ -45,16 +25,16 @@ export default function HomePage() {
               <span className="text-gradient"> nivel leyenda.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
-              Camisetas personalizadas con ADN tech, anime, motor y gaming para gente que quiere
-              verse como marca, no como algo genérico.
+              Camisetas personalizadas con ADN tech, anime, motor y gaming para perfiles que
+              quieren vender imagen, no verse como algo genérico.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CTAButton to="/catalogo">
-                Elegir diseño
+                Explorar catálogo
                 <ArrowRight className="h-4 w-4" />
               </CTAButton>
               <CTAButton to="/personalizar" variant="secondary">
-                Subir mi imagen
+                Personalizar ahora
               </CTAButton>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -67,8 +47,8 @@ export default function HomePage() {
                 <p className="mt-1 text-sm text-slate-400">Respuesta estimada</p>
               </div>
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">DTF</p>
-                <p className="mt-1 text-sm text-slate-400">Alta definición</p>
+                <p className="text-2xl font-bold text-white">Bajo pedido</p>
+                <p className="mt-1 text-sm text-slate-400">Producción confirmada</p>
               </div>
             </div>
           </div>
@@ -84,14 +64,20 @@ export default function HomePage() {
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">Tokyo Midnight Run</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Velocidad nocturna, lectura fuerte y estética lista para destacar en redes.
+                      Una vibra potente para entrar desde redes y cerrar el pedido con una sola
+                      conversación.
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Soporte real</p>
-                    <p className="mt-2 text-lg font-semibold text-white">Te ayudamos a refinar</p>
+                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                      Confianza comercial
+                    </p>
+                    <p className="mt-2 text-lg font-semibold text-white">
+                      Te guiamos antes de producir
+                    </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Si el arte no está listo, lo ajustamos contigo antes de producir.
+                      Si el arte no está listo o no sabes qué talla pedir, lo revisamos contigo
+                      antes de confirmar.
                     </p>
                   </div>
                 </div>
@@ -107,11 +93,11 @@ export default function HomePage() {
                   </div>
                   <div className="absolute -bottom-6 -left-8 w-[220px] rounded-[28px] border border-white/10 bg-night/90 p-4 backdrop-blur-xl">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Vibra premium
+                      Cierre por WhatsApp
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Previsualizaciones protagonistas, contraste alto y botones claros para cerrar por
-                      WhatsApp.
+                      Diseños claros, CTA directos y una experiencia lista para captar pedidos
+                      desde Instagram o TikTok.
                     </p>
                   </div>
                 </div>
@@ -137,9 +123,9 @@ export default function HomePage() {
       <section className="shell mt-24">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
-            description="Una selección con presencia fuerte para quienes quieren empezar rápido sin sacrificar identidad."
-            eyebrow="Diseños legendarios"
-            title="Diseños listos para pedir"
+            description="Una selección con identidad fuerte para entrar rápido, elegir mejor y pedir sin vueltas."
+            eyebrow="Diseños listos para vender visual"
+            title="Empieza con un diseño que ya tiene presencia"
           />
           <CTAButton to="/catalogo" variant="secondary">
             Ver catálogo completo
@@ -153,47 +139,42 @@ export default function HomePage() {
       </section>
 
       <section className="shell mt-24">
+        <ExampleGallery items={showcaseExamples} />
+      </section>
+
+      <section className="shell mt-16">
+        <CommercialCTA
+          description="Si ya viste un diseño que te gustó, puedes ir al catálogo, personalizar el tuyo o cerrar de una vez por WhatsApp."
+          eyebrow="Siguiente paso"
+          title="No te quedes solo en la inspiración. Convierte esa idea en pedido."
+        />
+      </section>
+
+      <section className="shell mt-24">
         <SectionHeading
           align="center"
-          description="Un flujo simple para que la experiencia se sienta premium, clara y rápida desde el primer clic."
-          eyebrow="Cómo forjar tu estilo"
-          title="Tres pasos para llevar tu idea a camiseta"
+          description="Una experiencia pensada para que comprar una camiseta personalizada se sienta clara, seria y fácil de recomendar."
+          eyebrow="¿Por qué pedir con GGDev?"
+          title="Más confianza, mejor guía y un proceso que sí acompaña"
         />
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {processSteps.slice(0, 3).map((step) => (
-            <InfoCard
-              key={step.id}
-              className="h-full"
-              description={step.description}
-              icon={step.icon}
-              title={`${step.id}. ${step.title}`}
-            />
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+          {commercialBenefits.map((benefit) => (
+            <BenefitCard key={benefit.title} benefit={benefit} />
           ))}
         </div>
       </section>
 
       <section className="shell mt-24">
-        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="panel p-8 sm:p-10">
-            <span className="eyebrow">Asesoría de diseño</span>
-            <h2 className="mt-5 text-3xl font-bold sm:text-4xl">
-              Si tu archivo no está perfecto, no te dejamos solo.
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
-              GGDev revisa resolución, ubicación del arte, proporción y contraste para que la
-              pieza final conserve fuerza visual tanto en foto como en uso real.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CTAButton to="/asesoria">Quiero asesoría</CTAButton>
-              <WhatsAppCTA variant="secondary">Hablar con GGDev</WhatsAppCTA>
-            </div>
-          </div>
-          <div className="grid gap-4">
-            {trustItems.map((item) => (
-              <InfoCard key={item.title} {...item} />
-            ))}
-          </div>
-        </div>
+        <ProcessSection steps={commercialSteps} />
+      </section>
+
+      <section className="shell mt-16">
+        <CommercialCTA
+          description="Tanto si vienes con una idea definida como si apenas tienes una referencia, te ayudamos a ordenar el pedido y confirmarlo por WhatsApp."
+          eyebrow="Pedido guiado"
+          title="El proceso es simple, pero el resultado tiene que sentirse premium."
+          whatsappLabel="Hablar por WhatsApp"
+        />
       </section>
 
       <section className="shell mt-24">
@@ -210,28 +191,12 @@ export default function HomePage() {
       </section>
 
       <section className="shell mt-24">
-        <div className="panel flex flex-col items-start justify-between gap-6 overflow-hidden p-8 sm:p-10 lg:flex-row lg:items-center">
-          <div className="max-w-2xl">
-            <span className="eyebrow">Cierre directo</span>
-            <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-              Pide por WhatsApp y termina tu pedido sin vueltas.
-            </h2>
-            <p className="mt-4 text-base leading-8 text-slate-300">
-              Explora, personaliza y envía tu pedido con una conversación clara. Nada de pagos en
-              línea por ahora; aquí el proceso se confirma contigo.
-            </p>
-          </div>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <CTAButton to="/catalogo">Explorar catálogo</CTAButton>
-            <Link
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-aqua/30 hover:bg-white/10"
-              to="/personalizar"
-            >
-              Ir al configurador
-              <MessageCircle className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
+        <CommercialCTA
+          description="Explora diseños, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atención real."
+          eyebrow="Cierre directo"
+          title="GGDev ya está listo para captar tu pedido desde cualquier canal."
+          whatsappLabel="Pedir por WhatsApp"
+        />
       </section>
     </div>
   );
