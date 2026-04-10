@@ -8,9 +8,10 @@ import BenefitCard from "@/components/home/BenefitCard";
 import CommercialCTA from "@/components/home/CommercialCTA";
 import ExampleGallery from "@/components/home/ExampleGallery";
 import ProcessSection from "@/components/home/ProcessSection";
+import ProductImage from "@/components/product/ProductImage";
 import { categories } from "@/data/categories";
-import { commercialBenefits, commercialSteps, showcaseExamples } from "@/data/commercial";
-import { featuredProducts } from "@/data/products";
+import { commercialBenefits, commercialSteps } from "@/data/commercial";
+import { activeProducts, featuredProducts, showcaseProducts } from "@/data/products";
 import { testimonials } from "@/data/testimonials";
 
 export default function HomePage() {
@@ -39,7 +40,7 @@ export default function HomePage() {
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">+8</p>
+                <p className="text-2xl font-bold text-white">{activeProducts.length}</p>
                 <p className="mt-1 text-sm text-slate-400">Diseños activos</p>
               </div>
               <div className="panel-soft p-4">
@@ -47,8 +48,8 @@ export default function HomePage() {
                 <p className="mt-1 text-sm text-slate-400">Respuesta estimada</p>
               </div>
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">Bajo pedido</p>
-                <p className="mt-1 text-sm text-slate-400">Producción confirmada</p>
+                <p className="text-2xl font-bold text-white">4 líneas</p>
+                <p className="mt-1 text-sm text-slate-400">Catálogo visual</p>
               </div>
             </div>
           </div>
@@ -62,10 +63,10 @@ export default function HomePage() {
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
                       Selección destacada
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">Tokyo Midnight Run</p>
+                    <p className="mt-2 text-lg font-semibold text-white">{featuredProducts[0].name}</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Una vibra potente para entrar desde redes y cerrar el pedido con una sola
-                      conversación.
+                      Un producto listo para validar si el tono visual de la marca va por donde
+                      quieres llevar el catálogo real.
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
@@ -73,31 +74,32 @@ export default function HomePage() {
                       Confianza comercial
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">
-                      Te guiamos antes de producir
+                      Catálogo listo para crecer
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Si el arte no está listo o no sabes qué talla pedir, lo revisamos contigo
-                      antes de confirmar.
+                      Ya puedes sustituir mockups por imágenes reales sin rehacer la estructura del
+                      producto ni el flujo de compra.
                     </p>
                   </div>
                 </div>
                 <div className="relative rounded-[34px] border border-white/10 bg-gradient-to-b from-surface-3 to-surface-2 p-5 shadow-glow">
                   <div className="rounded-[28px] border border-white/10 bg-night/50 p-3">
                     <div className="overflow-hidden rounded-[24px]">
-                      <img
+                      <ProductImage
                         alt="Previsualización premium GGDev"
-                        className="h-[420px] w-full object-cover"
-                        src={featuredProducts[0].images[0]}
+                        className="h-[420px]"
+                        image={featuredProducts[0].mainImage}
+                        name={featuredProducts[0].name}
                       />
                     </div>
                   </div>
                   <div className="absolute -bottom-6 -left-8 w-[220px] rounded-[28px] border border-white/10 bg-night/90 p-4 backdrop-blur-xl">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Cierre por WhatsApp
+                      Marca protegida
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Diseños claros, CTA directos y una experiencia lista para captar pedidos
-                      desde Instagram o TikTok.
+                      Las tarjetas del catálogo ya incluyen una marca de agua sutil para proteger
+                      el contenido visual de la marca.
                     </p>
                   </div>
                 </div>
@@ -132,14 +134,14 @@ export default function HomePage() {
           </CTAButton>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {featuredProducts.map((product) => (
+          {featuredProducts.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
 
       <section className="shell mt-24">
-        <ExampleGallery items={showcaseExamples} />
+        <ExampleGallery items={showcaseProducts} />
       </section>
 
       <section className="shell mt-16">

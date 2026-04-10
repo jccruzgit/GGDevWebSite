@@ -1,19 +1,21 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import ProductCard from "@/components/catalog/ProductCard";
+import ProductGallery from "@/components/product/ProductGallery";
+import ProductSpecs from "@/components/product/ProductSpecs";
 import CTAButton from "@/components/ui/CTAButton";
 import ColorSelector from "@/components/ui/ColorSelector";
 import InlineNotice from "@/components/ui/InlineNotice";
 import QuantitySelector from "@/components/ui/QuantitySelector";
 import SectionHeading from "@/components/ui/SectionHeading";
 import SizeSelector from "@/components/ui/SizeSelector";
+import TrustSection from "@/components/ui/TrustSection";
 import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
-import TrustSection from "@/components/ui/TrustSection";
-import ProductGallery from "@/components/product/ProductGallery";
-import ProductSpecs from "@/components/product/ProductSpecs";
 import { productTrustItems } from "@/data/commercial";
-import { products } from "@/data/products";
+import { activeProducts, products } from "@/data/products";
 import { formatCurrency } from "@/utils/format";
+import { getProductGalleryImages } from "@/utils/productMedia";
 import {
   buildProductOrderMessage,
   buildSupportMessage,
@@ -44,6 +46,15 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
+
+  const productImages = useMemo(() => getProductGalleryImages(product), [product]);
+  const relatedProducts = useMemo(
+    () =>
+      activeProducts
+        .filter((item) => item.id !== product?.id && item.category === product?.category)
+        .slice(0, 3),
+    [product]
+  );
 
   if (!product) {
     return (
@@ -108,7 +119,7 @@ export default function ProductDetailPage() {
   const handleHelpClick = () => {
     openWhatsApp(
       buildSupportMessage({
-        intro: `Hola, necesito ayuda con el diseno ${product.name}.`,
+        intro: `Hola, necesito ayuda con el diseño ${product.name}.`,
         details: [
           `Diseño: ${product.name}`,
           `Talla: ${selectedSize || "Por definir"}`,
@@ -124,7 +135,7 @@ export default function ProductDetailPage() {
   return (
     <div className="shell pt-10">
       <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
-        <ProductGallery activeIndex={activeImage} images={product.images} onChange={setActiveImage} />
+        <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
 
         <div className="space-y-6">
           <div>
@@ -135,7 +146,7 @@ export default function ProductDetailPage() {
 
           <div className="panel-soft space-y-6 p-6">
             <ColorSelector
-              colors={product.colors}
+              colors={product.availableColors}
               onChange={setSelectedColor}
               selectedColor={selectedColor?.hex}
             />
@@ -206,6 +217,24 @@ export default function ProductDetailPage() {
         </div>
         <WhatsAppResponseNote />
       </TrustSection>
+
+      {relatedProducts.length > 0 ? (
+        <section className="mt-16">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <SectionHeading
+              description={`Más opciones dentro de ${product.categoryLabel} para comparar estilo, color y presencia visual.`}
+              eyebrow="Relacionados"
+              title="Sigue explorando esta línea"
+            />
+            <CTAButton to={`/catalogo?categoria=${product.category}`}>Ver más de esta categoría</CTAButton>
+          </div>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

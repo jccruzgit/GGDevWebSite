@@ -1,11 +1,14 @@
+import ProductImage from "@/components/product/ProductImage";
+
 export default function ProductGallery({ images, activeIndex, onChange }) {
   return (
     <div className="space-y-4">
       <div className="panel overflow-hidden">
-        <img
+        <ProductImage
           alt="Vista del diseño"
-          className="h-[430px] w-full object-cover sm:h-[540px]"
-          src={images[activeIndex]}
+          className="h-[430px] sm:h-[540px]"
+          image={images[activeIndex]}
+          name="GGDev"
         />
       </div>
       <div className="grid grid-cols-3 gap-3">
@@ -21,7 +24,7 @@ export default function ProductGallery({ images, activeIndex, onChange }) {
             onClick={() => onChange(index)}
             type="button"
           >
-            <img alt="" className="h-28 w-full object-cover" src={image} />
+            <ProductImage alt="" className="h-28" image={image} name="GGDev" />
           </button>
         ))}
       </div>

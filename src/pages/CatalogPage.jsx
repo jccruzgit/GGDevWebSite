@@ -6,7 +6,7 @@ import ProductCard from "@/components/catalog/ProductCard";
 import CatalogSidebar from "@/components/catalog/CatalogSidebar";
 import CTAButton from "@/components/ui/CTAButton";
 import { categories, sizeOptions } from "@/data/categories";
-import { products } from "@/data/products";
+import { activeProducts } from "@/data/products";
 
 export default function CatalogPage() {
   const [searchParams] = useSearchParams();
@@ -16,7 +16,7 @@ export default function CatalogPage() {
   const [visibleCount, setVisibleCount] = useState(6);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return activeProducts.filter((product) => {
       const matchesCategory =
         selectedCategory === "all" || product.category === selectedCategory;
       const matchesSize = selectedSize === "all" || product.sizes.includes(selectedSize);
