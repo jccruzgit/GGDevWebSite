@@ -1,0 +1,95 @@
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import CTAButton from "@/components/ui/CTAButton";
+import logoMark from "@/assets/logo-mark.svg";
+
+const navItems = [
+  { label: "Catálogo", to: "/catalogo" },
+  { label: "Personalizar", to: "/personalizar" },
+  { label: "Asesoría", to: "/asesoria" },
+  { label: "Cómo pedir", to: "/como-pedir" },
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const linkClassName = ({ isActive }) =>
+    `text-sm font-medium ${
+      isActive ? "text-white" : "text-slate-300 hover:text-white"
+    }`;
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-white/8 bg-night/80 backdrop-blur-xl">
+      <div className="shell">
+        <div className="flex items-center justify-between gap-3 py-4">
+          <Link className="flex items-center gap-3" to="/">
+            <img alt="Logo GGDev" className="h-11 w-11 rounded-2xl" src={logoMark} />
+            <div>
+              <span className="block text-lg font-bold text-white">GGDev</span>
+              <span className="block text-xs uppercase tracking-[0.28em] text-slate-400">
+                Camisetas premium
+              </span>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-8 lg:flex">
+            {navItems.map((item) => (
+              <NavLink key={item.to} className={linkClassName} to={item.to}>
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="hidden lg:block">
+            <CTAButton
+              href="https://wa.me/50370000000?text=Hola%20GGDev%2C%20quiero%20hacer%20un%20pedido."
+              rel="noreferrer"
+              target="_blank"
+            >
+              WhatsApp
+            </CTAButton>
+          </div>
+
+          <button
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            className="inline-flex rounded-full border border-white/10 bg-white/5 p-3 text-slate-200 lg:hidden"
+            onClick={() => setOpen((current) => !current)}
+            type="button"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+
+        {open ? (
+          <div className="panel mb-4 space-y-4 p-4 lg:hidden">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                className={({ isActive }) =>
+                  `block rounded-2xl px-4 py-3 text-sm font-medium ${
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-slate-300 hover:bg-white/6 hover:text-white"
+                  }`
+                }
+                onClick={() => setOpen(false)}
+                to={item.to}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+            <CTAButton
+              className="w-full"
+              href="https://wa.me/50370000000?text=Hola%20GGDev%2C%20quiero%20hacer%20un%20pedido."
+              rel="noreferrer"
+              target="_blank"
+            >
+              WhatsApp
+            </CTAButton>
+          </div>
+        ) : null}
+      </div>
+    </header>
+  );
+}

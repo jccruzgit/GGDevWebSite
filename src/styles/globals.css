@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-night font-body text-slate-100 antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(124, 248, 210, 0.12), transparent 20%),
+      radial-gradient(circle at top right, rgba(58, 166, 255, 0.14), transparent 28%),
+      linear-gradient(180deg, rgba(4, 13, 30, 0.98), rgba(3, 11, 26, 1));
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(39, 228, 242, 0.28);
+    color: white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight text-white;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .panel {
+    @apply rounded-[28px] border border-line bg-surface-2/85 shadow-card backdrop-blur-xl;
+  }
+
+  .panel-soft {
+    @apply rounded-[24px] border border-white/10 bg-surface-3/70 shadow-card backdrop-blur-md;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300;
+  }
+
+  .text-gradient {
+    @apply bg-brand-gradient bg-clip-text text-transparent;
+  }
+
+  .button-glow {
+    @apply shadow-[0_0_0_1px_rgba(124,248,210,0.22),0_14px_40px_rgba(39,228,242,0.18)];
+  }
+
+  .surface-grid {
+    background-image:
+      radial-gradient(circle at top, rgba(58, 166, 255, 0.12), transparent 28%),
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: auto, 36px 36px, 36px 36px;
+  }
+}
