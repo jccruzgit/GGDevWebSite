@@ -48,16 +48,16 @@ export default function HomePage() {
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">{activeProducts.length}</p>
-                <p className="mt-1 text-sm text-slate-400">Disenos activos</p>
+                <p className="text-2xl font-bold text-white">+20 disenos</p>
+                <p className="mt-1 text-sm text-slate-400">Disponibles</p>
               </div>
               <div className="panel-soft p-4">
                 <p className="text-2xl font-bold text-white">24h</p>
-                <p className="mt-1 text-sm text-slate-400">Respuesta estimada</p>
+                <p className="mt-1 text-sm text-slate-400">De respuesta</p>
               </div>
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">4 lineas</p>
-                <p className="mt-1 text-sm text-slate-400">Catalogo visual</p>
+                <p className="text-2xl font-bold text-white">A tu estilo</p>
+                <p className="mt-1 text-sm text-slate-400">Personalizable</p>
               </div>
             </div>
           </div>
