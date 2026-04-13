@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import BrandLogo from "@/components/common/BrandLogo";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CTAButton from "@/components/ui/CTAButton";
 import CategoryCard from "@/components/home/CategoryCard";
@@ -20,18 +21,25 @@ export default function HomePage() {
       <section className="shell pt-8 sm:pt-12">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="max-w-2xl">
-            <span className="eyebrow">Selección insignia GGDev</span>
+            <div className="inline-flex rounded-[30px] border border-white/10 bg-white/5 p-3 shadow-card backdrop-blur-xl">
+              <BrandLogo
+                alt="GGDev"
+                imgClassName="h-12 sm:h-14 drop-shadow-[0_0_30px_rgba(39,228,242,0.2)]"
+                variant="full"
+              />
+            </div>
+            <span className="eyebrow mt-6">Seleccion insignia GGDev</span>
             <h1 className="mt-6 text-5xl font-bold leading-[0.95] sm:text-6xl lg:text-7xl">
               Tu estilo,
               <span className="text-gradient"> nivel leyenda.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
               Camisetas personalizadas con ADN tech, anime, motor y gaming para perfiles que
-              quieren vender imagen, no verse como algo genérico.
+              quieren vender imagen, no verse como algo generico.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CTAButton to="/catalogo">
-                Explorar catálogo
+                Explorar catalogo
                 <ArrowRight className="h-4 w-4" />
               </CTAButton>
               <CTAButton to="/personalizar" variant="secondary">
@@ -41,15 +49,15 @@ export default function HomePage() {
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               <div className="panel-soft p-4">
                 <p className="text-2xl font-bold text-white">{activeProducts.length}</p>
-                <p className="mt-1 text-sm text-slate-400">Diseños activos</p>
+                <p className="mt-1 text-sm text-slate-400">Disenos activos</p>
               </div>
               <div className="panel-soft p-4">
                 <p className="text-2xl font-bold text-white">24h</p>
                 <p className="mt-1 text-sm text-slate-400">Respuesta estimada</p>
               </div>
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">4 líneas</p>
-                <p className="mt-1 text-sm text-slate-400">Catálogo visual</p>
+                <p className="text-2xl font-bold text-white">4 lineas</p>
+                <p className="mt-1 text-sm text-slate-400">Catalogo visual</p>
               </div>
             </div>
           </div>
@@ -61,12 +69,12 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Selección destacada
+                      Seleccion destacada
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">{featuredProducts[0].name}</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
                       Un producto listo para validar si el tono visual de la marca va por donde
-                      quieres llevar el catálogo real.
+                      quieres llevar el catalogo real.
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
@@ -74,10 +82,10 @@ export default function HomePage() {
                       Confianza comercial
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">
-                      Catálogo listo para crecer
+                      Catalogo listo para crecer
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Ya puedes sustituir mockups por imágenes reales sin rehacer la estructura del
+                      Ya puedes sustituir mockups por imagenes reales sin rehacer la estructura del
                       producto ni el flujo de compra.
                     </p>
                   </div>
@@ -86,10 +94,13 @@ export default function HomePage() {
                   <div className="rounded-[28px] border border-white/10 bg-night/50 p-3">
                     <div className="overflow-hidden rounded-[24px]">
                       <ProductImage
-                        alt="Previsualización premium GGDev"
+                        alt="Previsualizacion premium GGDev"
                         className="h-[420px]"
+                        fit="contain"
                         image={featuredProducts[0].mainImage}
+                        imageClassName="p-4"
                         name={featuredProducts[0].name}
+                        surfaceClassName="bg-slate-100"
                       />
                     </div>
                   </div>
@@ -98,7 +109,7 @@ export default function HomePage() {
                       Marca protegida
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Las tarjetas del catálogo ya incluyen una marca de agua sutil para proteger
+                      Las tarjetas del catalogo ya incluyen una marca de agua sutil para proteger
                       el contenido visual de la marca.
                     </p>
                   </div>
@@ -112,8 +123,8 @@ export default function HomePage() {
       <section className="shell mt-24">
         <SectionHeading
           description="Explora universos visuales pensados para creadores, fandoms intensos y perfiles que viven entre redes, comunidad y calle."
-          eyebrow="Categorías"
-          title="Tu próxima camiseta empieza con una estética clara"
+          eyebrow="Categorias"
+          title="Tu proxima camiseta empieza con una estetica clara"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {categories.map((category) => (
@@ -125,12 +136,12 @@ export default function HomePage() {
       <section className="shell mt-24">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
-            description="Una selección con identidad fuerte para entrar rápido, elegir mejor y pedir sin vueltas."
-            eyebrow="Diseños listos para vender visual"
-            title="Empieza con un diseño que ya tiene presencia"
+            description="Una seleccion con identidad fuerte para entrar rapido, elegir mejor y pedir sin vueltas."
+            eyebrow="Disenos listos para vender visual"
+            title="Empieza con un diseno que ya tiene presencia"
           />
           <CTAButton to="/catalogo" variant="secondary">
-            Ver catálogo completo
+            Ver catalogo completo
           </CTAButton>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -146,18 +157,18 @@ export default function HomePage() {
 
       <section className="shell mt-16">
         <CommercialCTA
-          description="Si ya viste un diseño que te gustó, puedes ir al catálogo, personalizar el tuyo o cerrar de una vez por WhatsApp."
+          description="Si ya viste un diseno que te gusto, puedes ir al catalogo, personalizar el tuyo o cerrar de una vez por WhatsApp."
           eyebrow="Siguiente paso"
-          title="No te quedes solo en la inspiración. Convierte esa idea en pedido."
+          title="No te quedes solo en la inspiracion. Convierte esa idea en pedido."
         />
       </section>
 
       <section className="shell mt-24">
         <SectionHeading
           align="center"
-          description="Una experiencia pensada para que comprar una camiseta personalizada se sienta clara, seria y fácil de recomendar."
-          eyebrow="¿Por qué pedir con GGDev?"
-          title="Más confianza, mejor guía y un proceso que sí acompaña"
+          description="Una experiencia pensada para que comprar una camiseta personalizada se sienta clara, seria y facil de recomendar."
+          eyebrow="Por que pedir con GGDev?"
+          title="Mas confianza, mejor guia y un proceso que si acompana"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           {commercialBenefits.map((benefit) => (
@@ -194,9 +205,9 @@ export default function HomePage() {
 
       <section className="shell mt-24">
         <CommercialCTA
-          description="Explora diseños, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atención real."
+          description="Explora disenos, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atencion real."
           eyebrow="Cierre directo"
-          title="GGDev ya está listo para captar tu pedido desde cualquier canal."
+          title="GGDev ya esta listo para captar tu pedido desde cualquier canal."
           whatsappLabel="Pedir por WhatsApp"
         />
       </section>

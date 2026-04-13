@@ -1,3 +1,4 @@
+import { resolveProductGallery } from "@/assets/mockups";
 import { createMockGallery } from "@/utils/mockImage";
 
 const sharedSizes = ["S", "M", "L", "XL", "2XL"];
@@ -8,17 +9,18 @@ const sharedColors = [
 ];
 
 const categoryLabels = {
-  devs: "Devs",
   anime: "Anime",
+  devs: "Devs",
   gaming: "Gaming",
   motogp: "MotoGP",
+  streetwear: "Streetwear",
+  "tech-humor": "Tech Humor",
 };
 
 function buildProduct({
   id,
   name,
   category,
-  price,
   shortDescription,
   description,
   tag,
@@ -27,10 +29,14 @@ function buildProduct({
   accent,
   glow,
 }) {
-  const gallery = createMockGallery({
-    title: name,
-    accent,
-    glow,
+  const gallery = resolveProductGallery({
+    slug: id,
+    category,
+    fallbackImages: createMockGallery({
+      title: name,
+      accent,
+      glow,
+    }),
   });
 
   return {
@@ -39,13 +45,13 @@ function buildProduct({
     name,
     category,
     categoryLabel: categoryLabels[category],
-    price,
+    price: 20,
     shortDescription,
     description,
     availableColors: sharedColors,
     sizes: sharedSizes,
     mainImage: gallery[0],
-    secondaryImages: gallery.slice(1, 3),
+    secondaryImages: gallery.slice(1),
     tag,
     featured,
     active,
@@ -54,150 +60,113 @@ function buildProduct({
 
 export const products = [
   buildProduct({
-    id: "terminal-overdrive-01",
-    name: "Terminal Overdrive 01",
+    id: "legacy-code",
+    name: "Legacy Code",
     category: "devs",
-    price: 24.9,
-    shortDescription: "Una pieza oscura con lectura de consola y actitud de build serio.",
+    shortDescription: "Humor dev clasico con una lectura limpia y directa sobre negro premium.",
     description:
-      "Pensada para perfiles dev que quieren una camiseta limpia, técnica y lista para destacar en contenido, eventos o uso diario.",
-    tag: "Popular",
+      "Una camiseta para quienes conviven con sistemas heredados, refactors pendientes y todavia lo llevan con estilo.",
+    tag: "Favorito dev",
     featured: true,
     accent: "#7CF8D2",
     glow: "#27E4F2",
   }),
   buildProduct({
-    id: "merge-conflict-club",
-    name: "Merge Conflict Club",
+    id: "machine-learning",
+    name: "Machine Learning",
     category: "devs",
-    price: 25.5,
-    shortDescription: "Humor interno para gente que vive entre ramas, fixes y despliegues.",
+    shortDescription: "Estetica de IA aplicada a una pieza simple, actual y facil de combinar.",
     description:
-      "Un diseño con energía de equipo técnico y personalidad visual clara para quienes convierten errores en identidad.",
-    tag: "Destacado",
+      "Pensada para perfiles tech que quieren una referencia clara al mundo ML sin cargar demasiado la prenda.",
+    tag: "Nuevo lanzamiento",
     accent: "#3AA6FF",
     glow: "#7CF8D2",
   }),
   buildProduct({
-    id: "stack-trace-syndicate",
-    name: "Stack Trace Syndicate",
+    id: "vaporwave-8-bit",
+    name: "Vaporwave 8-Bit",
+    category: "gaming",
+    shortDescription: "Neon retro para setups con personalidad y nostalgia bien pulida.",
+    description:
+      "Una mezcla entre arcade, glitch controlado y color con identidad gamer premium.",
+    tag: "Nuevo lanzamiento",
+    featured: true,
+    accent: "#3AA6FF",
+    glow: "#7CF8D2",
+  }),
+  buildProduct({
+    id: "mainframe-soul",
+    name: "Mainframe Soul",
+    category: "tech-humor",
+    shortDescription: "Diseno elegante para quienes convierten errores en personalidad.",
+    description:
+      "Inspirado en interfaces crudas, estructuras modulares y una vibra tech con lectura editorial.",
+    accent: "#27E4F2",
+    glow: "#3AA6FF",
+  }),
+  buildProduct({
+    id: "senor-developer",
+    name: "Senor Developer",
     category: "devs",
-    price: 26.2,
-    shortDescription: "Visual agresivo, contraste fuerte y estética dev de culto.",
+    shortDescription: "Una referencia con identidad latina y tono geek para destacar sin ruido visual.",
     description:
-      "Ideal para quienes quieren una pieza con presencia tech más editorial, sin perder el guiño geek que la hace memorable.",
-    featured: true,
-    accent: "#27E4F2",
+      "Disenada para quienes mezclan humor, oficio y cultura dev en una pieza facil de reconocer.",
+    accent: "#7CF8D2",
     glow: "#3AA6FF",
   }),
   buildProduct({
-    id: "oni-signal-v2",
-    name: "Oni Signal V2",
+    id: "glitch-geist-01",
+    name: "Glitch Geist 01",
     category: "anime",
-    price: 27.9,
-    shortDescription: "Anime oscuro con vibra urbana y una lectura visual muy marcada.",
+    shortDescription: "Estetica espectral y urbana para perfiles visuales mas intensos.",
     description:
-      "Un mockup listo para convertirse en diseño real de línea anime premium, con presencia fuerte tanto en calle como en redes.",
-    tag: "Nuevo",
+      "Combina glitch, narrativa nocturna y una silueta grafica que domina el look completo.",
+    tag: "Edicion limitada",
     featured: true,
     accent: "#27E4F2",
     glow: "#7CF8D2",
   }),
   buildProduct({
-    id: "mecha-district-77",
-    name: "Mecha District 77",
-    category: "anime",
-    price: 28.4,
-    shortDescription: "Capas visuales más densas para un look anime con energía futurista.",
+    id: "github",
+    name: "GitHub",
+    category: "devs",
+    shortDescription: "Un clasico reconocible al instante para perfiles que viven entre repos y ramas.",
     description:
-      "Funciona como base clara para una línea de mockups anime con mayor impacto visual y lectura de colección.",
-    accent: "#7CF8D2",
-    glow: "#3AA6FF",
-  }),
-  buildProduct({
-    id: "shibuya-afterglow",
-    name: "Shibuya Afterglow",
-    category: "anime",
-    price: 27.4,
-    shortDescription: "Neón controlado, composición limpia y espíritu nocturno.",
-    description:
-      "Pensada para una estética anime más elegante, con balance entre intensidad visual y acabado premium.",
-    tag: "Popular",
-    accent: "#3AA6FF",
-    glow: "#27E4F2",
-  }),
-  buildProduct({
-    id: "arcade-revival-x",
-    name: "Arcade Revival X",
-    category: "gaming",
-    price: 26.9,
-    shortDescription: "Retro competitivo con nostalgia bien pulida y presencia de setup.",
-    description:
-      "Una base ideal para catálogo gaming con personalidad inmediata y visual lista para clips, streams y reels.",
-    tag: "Popular",
-    featured: true,
-    accent: "#3AA6FF",
-    glow: "#7CF8D2",
-  }),
-  buildProduct({
-    id: "ranked-night-shift",
-    name: "Ranked Night Shift",
-    category: "gaming",
-    price: 27.2,
-    shortDescription: "Gamer nocturno, lectura fuerte y look más maduro que un print casual.",
-    description:
-      "Sirve como referencia para una línea gaming premium centrada en oscuridad, contraste y actitud seria.",
-    accent: "#27E4F2",
-    glow: "#3AA6FF",
-  }),
-  buildProduct({
-    id: "lagless-legends",
-    name: "Lagless Legends",
-    category: "gaming",
-    price: 26.7,
-    shortDescription: "Una camiseta con pulso competitivo y guiño geek bien dosificado.",
-    description:
-      "Diseñada para funcionar bien como producto de catálogo y también como futura pieza destacada dentro de la línea gaming.",
-    tag: "Destacado",
-    accent: "#7CF8D2",
-    glow: "#27E4F2",
-  }),
-  buildProduct({
-    id: "apex-chicane-club",
-    name: "Apex Chicane Club",
-    category: "motogp",
-    price: 28.9,
-    shortDescription: "Velocidad, líneas de pista y una presencia pensada para destacar.",
-    description:
-      "Un concepto base para colección racing con lectura premium y ritmo visual fuerte para historias y catálogo.",
-    tag: "Destacado",
-    featured: true,
-    accent: "#7CF8D2",
-    glow: "#3AA6FF",
-  }),
-  buildProduct({
-    id: "midnight-paddock",
-    name: "Midnight Paddock",
-    category: "motogp",
-    price: 29.4,
-    shortDescription: "MotoGP nocturno con energía de calle y enfoque cinematográfico.",
-    description:
-      "Pensada para una línea que combine motor, cultura visual y una estética más aspiracional que deportiva genérica.",
+      "Una camiseta directa y funcional para quienes quieren una referencia tech universal con acabado limpio.",
     accent: "#27E4F2",
     glow: "#7CF8D2",
   }),
   buildProduct({
-    id: "redline-sector-09",
-    name: "Redline Sector 09",
-    category: "motogp",
-    price: 29.9,
-    shortDescription: "Una referencia racing más agresiva para perfiles que quieren impacto inmediato.",
+    id: "async-await-ghost",
+    name: "Async Await Ghost",
+    category: "tech-humor",
+    shortDescription: "Una pieza ligera, ingeniosa y lista para conversaciones geek.",
     description:
-      "Lista para reemplazarse luego por arte final de marca, conservando ya una estructura clara de producto real.",
-    tag: "Nuevo",
-    featured: true,
+      "Pensada para destacar sin gritar, con humor de nicho y composicion limpia.",
     accent: "#3AA6FF",
     glow: "#27E4F2",
+  }),
+  buildProduct({
+    id: "tokyo-midnight-run",
+    name: "Tokyo Midnight Run",
+    category: "motogp",
+    shortDescription: "Velocidad urbana con lectura cinematografica y pulso nocturno.",
+    description:
+      "Trazos de calle, energia mecanica y un tono premium pensado para destacar en reels.",
+    tag: "Favorito IG",
+    accent: "#7CF8D2",
+    glow: "#3AA6FF",
+  }),
+  buildProduct({
+    id: "cyber-ronin-v04",
+    name: "Cyber-Ronin V.04",
+    category: "streetwear",
+    shortDescription: "Streetwear oscuro con identidad futurista y presencia premium.",
+    description:
+      "Una camiseta para quienes quieren un statement visual fuerte sin perder limpieza de marca.",
+    featured: true,
+    accent: "#27E4F2",
+    glow: "#7CF8D2",
   }),
 ];
 

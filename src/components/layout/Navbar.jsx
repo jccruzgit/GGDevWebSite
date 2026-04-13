@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import BrandLogo from "@/components/common/BrandLogo";
 import CTAButton from "@/components/ui/CTAButton";
-import logoMark from "@/assets/logo-mark.svg";
-import { buildWhatsAppUrl, buildGeneralWhatsAppMessage } from "@/utils/whatsapp";
+import { buildGeneralWhatsAppMessage, buildWhatsAppUrl } from "@/utils/whatsapp";
 
 const navItems = [
-  { label: "Catálogo", to: "/catalogo" },
+  { label: "Catalogo", to: "/catalogo" },
   { label: "Personalizar", to: "/personalizar" },
-  { label: "Asesoría", to: "/asesoria" },
-  { label: "Cómo pedir", to: "/como-pedir" },
+  { label: "Asesoria", to: "/asesoria" },
+  { label: "Como pedir", to: "/como-pedir" },
 ];
 
 export default function Navbar() {
@@ -26,8 +26,13 @@ export default function Navbar() {
       <div className="shell">
         <div className="flex items-center justify-between gap-3 py-4">
           <Link className="flex items-center gap-3" to="/">
-            <img alt="Logo GGDev" className="h-11 w-11 rounded-2xl" src={logoMark} />
-            <div>
+            <BrandLogo
+              alt="Inicio GGDev"
+              className="shrink-0"
+              imgClassName="drop-shadow-[0_0_22px_rgba(39,228,242,0.28)]"
+              variant="icon"
+            />
+            <div className="hidden sm:block">
               <span className="block text-lg font-bold text-white">GGDev</span>
               <span className="block text-xs uppercase tracking-[0.28em] text-slate-400">
                 Camisetas premium
@@ -50,7 +55,7 @@ export default function Navbar() {
           </div>
 
           <button
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-label={open ? "Cerrar menu" : "Abrir menu"}
             className="inline-flex rounded-full border border-white/10 bg-white/5 p-3 text-slate-200 lg:hidden"
             onClick={() => setOpen((current) => !current)}
             type="button"

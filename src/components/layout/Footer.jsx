@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Music2 } from "lucide-react";
-import logoMark from "@/assets/logo-mark.svg";
+import BrandLogo from "@/components/common/BrandLogo";
 import { siteConfig } from "@/data/site";
 import { buildGeneralWhatsAppMessage, buildWhatsAppUrl } from "@/utils/whatsapp";
 
 const links = [
   { label: "Inicio", to: "/" },
-  { label: "Catálogo", to: "/catalogo" },
+  { label: "Catalogo", to: "/catalogo" },
   { label: "Personalizar", to: "/personalizar" },
-  { label: "Asesoría", to: "/asesoria" },
+  { label: "Asesoria", to: "/asesoria" },
 ];
 
 export default function Footer() {
@@ -19,17 +19,16 @@ export default function Footer() {
       <div className="shell">
         <div className="panel grid gap-10 p-8 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <img alt="Logo GGDev" className="h-12 w-12 rounded-2xl" src={logoMark} />
-              <div>
-                <p className="text-lg font-bold text-white">GGDev</p>
-                <p className="text-sm text-slate-400">
-                  Camisetas personalizadas con vibra premium
-                </p>
-              </div>
-            </div>
+            <Link className="inline-flex items-center" to="/">
+              <BrandLogo
+                alt="GGDev"
+                imgClassName="h-16 sm:h-[4.5rem] drop-shadow-[0_0_28px_rgba(39,228,242,0.18)]"
+                variant="full"
+              />
+            </Link>
+            <p className="mt-4 text-sm text-slate-400">Camisetas personalizadas con vibra premium</p>
             <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300">
-              Diseños tech, anime, gaming y motor con una experiencia directa por WhatsApp para
+              Disenos tech, anime, gaming y motor con una experiencia directa por WhatsApp para
               ayudarte a elegir, adaptar y pedir sin complicaciones.
             </p>
           </div>
@@ -88,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
         <p className="mt-6 text-center text-xs uppercase tracking-[0.24em] text-slate-500">
-          GGDev - Diseñado para destacar en publicaciones, historias y calle
+          GGDev - Disenado para destacar en publicaciones, historias y calle
         </p>
       </div>
     </footer>

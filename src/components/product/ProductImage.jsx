@@ -2,16 +2,19 @@ export default function ProductImage({
   alt,
   category,
   className = "",
+  fit = "cover",
   image,
+  imageClassName = "",
   name,
+  surfaceClassName = "bg-gradient-to-br from-surface-3 via-night to-surface-2",
   watermark = false,
 }) {
   return (
-    <div className={`relative overflow-hidden bg-gradient-to-br from-surface-3 via-night to-surface-2 ${className}`}>
+    <div className={`relative overflow-hidden ${surfaceClassName} ${className}`}>
       {image ? (
         <img
           alt={alt}
-          className="h-full w-full object-cover"
+          className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"} ${imageClassName}`.trim()}
           src={image}
         />
       ) : (

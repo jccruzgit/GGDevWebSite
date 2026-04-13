@@ -11,9 +11,12 @@ export default function ProductCard({ product }) {
         <ProductImage
           alt={product.name}
           category={product.categoryLabel}
-          className="h-72 transition duration-500 group-hover:scale-105"
+          className="h-72 transition duration-500 group-hover:scale-[1.03]"
+          fit="contain"
           image={getProductPrimaryImage(product)}
+          imageClassName="p-4"
           name={product.name}
+          surfaceClassName="bg-slate-100"
           watermark
         />
         {product.tag ? (
