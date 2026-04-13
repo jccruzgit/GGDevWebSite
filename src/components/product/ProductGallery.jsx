@@ -5,7 +5,7 @@ export default function ProductGallery({ images, activeIndex, onChange }) {
     <div className="space-y-4">
       <div className="panel overflow-hidden">
         <ProductImage
-          alt="Vista del diseno"
+          alt="Vista del diseño"
           className="h-[430px] sm:h-[540px]"
           fit="contain"
           image={images[activeIndex]}

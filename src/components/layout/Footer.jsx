@@ -6,9 +6,9 @@ import { buildGeneralWhatsAppMessage, buildWhatsAppUrl } from "@/utils/whatsapp"
 
 const links = [
   { label: "Inicio", to: "/" },
-  { label: "Catalogo", to: "/catalogo" },
+  { label: "Catálogo", to: "/catalogo" },
   { label: "Personalizar", to: "/personalizar" },
-  { label: "Asesoria", to: "/asesoria" },
+  { label: "Asesoría", to: "/asesoria" },
 ];
 
 export default function Footer() {
@@ -28,7 +28,7 @@ export default function Footer() {
             </Link>
             <p className="mt-4 text-sm text-slate-400">Camisetas personalizadas con vibra premium</p>
             <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300">
-              Disenos tech, anime, gaming y motor con una experiencia directa por WhatsApp para
+              Diseños tech, anime, gaming y motor con una experiencia directa por WhatsApp para
               ayudarte a elegir, adaptar y pedir sin complicaciones.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
         <p className="mt-6 text-center text-xs uppercase tracking-[0.24em] text-slate-500">
-          GGDev - Disenado para destacar en publicaciones, historias y calle
+          GGDev - Diseñado para destacar en publicaciones, historias y calle
         </p>
       </div>
     </footer>

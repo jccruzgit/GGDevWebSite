@@ -6,10 +6,10 @@ import CTAButton from "@/components/ui/CTAButton";
 import { buildGeneralWhatsAppMessage, buildWhatsAppUrl } from "@/utils/whatsapp";
 
 const navItems = [
-  { label: "Catalogo", to: "/catalogo" },
+  { label: "Catálogo", to: "/catalogo" },
   { label: "Personalizar", to: "/personalizar" },
-  { label: "Asesoria", to: "/asesoria" },
-  { label: "Como pedir", to: "/como-pedir" },
+  { label: "Asesoría", to: "/asesoria" },
+  { label: "Cómo pedir", to: "/como-pedir" },
 ];
 
 export default function Navbar() {
@@ -55,7 +55,7 @@ export default function Navbar() {
           </div>
 
           <button
-            aria-label={open ? "Cerrar menu" : "Abrir menu"}
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
             className="inline-flex rounded-full border border-white/10 bg-white/5 p-3 text-slate-200 lg:hidden"
             onClick={() => setOpen((current) => !current)}
             type="button"

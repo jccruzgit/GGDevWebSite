@@ -5,7 +5,7 @@ export default function CommercialCTA({
   eyebrow = "Listo para pedir",
   title,
   description,
-  primaryLabel = "Explorar catalogo",
+  primaryLabel = "Explorar catálogo",
   primaryTo = "/catalogo",
   secondaryLabel = "Personalizar ahora",
   secondaryTo = "/personalizar",
