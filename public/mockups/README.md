@@ -27,6 +27,7 @@ Productos actuales:
 - `devs/senor-developer`
 - `devs/github`
 - `gaming/vaporwave-8-bit`
+- `gaming/mango-fortnite`
 - `tech-humor/mainframe-soul`
 - `tech-humor/async-await-ghost`
 - `anime/glitch-geist-01`
@@ -46,3 +47,7 @@ Ejemplo:
 ```
 
 Si un producto no tiene archivos registrados, la app sigue usando el mockup SVG actual.
+
+Para `gaming/mango-fortnite`, la imagen principal esperada es:
+
+- `public/mockups/gaming/mango-fortnite/main.png`

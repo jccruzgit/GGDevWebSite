@@ -12,8 +12,8 @@ import SizeSelector from "@/components/ui/SizeSelector";
 import TrustSection from "@/components/ui/TrustSection";
 import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
+import { useCatalog } from "@/context/CatalogContext";
 import { productTrustItems } from "@/data/commercial";
-import { activeProducts, products } from "@/data/products";
 import { formatCurrency } from "@/utils/format";
 import { getProductGalleryImages } from "@/utils/productMedia";
 import {
@@ -36,9 +36,10 @@ function formatMissingFields(fields) {
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const { activeProducts, loading, products } = useCatalog();
   const product = useMemo(
     () => products.find((item) => item.slug === id || item.id === id),
-    [id]
+    [id, products]
   );
 
   const [activeImage, setActiveImage] = useState(0);
@@ -53,19 +54,32 @@ export default function ProductDetailPage() {
       activeProducts
         .filter((item) => item.id !== product?.id && item.category === product?.category)
         .slice(0, 3),
-    [product]
+    [activeProducts, product]
   );
+
+  if (!product && loading) {
+    return (
+      <div className="shell pt-14">
+        <div className="panel p-10 text-center">
+          <h1 className="text-3xl font-bold text-white">Cargando diseno</h1>
+          <p className="mt-4 text-slate-400">
+            Estamos buscando el producto en el catalogo para mostrarte el detalle correcto.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
       <div className="shell pt-14">
         <div className="panel p-10 text-center">
-          <h1 className="text-3xl font-bold text-white">Ese diseño ya no está disponible</h1>
+          <h1 className="text-3xl font-bold text-white">Ese diseno ya no esta disponible</h1>
           <p className="mt-4 text-slate-400">
-            Vuelve al catálogo para explorar otros diseños o pide apoyo para una versión similar.
+            Vuelve al catalogo para explorar otros disenos o pide apoyo para una version similar.
           </p>
           <CTAButton className="mt-8" to="/catalogo">
-            Ir al catálogo
+            Ir al catalogo
           </CTAButton>
         </div>
       </div>
@@ -78,7 +92,7 @@ export default function ProductDetailPage() {
     quantity:
       Number.isInteger(quantity) && quantity > 0
         ? ""
-        : "La cantidad debe ser un número válido mayor que cero.",
+        : "La cantidad debe ser un numero valido mayor que cero.",
   };
 
   const isProductOrderReady = !Object.values(productErrors).some(Boolean);
@@ -93,11 +107,11 @@ export default function ProductDetailPage() {
   }
 
   if (productErrors.quantity) {
-    missingFields.push("una cantidad válida");
+    missingFields.push("una cantidad valida");
   }
 
   const productNotice = isProductOrderReady
-    ? "Tu mensaje incluirá el diseño, talla, color, cantidad y notas para cerrar el pedido más rápido."
+    ? "Tu mensaje incluira el diseno, talla, color, cantidad y notas para cerrar el pedido mas rapido."
     : `Selecciona ${formatMissingFields(missingFields)} para desbloquear el pedido por WhatsApp.`;
 
   const handleOrderClick = () => {
@@ -119,13 +133,13 @@ export default function ProductDetailPage() {
   const handleHelpClick = () => {
     openWhatsApp(
       buildSupportMessage({
-        intro: `Hola, necesito ayuda con el diseño ${product.name}.`,
+        intro: `Hola, necesito ayuda con el diseno ${product.name}.`,
         details: [
-          `Diseño: ${product.name}`,
+          `Diseno: ${product.name}`,
           `Talla: ${selectedSize || "Por definir"}`,
           `Color: ${selectedColor?.name || "Por definir"}`,
           `Cantidad: ${quantity}`,
-          `Notas: ${notes.trim() || "Necesito recomendación para elegir la mejor opción."}`,
+          `Notas: ${notes.trim() || "Necesito recomendacion para elegir la mejor opcion."}`,
         ],
         closing: "Quiero que me orienten antes de confirmar mi pedido.",
       })
@@ -168,7 +182,7 @@ export default function ProductDetailPage() {
                 className="min-h-32 w-full rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
                 id="notes"
                 onChange={(event) => setNotes(event.target.value)}
-                placeholder="Cuéntanos si quieres un ajuste, una referencia o alguna indicación especial."
+                placeholder="Cuentanos si quieres un ajuste, una referencia o alguna indicacion especial."
                 value={notes}
               />
             </div>
@@ -187,7 +201,7 @@ export default function ProductDetailPage() {
                   onClick={handleHelpClick}
                   variant="secondary"
                 >
-                  Necesito ayuda con este diseño
+                  Necesito ayuda con este diseno
                 </WhatsAppActionButton>
               </div>
 
@@ -202,11 +216,11 @@ export default function ProductDetailPage() {
 
       <TrustSection
         className="mt-16"
-        description={`Queremos que pedir ${product.name} se sienta claro desde el primer mensaje hasta la confirmación final.`}
+        description={`Queremos que pedir ${product.name} se sienta claro desde el primer mensaje hasta la confirmacion final.`}
         eyebrow="Confianza GGDev"
         items={productTrustItems}
-        note="Si no estás seguro del tamaño o la ubicación del diseño, te ayudamos antes de producir."
-        title="Compra con respaldo visual y acompañamiento real"
+        note="Si no estas seguro del tamano o la ubicacion del diseno, te ayudamos antes de producir."
+        title="Compra con respaldo visual y acompanamiento real"
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <WhatsAppActionButton className="w-full sm:w-auto" onClick={handleHelpClick} variant="secondary">
@@ -223,11 +237,11 @@ export default function ProductDetailPage() {
         <section className="mt-16">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading
-              description={`Más opciones dentro de ${product.categoryLabel} para comparar estilo, color y presencia visual.`}
+              description={`Mas opciones dentro de ${product.categoryLabel} para comparar estilo, color y presencia visual.`}
               eyebrow="Relacionados"
-              title="Sigue explorando esta línea"
+              title="Sigue explorando esta linea"
             />
-            <CTAButton to={`/catalogo?categoria=${product.category}`}>Ver más de esta categoría</CTAButton>
+            <CTAButton to={`/catalogo?categoria=${product.category}`}>Ver mas de esta categoria</CTAButton>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {relatedProducts.map((relatedProduct) => (

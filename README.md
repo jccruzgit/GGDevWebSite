@@ -66,6 +66,19 @@ src/
   utils/
 ```
 
+## Admin basico
+
+El proyecto ahora incluye una base para admin en `#/admin/login` y `#/admin`.
+
+Para activarlo necesitas:
+
+1. Crear un proyecto en Supabase.
+2. Copiar `.env.example` a `.env` y completar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
+3. Ejecutar el SQL de `supabase/schema.sql`.
+4. Crear tu usuario en Supabase Auth y luego insertar su fila en `public.profiles` con rol `owner` o `admin`.
+
+Con eso podras iniciar sesion, subir la imagen principal del producto y publicar nuevos disenos en el catalogo.
+
 ## Flujo del sitio
 
 - El usuario explora el catálogo o sube su diseño.

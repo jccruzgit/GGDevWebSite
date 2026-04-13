@@ -6,6 +6,7 @@ const productMockupRegistry = {
   "senor-developer": ["main.png"],
   github: ["main.png"],
   "vaporwave-8-bit": [],
+  "mango-fortnite": ["main.png"],
   "mainframe-soul": [],
   "glitch-geist-01": [],
   "async-await-ghost": [],

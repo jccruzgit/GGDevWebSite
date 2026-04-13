@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export default function ProductImage({
   alt,
   category,
@@ -9,12 +11,19 @@ export default function ProductImage({
   surfaceClassName = "bg-gradient-to-br from-surface-3 via-night to-surface-2",
   watermark = false,
 }) {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [image]);
+
   return (
     <div className={`relative overflow-hidden ${surfaceClassName} ${className}`}>
-      {image ? (
+      {image && !hasError ? (
         <img
           alt={alt}
           className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"} ${imageClassName}`.trim()}
+          onError={() => setHasError(true)}
           src={image}
         />
       ) : (
