@@ -69,24 +69,24 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Seleccion destacada
+                      Diseno destacado
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">{featuredProducts[0].name}</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Un producto listo para validar si el tono visual de la marca va por donde
-                      quieres llevar el catalogo real.
+                      Una camiseta con presencia limpia, contraste fuerte y un look pensado para
+                      destacar tanto en uso diario como en tus fotos.
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Confianza comercial
+                      Compra directa
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">
-                      Catalogo listo para crecer
+                      Pide facil por WhatsApp
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Ya puedes sustituir mockups por imagenes reales sin rehacer la estructura del
-                      producto ni el flujo de compra.
+                      Elige tu diseno, confirma talla y color, y termina tu pedido con atencion
+                      clara y acompanamiento real.
                     </p>
                   </div>
                 </div>
@@ -106,11 +106,11 @@ export default function HomePage() {
                   </div>
                   <div className="absolute -bottom-6 -left-8 w-[220px] rounded-[28px] border border-white/10 bg-night/90 p-4 backdrop-blur-xl">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Marca protegida
+                      Acabado premium
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Las tarjetas del catalogo ya incluyen una marca de agua sutil para proteger
-                      el contenido visual de la marca.
+                      Disenos con lectura visual fuerte, buena presencia sobre la prenda y una
+                      presentacion lista para enamorar desde el primer vistazo.
                     </p>
                   </div>
                 </div>

@@ -16,9 +16,9 @@ export default function ExampleGallery({ items }) {
   return (
     <section>
       <SectionHeading
-        description="Una vista rápida de cómo se sienten nuestros diseños sobre la prenda: contraste limpio, impacto visual y presencia lista para redes."
-        eyebrow="Así se ven nuestras camisetas"
-        title="Mockups listos para reemplazarse por producto real"
+        description="Descubre algunas de las camisetas destacadas de la tienda, con estilos pensados para sobresalir en el dia a dia y en tus fotos."
+        eyebrow="Disenos destacados"
+        title="Camisetas con presencia y estilo propio"
       />
 
       <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-12">
@@ -34,9 +34,11 @@ export default function ExampleGallery({ items }) {
               className={`transition duration-500 group-hover:scale-[1.03] ${
                 index === 0 ? "h-[420px] sm:h-[520px]" : "h-[320px]"
               }`}
+              fit="contain"
               image={getProductPrimaryImage(item)}
+              imageClassName="p-4"
               name={item.name}
-              watermark
+              surfaceClassName="bg-slate-100"
             />
             <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
               <span className="inline-flex rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-slate-200 backdrop-blur-md">
