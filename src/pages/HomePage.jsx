@@ -12,7 +12,7 @@ import ProcessSection from "@/components/home/ProcessSection";
 import ProductImage from "@/components/product/ProductImage";
 import { categories } from "@/data/categories";
 import { commercialBenefits, commercialSteps } from "@/data/commercial";
-import { activeProducts, featuredProducts, showcaseProducts } from "@/data/products";
+import { featuredProducts, showcaseProducts } from "@/data/products";
 import { testimonials } from "@/data/testimonials";
 
 export default function HomePage() {
@@ -34,8 +34,8 @@ export default function HomePage() {
               <span className="text-gradient"> nivel leyenda.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
-              Camisetas personalizadas con ADN tech, anime, motor y gaming para perfiles que
-              quieren vender imagen, no verse como algo generico.
+              Camisetas personalizadas con identidad tech, anime, motor y gaming para quienes
+              quieren vestir con estilo propio y destacar desde el primer vistazo.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CTAButton to="/catalogo">
@@ -81,12 +81,10 @@ export default function HomePage() {
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
                       Compra directa
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">
-                      Pide facil por WhatsApp
-                    </p>
+                    <p className="mt-2 text-lg font-semibold text-white">Pide facil por WhatsApp</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Elige tu diseno, confirma talla y color, y termina tu pedido con atencion
-                      clara y acompanamiento real.
+                      Elige tu diseno, confirma talla y color, y cierra tu pedido con una atencion
+                      clara, rapida y directa.
                     </p>
                   </div>
                 </div>
@@ -109,8 +107,8 @@ export default function HomePage() {
                       Acabado premium
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Disenos con lectura visual fuerte, buena presencia sobre la prenda y una
-                      presentacion lista para enamorar desde el primer vistazo.
+                      Disenos con gran presencia visual, buen contraste sobre la prenda y un
+                      acabado pensado para impresionar desde el primer vistazo.
                     </p>
                   </div>
                 </div>
@@ -122,9 +120,9 @@ export default function HomePage() {
 
       <section className="shell mt-24">
         <SectionHeading
-          description="Explora universos visuales pensados para creadores, fandoms intensos y perfiles que viven entre redes, comunidad y calle."
+          description="Explora categorias pensadas para creadores, fans y personas que quieren una camiseta con identidad clara."
           eyebrow="Categorias"
-          title="Tu proxima camiseta empieza con una estetica clara"
+          title="Tu proxima camiseta empieza con una idea que conecte contigo"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {categories.map((category) => (
@@ -136,9 +134,9 @@ export default function HomePage() {
       <section className="shell mt-24">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
-            description="Una seleccion con identidad fuerte para entrar rapido, elegir mejor y pedir sin vueltas."
-            eyebrow="Disenos listos para vender visual"
-            title="Empieza con un diseno que ya tiene presencia"
+            description="Una seleccion lista para elegir sin complicaciones, con estilos que ya se ven bien sobre la prenda."
+            eyebrow="Disenos listos para pedir"
+            title="Empieza con una camiseta que ya se ve brutal"
           />
           <CTAButton to="/catalogo" variant="secondary">
             Ver catalogo completo
@@ -157,18 +155,18 @@ export default function HomePage() {
 
       <section className="shell mt-16">
         <CommercialCTA
-          description="Si ya viste un diseno que te gusto, puedes ir al catalogo, personalizar el tuyo o cerrar de una vez por WhatsApp."
+          description="Si ya encontraste un diseno que te gusta, puedes explorarlo mejor, personalizar otra idea o pedirlo de una vez."
           eyebrow="Siguiente paso"
-          title="No te quedes solo en la inspiracion. Convierte esa idea en pedido."
+          title="No te quedes solo con la idea. Convierte tu estilo en una camiseta real."
         />
       </section>
 
       <section className="shell mt-24">
         <SectionHeading
           align="center"
-          description="Una experiencia pensada para que comprar una camiseta personalizada se sienta clara, seria y facil de recomendar."
-          eyebrow="Por que pedir con GGDev?"
-          title="Mas confianza, mejor guia y un proceso que si acompana"
+          description="Queremos que pedir una camiseta personalizada se sienta claro, confiable y facil de recomendar."
+          eyebrow="Por que elegir GGDev?"
+          title="Mas confianza, mejor guia y un proceso que realmente acompana"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           {commercialBenefits.map((benefit) => (
@@ -183,7 +181,7 @@ export default function HomePage() {
 
       <section className="shell mt-16">
         <CommercialCTA
-          description="Tanto si vienes con una idea definida como si apenas tienes una referencia, te ayudamos a ordenar el pedido y confirmarlo por WhatsApp."
+          description="Tanto si ya tienes una idea definida como si solo llevas una referencia, te ayudamos a aterrizarla y confirmarla."
           eyebrow="Pedido guiado"
           title="El proceso es simple, pero el resultado tiene que sentirse premium."
           whatsappLabel="Hablar por WhatsApp"
@@ -192,7 +190,7 @@ export default function HomePage() {
 
       <section className="shell mt-24">
         <SectionHeading
-          description="Opiniones de clientes que llegaron con una idea, una referencia o un archivo dudoso y terminaron con una prenda lista para presumir."
+          description="Opiniones de clientes que llegaron con una idea o una referencia y terminaron con una camiseta lista para presumir."
           eyebrow="Testimonios"
           title="Lo que se siente al pedir con GGDev"
         />
@@ -207,7 +205,7 @@ export default function HomePage() {
         <CommercialCTA
           description="Explora disenos, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atencion real."
           eyebrow="Cierre directo"
-          title="GGDev ya esta listo para captar tu pedido desde cualquier canal."
+          title="GGDev esta listo para ayudarte a pedir desde cualquier canal."
           whatsappLabel="Pedir por WhatsApp"
         />
       </section>

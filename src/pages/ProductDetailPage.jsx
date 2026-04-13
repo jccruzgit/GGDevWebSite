@@ -135,7 +135,10 @@ export default function ProductDetailPage() {
   return (
     <div className="shell pt-10">
       <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
-        <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
+        <div className="space-y-6">
+          <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
+          <ProductSpecs />
+        </div>
 
         <div className="space-y-6">
           <div>
@@ -194,8 +197,6 @@ export default function ProductDetailPage() {
               <WhatsAppResponseNote className="text-center sm:text-left" />
             </div>
           </div>
-
-          <ProductSpecs />
         </div>
       </div>
 

@@ -5,8 +5,8 @@ export default function ProcessSection({ steps }) {
     <section>
       <SectionHeading
         align="center"
-        description="Un proceso simple para que entrar desde Instagram, TikTok o WhatsApp se convierta rápido en un pedido bien confirmado."
-        eyebrow="Cómo trabajamos tu pedido"
+        description="Un proceso simple para que una idea que nace en Instagram, TikTok o WhatsApp termine en un pedido bien confirmado."
+        eyebrow="Como trabajamos tu pedido"
         title="Te guiamos desde la idea hasta la entrega"
       />
 

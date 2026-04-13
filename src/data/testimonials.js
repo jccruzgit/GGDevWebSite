@@ -4,20 +4,20 @@ export const testimonials = [
     name: "Andrea M.",
     role: "Creadora de contenido",
     quote:
-      "Subí una idea rápida y GGDev me ayudó a ajustarla para que en la camiseta se viera brutal. El acabado sí se siente premium.",
+      "Subi una idea rapida y GGDev me ayudo a ajustarla para que en la camiseta se viera brutal. El acabado si se siente premium.",
   },
   {
     id: 2,
     name: "Kevin R.",
     role: "Frontend developer",
     quote:
-      "No parece merchandising improvisado. El diseño, el fit y el soporte por WhatsApp hicieron que todo se sintiera muy serio.",
+      "No parece merchandising improvisado. El diseno, el fit y el soporte por WhatsApp hicieron que todo se sintiera muy serio.",
   },
   {
     id: 3,
-    name: "Lucía C.",
+    name: "Lucia C.",
     role: "Fan de motorsport",
     quote:
-      "Pedí una pieza inspirada en F1 y me asesoraron con la ubicación del diseño. Quedó mucho mejor de lo que había imaginado.",
+      "Pedi una pieza inspirada en F1 y me asesoraron con la ubicacion del diseno. Quedo mucho mejor de lo que habia imaginado.",
   },
 ];
