@@ -17,7 +17,6 @@ export default function ProductCard({ product }) {
           imageClassName="p-4"
           name={product.name}
           surfaceClassName="bg-slate-100"
-          watermark
         />
         {product.tag ? (
           <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-white backdrop-blur-md">
