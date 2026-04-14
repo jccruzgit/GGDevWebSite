@@ -51,6 +51,15 @@ https://jccruzgit.github.io/GGDevWebSite/
 
 Después de eso, cada `git push` a `main` disparará el workflow y publicará la carpeta `dist` generada por Vite.
 
+### Secrets para GitHub Pages
+
+Si quieres que el sitio publicado lea el catalogo remoto de Supabase, agrega estos secrets en GitHub:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+No agregues `SUPABASE_SERVICE_ROLE_KEY` en GitHub Pages. Esa llave es solo para scripts o tareas administrativas del lado servidor.
+
 ## Estructura principal
 
 ```text
@@ -78,6 +87,15 @@ Para activarlo necesitas:
 4. Crear tu usuario en Supabase Auth y luego insertar su fila en `public.profiles` con rol `owner` o `admin`.
 
 Con eso podras iniciar sesion, subir la imagen principal del producto y publicar nuevos disenos en el catalogo.
+
+### Migrar catalogo local a Supabase
+
+Si quieres pasar los disenos locales de `src/data/products.js` y las imagenes de `public/mockups` al catalogo remoto:
+
+1. Completa `SUPABASE_SERVICE_ROLE_KEY` en `.env`.
+2. Ejecuta `npm run migrate:catalog`.
+
+El script hace upsert por `slug`, conserva descripcion corta y completa, y sube al bucket publico configurado las imagenes locales encontradas para cada producto.
 
 ## Flujo del sitio
 

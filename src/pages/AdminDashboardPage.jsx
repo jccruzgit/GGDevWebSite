@@ -25,6 +25,7 @@ import {
 import { getProductPrimaryImage } from "@/utils/productMedia";
 
 const DRAFT_STORAGE_KEY = "ggdev.admin.product-draft";
+const ADMIN_PRODUCTS_PER_PAGE = 6;
 
 const initialForm = {
   active: true,
@@ -152,6 +153,7 @@ export default function AdminDashboardPage() {
   const [draftRecovered, setDraftRecovered] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [actionProductId, setActionProductId] = useState("");
+  const [productsPage, setProductsPage] = useState(1);
 
   const isEditing = Boolean(editingProduct);
   const isDirty = useMemo(() => {
@@ -501,6 +503,31 @@ export default function AdminDashboardPage() {
     return "";
   }, [galleryDraftNames, galleryItems.length]);
 
+  const totalProductPages = useMemo(
+    () => Math.max(1, Math.ceil(products.length / ADMIN_PRODUCTS_PER_PAGE)),
+    [products.length]
+  );
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (productsPage - 1) * ADMIN_PRODUCTS_PER_PAGE;
+    return products.slice(startIndex, startIndex + ADMIN_PRODUCTS_PER_PAGE);
+  }, [products, productsPage]);
+
+  const paginationLabel = useMemo(() => {
+    if (products.length === 0) {
+      return "0 productos";
+    }
+
+    const start = (productsPage - 1) * ADMIN_PRODUCTS_PER_PAGE + 1;
+    const end = Math.min(productsPage * ADMIN_PRODUCTS_PER_PAGE, products.length);
+
+    return `Mostrando ${start}-${end} de ${products.length} productos`;
+  }, [products.length, productsPage]);
+
+  useEffect(() => {
+    setProductsPage((currentPage) => Math.min(currentPage, totalProductPages));
+  }, [totalProductPages]);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
       <section className="space-y-8">
@@ -547,6 +574,37 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
+          {products.length > 0 ? (
+            <div className="mt-6 flex flex-col gap-3 rounded-[24px] border border-white/10 bg-white/5 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-slate-300">{paginationLabel}</p>
+              <div className="flex items-center gap-2">
+                <button
+                  className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:border-aqua/30 hover:text-aqua disabled:cursor-not-allowed disabled:opacity-40"
+                  disabled={productsPage === 1}
+                  onClick={() => setProductsPage((currentPage) => Math.max(1, currentPage - 1))}
+                  type="button"
+                >
+                  <ChevronLeft className="mr-2 h-4 w-4" />
+                  Anterior
+                </button>
+                <span className="min-w-24 text-center text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+                  Página {productsPage} de {totalProductPages}
+                </span>
+                <button
+                  className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:border-aqua/30 hover:text-aqua disabled:cursor-not-allowed disabled:opacity-40"
+                  disabled={productsPage === totalProductPages}
+                  onClick={() =>
+                    setProductsPage((currentPage) => Math.min(totalProductPages, currentPage + 1))
+                  }
+                  type="button"
+                >
+                  Siguiente
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ) : null}
+
           {productsError ? (
             <div className="mt-6 rounded-[20px] border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-100">
               {productsError}
@@ -567,7 +625,7 @@ export default function AdminDashboardPage() {
 
           {products.length > 0 ? (
             <div className="mt-6 grid gap-5 md:grid-cols-2">
-              {products.map((product) => {
+              {paginatedProducts.map((product) => {
                 const processing = actionProductId === product.remoteId;
 
                 return (
