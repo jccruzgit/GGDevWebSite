@@ -95,8 +95,8 @@ export const products = [
     glow: "#7CF8D2",
   }),
   buildProduct({
-    id: "mango-fortnite",
-    name: "Mango Fortnite",
+    id: "manco-fortnite",
+    name: "Manco Fortnite",
     category: "gaming",
     shortDescription: "Grafica gamer en alto contraste sobre negro, pensada para destacar de inmediato.",
     description:

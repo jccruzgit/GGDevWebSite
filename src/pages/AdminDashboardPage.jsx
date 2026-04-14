@@ -666,7 +666,7 @@ export default function AdminDashboardPage() {
                 className="w-full rounded-[20px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/40 focus:outline-none"
                 name="name"
                 onChange={handleFieldChange}
-                placeholder="Mango Fortnite"
+                placeholder="Manco Fortnite"
                 value={form.name}
               />
             </label>
@@ -677,7 +677,7 @@ export default function AdminDashboardPage() {
                 className="w-full rounded-[20px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/40 focus:outline-none"
                 name="slug"
                 onChange={handleFieldChange}
-                placeholder="mango-fortnite"
+                placeholder="manco-fortnite"
                 value={form.slug}
               />
             </label>
