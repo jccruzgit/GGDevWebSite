@@ -10,6 +10,7 @@ const sharedColors = [
 
 const categoryLabels = {
   anime: "Anime",
+  custom: "Personalizados",
   devs: "Devs",
   gaming: "Gaming",
   motogp: "MotoGP",
