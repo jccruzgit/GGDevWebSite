@@ -17,8 +17,8 @@ export const categories = [
   },
   {
     id: "bands",
-    name: "Bandas",
-    description: "Disenos inspirados en grupos, portadas, giras y simbolos que conectan con una identidad musical clara.",
+    name: "Metal",
+    description: "Disenos con alma de rock y heavy metal, inspirados en portadas, giras, riffs y simbolos con actitud.",
     accent: "from-aqua via-mint to-cyan",
     icon: Disc3,
   },

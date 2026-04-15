@@ -17,7 +17,7 @@ export const defaultProductColors = [
 
 export const productCategoryLabels = {
   anime: "Anime",
-  bands: "Bandas",
+  bands: "Metal",
   custom: "Personalizados",
   devs: "Devs",
   gaming: "Gaming",
