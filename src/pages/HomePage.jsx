@@ -129,7 +129,7 @@ export default function HomePage() {
           eyebrow="Categorias"
           title="Tu proxima camiseta empieza con una idea que conecte contigo"
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}

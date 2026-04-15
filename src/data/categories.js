@@ -1,4 +1,4 @@
-import { Code2, Flame, Gamepad2, Gauge, Sparkles } from "lucide-react";
+import { Code2, Disc3, Flame, Gamepad2, Gauge, Sparkles } from "lucide-react";
 
 export const categories = [
   {
@@ -14,6 +14,13 @@ export const categories = [
     description: "Vibra intensa, contraste fuerte y mockups listos para evolucionar a coleccion real.",
     accent: "from-cyan via-aqua to-mint",
     icon: Flame,
+  },
+  {
+    id: "bands",
+    name: "Bandas",
+    description: "Disenos inspirados en grupos, portadas, giras y simbolos que conectan con una identidad musical clara.",
+    accent: "from-aqua via-mint to-cyan",
+    icon: Disc3,
   },
   {
     id: "gaming",
