@@ -1,4 +1,3 @@
-import { products as localProducts } from "@/data/products";
 import {
   getSupabaseClient,
   getSupabasePublicUrl,
@@ -6,7 +5,6 @@ import {
   supabaseProductsTable,
   supabaseStorageBucket,
 } from "@/lib/supabase";
-import { createMockGallery } from "@/utils/mockImage";
 
 export const defaultProductSizes = ["S", "M", "L", "XL", "2XL"];
 export const defaultProductColors = [
@@ -180,13 +178,6 @@ export function slugifyProductName(value) {
 }
 
 export function normalizeSupabaseProduct(record) {
-  const accent = record.accent || "#3AA6FF";
-  const glow = record.glow || "#7CF8D2";
-  const fallbackImages = createMockGallery({
-    title: record.name || "GGDev",
-    accent,
-    glow,
-  });
   const mainImage = getSupabasePublicUrl(record.main_image_path);
   const secondaryImages = normalizeImageList(record.secondary_image_paths);
 
@@ -205,9 +196,9 @@ export function normalizeSupabaseProduct(record) {
       "Producto administrado desde Supabase y listo para mostrarse en catÃ¡logo.",
     availableColors: normalizeColors(record.available_colors),
     sizes: normalizeSizes(record.sizes),
-    mainImage: mainImage || fallbackImages[0],
+    mainImage: mainImage || "",
     mainImagePath: record.main_image_path || "",
-    secondaryImages: secondaryImages.length > 0 ? secondaryImages : fallbackImages.slice(1),
+    secondaryImages,
     secondaryImagePaths: Array.isArray(record.secondary_image_paths)
       ? record.secondary_image_paths
       : [],
@@ -221,13 +212,7 @@ export function normalizeSupabaseProduct(record) {
 }
 
 export function mergeCatalogProducts(remoteProducts = []) {
-  const productMap = new Map(localProducts.map((product) => [product.slug, product]));
-
-  remoteProducts.forEach((product) => {
-    productMap.set(product.slug, product);
-  });
-
-  return Array.from(productMap.values());
+  return Array.isArray(remoteProducts) ? remoteProducts : [];
 }
 
 export async function fetchPublicCatalogProducts() {

@@ -18,6 +18,8 @@ import { testimonials } from "@/data/testimonials";
 export default function HomePage() {
   const { featuredProducts, showcaseProducts } = useCatalog();
   const heroProduct = featuredProducts[0] || showcaseProducts[0];
+  const hasFeaturedProducts = featuredProducts.length > 0;
+  const hasShowcaseProducts = showcaseProducts.length > 0;
 
   return (
     <div className="pb-10">
@@ -72,14 +74,15 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Diseno destacado
+                      {heroProduct ? "Diseno destacado" : "Catalogo remoto"}
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">
-                      {heroProduct?.name || "GGDev"}
+                      {heroProduct?.name || "Sube tus disenos a Supabase"}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Una camiseta con presencia limpia, contraste fuerte y un look pensado para
-                      destacar tanto en uso diario como en tus fotos.
+                      {heroProduct
+                        ? "Una camiseta con presencia limpia, contraste fuerte y un look pensado para destacar tanto en uso diario como en tus fotos."
+                        : "Cuando cargues productos reales desde el panel, aqui se mostraran automaticamente sin mockups locales de relleno."}
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
@@ -94,19 +97,35 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="relative rounded-[34px] border border-white/10 bg-gradient-to-b from-surface-3 to-surface-2 p-5 shadow-glow">
-                  <div className="rounded-[28px] border border-white/10 bg-night/50 p-3">
-                    <div className="overflow-hidden rounded-[24px]">
-                      <ProductImage
-                        alt="Previsualizacion premium GGDev"
-                        className="h-[420px]"
-                        fit="contain"
-                        image={heroProduct?.mainImage}
-                        imageClassName="p-4"
-                        name={heroProduct?.name}
-                        surfaceClassName="bg-slate-100"
-                      />
+                  {heroProduct ? (
+                    <div className="rounded-[28px] border border-white/10 bg-night/50 p-3">
+                      <div className="overflow-hidden rounded-[24px]">
+                        <ProductImage
+                          alt="Previsualizacion premium GGDev"
+                          className="h-[420px]"
+                          fit="contain"
+                          image={heroProduct.mainImage}
+                          imageClassName="p-4"
+                          name={heroProduct.name}
+                          surfaceClassName="bg-slate-100"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex h-[420px] items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-night/50 p-8 text-center">
+                      <div className="max-w-sm">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                          Sin mockups locales
+                        </p>
+                        <p className="mt-4 text-2xl font-semibold text-white">
+                          El escaparate mostrara solo productos reales.
+                        </p>
+                        <p className="mt-4 text-sm leading-7 text-slate-300">
+                          Agrega disenos desde Supabase para poblar automaticamente el home, el catalogo y el detalle de producto.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                   <div className="absolute -bottom-6 -left-8 w-[220px] rounded-[28px] border border-white/10 bg-night/90 p-4 backdrop-blur-xl">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
                       Acabado premium
@@ -136,27 +155,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell mt-24">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            description="Una seleccion lista para elegir sin complicaciones, con estilos que ya se ven bien sobre la prenda."
-            eyebrow="Disenos listos para pedir"
-            title="Empieza con una camiseta que ya se ve brutal"
-          />
-          <CTAButton to="/catalogo" variant="secondary">
-            Ver catalogo completo
-          </CTAButton>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {featuredProducts.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+      {hasFeaturedProducts ? (
+        <section className="shell mt-24">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <SectionHeading
+              description="Una seleccion lista para elegir sin complicaciones, con estilos que ya se ven bien sobre la prenda."
+              eyebrow="Disenos listos para pedir"
+              title="Empieza con una camiseta que ya se ve brutal"
+            />
+            <CTAButton to="/catalogo" variant="secondary">
+              Ver catalogo completo
+            </CTAButton>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {featuredProducts.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
-      <section className="shell mt-24">
-        <ExampleGallery items={showcaseProducts} />
-      </section>
+      {hasShowcaseProducts ? (
+        <section className="shell mt-24">
+          <ExampleGallery items={showcaseProducts} />
+        </section>
+      ) : null}
 
       <section className="shell mt-16">
         <CommercialCTA

@@ -49,6 +49,7 @@ export default function ProductDetailPage() {
   const [notes, setNotes] = useState("");
 
   const productImages = useMemo(() => getProductGalleryImages(product), [product]);
+  const hasProductImages = productImages.length > 0;
   const relatedProducts = useMemo(
     () =>
       activeProducts
@@ -150,7 +151,16 @@ export default function ProductDetailPage() {
     <div className="shell pt-10">
       <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
         <div className="space-y-6">
-          <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
+          {hasProductImages ? (
+            <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
+          ) : (
+            <div className="panel p-10 text-center">
+              <h2 className="text-2xl font-bold text-white">Imagen pendiente de carga</h2>
+              <p className="mt-4 text-slate-400">
+                Este producto existe en el catalogo, pero todavia no tiene imagen principal publicada.
+              </p>
+            </div>
+          )}
           <ProductSpecs />
         </div>
 

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { products as localProducts } from "@/data/products";
 import { hasSupabaseConfig } from "@/lib/supabase";
-import { fetchPublicCatalogProducts, mergeCatalogProducts } from "@/services/catalogService";
+import { fetchPublicCatalogProducts } from "@/services/catalogService";
 
 const CatalogContext = createContext(null);
 
@@ -36,19 +35,13 @@ export function CatalogProvider({ children }) {
     void refreshProducts();
   }, []);
 
-  const products = useMemo(() => mergeCatalogProducts(remoteProducts), [remoteProducts]);
-  const activeProducts = useMemo(
-    () => products.filter((product) => product.active),
-    [products]
-  );
+  const products = useMemo(() => remoteProducts, [remoteProducts]);
+  const activeProducts = useMemo(() => products.filter((product) => product.active), [products]);
   const featuredProducts = useMemo(
     () => activeProducts.filter((product) => product.featured),
     [activeProducts]
   );
-  const showcaseProducts = useMemo(
-    () => featuredProducts.slice(0, 6),
-    [featuredProducts]
-  );
+  const showcaseProducts = useMemo(() => featuredProducts.slice(0, 6), [featuredProducts]);
 
   const value = useMemo(
     () => ({
@@ -59,7 +52,7 @@ export function CatalogProvider({ children }) {
       products,
       refreshProducts,
       showcaseProducts,
-      staticProducts: localProducts,
+      staticProducts: [],
     }),
     [activeProducts, error, featuredProducts, loading, products, refreshProducts, showcaseProducts]
   );
