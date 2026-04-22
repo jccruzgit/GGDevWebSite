@@ -85,7 +85,8 @@ export function buildCustomizerMessage({
   garmentColor,
   fileName,
   scale,
-  opacity,
+  offsetX,
+  offsetY,
   notes,
 }) {
   const hasFile = Boolean(normalizeText(fileName));
@@ -100,8 +101,9 @@ export function buildCustomizerMessage({
       hasFile
         ? `Archivo cargado: ${normalizeText(fileName)}`
         : "Archivo cargado: Aún no he subido una imagen.",
-      scale ? `Tamaño aproximado en vista previa: ${Math.round(scale * 100)}%` : "",
-      opacity ? `Opacidad de vista previa: ${Math.round(opacity * 100)}%` : "",
+      Number.isFinite(scale) ? `Tamaño aproximado en vista previa: ${Math.round(scale * 100)}%` : "",
+      Number.isFinite(offsetX) ? `Posición horizontal en vista previa: ${offsetX}%` : "",
+      Number.isFinite(offsetY) ? `Posición vertical en vista previa: ${offsetY}%` : "",
       `Notas: ${
         normalizedNotes || "Necesito ayuda para definir tamaño, ubicación y acabado del diseño."
       }`,

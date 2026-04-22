@@ -2,39 +2,19 @@ import { AlignCenter, Minus, Plus, RotateCcw } from "lucide-react";
 import InfoCard from "@/components/ui/InfoCard";
 
 export default function CustomizerControls({
-  placement,
-  onPlacementChange,
   onZoomIn,
   onZoomOut,
   onCenter,
   onReset,
-  opacity,
-  onOpacityChange,
+  offsetX,
+  offsetY,
+  onOffsetXChange,
+  onOffsetYChange,
 }) {
   return (
     <div className="space-y-5">
       <div className="panel-soft p-6">
-        <p className="text-sm font-semibold text-white">Vista del diseño</p>
-        <div className="mt-4 inline-flex rounded-full border border-white/10 bg-white/5 p-1">
-          {["frente", "espalda"].map((side) => (
-            <button
-              key={side}
-              className={`rounded-full px-4 py-2 text-sm font-medium capitalize ${
-                placement === side
-                  ? "bg-aqua/12 text-white"
-                  : "text-slate-300 hover:text-white"
-              }`}
-              onClick={() => onPlacementChange(side)}
-              type="button"
-            >
-              {side}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="panel-soft p-6">
-        <p className="text-sm font-semibold text-white">Ajustes rápidos</p>
+        <p className="text-sm font-semibold text-white">Tamaño y posición</p>
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 hover:border-aqua/30"
@@ -69,32 +49,55 @@ export default function CustomizerControls({
             Reiniciar
           </button>
         </div>
-      </div>
 
-      <div className="panel-soft p-6">
-        <label className="block text-sm font-semibold text-white" htmlFor="opacity">
-          Opacidad del diseño
+        <label
+          className="mt-6 block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400"
+          htmlFor="offset-x"
+        >
+          Horizontal
         </label>
         <input
-          className="mt-4 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#27E4F2]"
-          id="opacity"
-          max="1"
-          min="0.2"
-          onChange={(event) => onOpacityChange(Number(event.target.value))}
-          step="0.05"
+          className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#27E4F2]"
+          id="offset-x"
+          max="40"
+          min="-40"
+          onChange={(event) => onOffsetXChange(Number(event.target.value))}
+          step="1"
           type="range"
-          value={opacity}
+          value={offsetX}
         />
         <div className="mt-2 flex justify-between text-xs uppercase tracking-[0.18em] text-slate-400">
-          <span>Suave</span>
-          <span>{Math.round(opacity * 100)}%</span>
-          <span>Sólido</span>
+          <span>Izquierda</span>
+          <span>{offsetX}%</span>
+          <span>Derecha</span>
+        </div>
+
+        <label
+          className="mt-5 block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400"
+          htmlFor="offset-y"
+        >
+          Vertical
+        </label>
+        <input
+          className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#27E4F2]"
+          id="offset-y"
+          max="40"
+          min="-40"
+          onChange={(event) => onOffsetYChange(Number(event.target.value))}
+          step="1"
+          type="range"
+          value={offsetY}
+        />
+        <div className="mt-2 flex justify-between text-xs uppercase tracking-[0.18em] text-slate-400">
+          <span>Arriba</span>
+          <span>{offsetY}%</span>
+          <span>Abajo</span>
         </div>
       </div>
 
       <InfoCard
-        description="Si no estás seguro de la calidad de tu imagen o el tamaño del arte, GGDev te asesora sin costo adicional."
-        title="Acompañamiento visual incluido"
+        description="Ajusta tamaño y posición aquí, y luego confirma por WhatsApp para revisar viabilidad, calidad del archivo y producción."
+        title="Preview para aprobación"
       />
     </div>
   );

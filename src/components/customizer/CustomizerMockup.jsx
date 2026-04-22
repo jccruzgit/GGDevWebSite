@@ -1,41 +1,30 @@
-const mockupBasePath = `${import.meta.env.BASE_URL}mockups/tshirtmockup`;
+import { PHOTO_MOCKUP_COLOR, photoMockups } from "@/config/customizerMockups";
 
-const photoMockups = {
-  frente: {
-    src: `${mockupBasePath}/front-base.png`,
-    width: 1600,
-    height: 2000,
-    alt: "Mockup frontal de camiseta",
-    frameScale: 1,
-    frameOffsetY: 0,
-    printArea: {
-      x: 463,
-      y: 529,
-      width: 586,
-      height: 871,
-    },
-    emptyLabel: "Frente listo para arte",
-    imageAlt: "Diseno cargado",
-  },
-  espalda: {
-    src: `${mockupBasePath}/back-base.png`,
-    width: 1600,
-    height: 2000,
-    alt: "Mockup trasero de camiseta",
-    frameScale: 1.08,
-    frameOffsetY: -8,
-    printArea: {
-      x: 581,
-      y: 565,
-      width: 479,
-      height: 702,
-    },
-    emptyLabel: "Espalda lista para arte",
-    imageAlt: "Diseno cargado en la espalda",
-  },
-};
+function ArtworkPreview({ image, alt, emptyLabel, offsetX, offsetY, scale }) {
+  return image ? (
+    <div
+      className="flex h-full w-full items-center justify-center"
+      style={{
+        transform: `translate(${offsetX}%, ${offsetY}%)`,
+      }}
+    >
+      <img
+        alt={alt}
+        className="max-h-full max-w-full object-contain"
+        src={image}
+        style={{
+          transform: `scale(${scale})`,
+        }}
+      />
+    </div>
+  ) : (
+    <span className="flex h-full items-center justify-center text-center text-xs uppercase tracking-[0.18em] text-slate-400">
+      {emptyLabel}
+    </span>
+  );
+}
 
-function PhotoMockupView({ image, mockup, opacity, scale }) {
+function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
   const printAreaStyle = {
     left: `${(mockup.printArea.x / mockup.width) * 100}%`,
     top: `${(mockup.printArea.y / mockup.height) * 100}%`,
@@ -44,99 +33,105 @@ function PhotoMockupView({ image, mockup, opacity, scale }) {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-[420px] overflow-hidden">
-      <div
-        className="relative origin-center"
-        style={{
-          transform: `translateY(${mockup.frameOffsetY || 0}px) scale(${mockup.frameScale || 1})`,
-        }}
-      >
-        <img alt={mockup.alt} className="h-auto w-full" src={mockup.src} />
+    <div className="relative flex h-full w-full items-center justify-center p-6 sm:p-8">
+      <div className="relative w-full max-w-[420px]">
         <div
-          className="absolute rounded-[18px] border border-dashed border-aqua/35 bg-white/[0.03] p-4"
-          style={printAreaStyle}
+          className="relative origin-center"
+          style={{
+            transform: `translateY(${mockup.frameOffsetY || 0}px) scale(${mockup.frameScale || 1})`,
+          }}
         >
-          {image ? (
-            <img
+          <img alt={mockup.alt} className="h-auto w-full" src={mockup.src} />
+          <div
+            className="absolute z-10 overflow-hidden rounded-[18px] border border-dashed border-aqua/35 bg-white/[0.03] p-4"
+            style={printAreaStyle}
+          >
+            <ArtworkPreview
               alt={mockup.imageAlt}
-              className="h-full w-full object-contain"
-              src={image}
+              emptyLabel={mockup.emptyLabel}
+              image={image}
+              offsetX={offsetX}
+              offsetY={offsetY}
+              scale={scale}
+            />
+          </div>
+          {mockup.overlaySrc ? (
+            <img
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-20 h-full w-full"
+              src={mockup.overlaySrc}
               style={{
-                opacity,
-                transform: `scale(${scale})`,
+                mixBlendMode: mockup.overlayBlendMode || "normal",
               }}
             />
-          ) : (
-            <span className="flex h-full items-center justify-center text-center text-xs uppercase tracking-[0.18em] text-slate-400">
-              {mockup.emptyLabel}
-            </span>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
   );
 }
 
-function FallbackMockup({ garmentColor, image, opacity, placement, scale }) {
+function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scale }) {
   return (
-    <div className="relative mx-auto h-[520px] w-full max-w-[380px]">
-      <div
-        className="absolute left-1/2 top-[56px] h-[420px] w-[280px] -translate-x-1/2 rounded-[42px] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_30px_60px_rgba(0,0,0,0.35)]"
-        style={{ backgroundColor: garmentColor }}
-      />
-      <div
-        className="absolute left-1/2 top-[18px] h-24 w-32 -translate-x-1/2 rounded-b-[48px] border border-white/10"
-        style={{ backgroundColor: garmentColor }}
-      />
-      <div
-        className="absolute left-[18px] top-[82px] h-[148px] w-[110px] rounded-[34px] border border-white/10"
-        style={{ backgroundColor: garmentColor, transform: "rotate(18deg)" }}
-      />
-      <div
-        className="absolute right-[18px] top-[82px] h-[148px] w-[110px] rounded-[34px] border border-white/10"
-        style={{ backgroundColor: garmentColor, transform: "rotate(-18deg)" }}
-      />
-      <div
-        className={`absolute left-1/2 top-[160px] flex min-h-[180px] w-[190px] -translate-x-1/2 items-center justify-center rounded-[30px] border border-dashed ${
-          placement === "frente" ? "border-aqua/35" : "border-white/15"
-        } bg-white/[0.03] p-4`}
-      >
-        {placement === "frente" && image ? (
-          <img
-            alt="Diseno cargado"
-            className="max-h-full max-w-full object-contain"
-            src={image}
-            style={{
-              opacity,
-              transform: `scale(${scale})`,
-            }}
-          />
-        ) : (
-          <span className="text-center text-xs uppercase tracking-[0.18em] text-slate-400">
-            Frente listo para arte
-          </span>
-        )}
-      </div>
-      <div
-        className={`absolute left-1/2 top-[165px] flex min-h-[170px] w-[165px] -translate-x-1/2 items-center justify-center rounded-[30px] border border-dashed ${
-          placement === "espalda" ? "border-aqua/35" : "border-white/15"
-        } bg-white/[0.03] p-4`}
-      >
-        {placement === "espalda" && image ? (
-          <img
-            alt="Diseno cargado en la espalda"
-            className="max-h-full max-w-full object-contain"
-            src={image}
-            style={{
-              opacity,
-              transform: `scale(${scale})`,
-            }}
-          />
-        ) : (
-          <span className="text-center text-xs uppercase tracking-[0.18em] text-slate-400">
-            Espalda lista para arte
-          </span>
-        )}
+    <div className="relative flex h-full w-full items-center justify-center p-6 sm:p-8">
+      <div className="relative h-[420px] w-full max-w-[360px]">
+        <div
+          className="absolute left-1/2 top-[56px] h-[320px] w-[240px] -translate-x-1/2 rounded-[42px] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_30px_60px_rgba(0,0,0,0.35)]"
+          style={{ backgroundColor: garmentColor }}
+        />
+        <div
+          className="absolute left-1/2 top-[18px] h-20 w-28 -translate-x-1/2 rounded-b-[48px] border border-white/10"
+          style={{ backgroundColor: garmentColor }}
+        />
+        <div
+          className="absolute left-[30px] top-[82px] h-[120px] w-[96px] rounded-[34px] border border-white/10"
+          style={{ backgroundColor: garmentColor, transform: "rotate(18deg)" }}
+        />
+        <div
+          className="absolute right-[30px] top-[82px] h-[120px] w-[96px] rounded-[34px] border border-white/10"
+          style={{ backgroundColor: garmentColor, transform: "rotate(-18deg)" }}
+        />
+        <div
+          className={`absolute left-1/2 top-[138px] flex min-h-[160px] w-[180px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-[30px] border border-dashed ${
+            placement === "frente" ? "border-aqua/35" : "border-white/15"
+          } bg-white/[0.03] p-4`}
+        >
+          {placement === "frente" ? (
+            <ArtworkPreview
+              alt="Diseno cargado"
+              emptyLabel="Frente listo para arte"
+              image={image}
+              offsetX={offsetX}
+              offsetY={offsetY}
+              scale={scale}
+            />
+          ) : (
+            <span className="text-center text-xs uppercase tracking-[0.18em] text-slate-400">
+              Frente listo para arte
+            </span>
+          )}
+        </div>
+        <div
+          className={`absolute left-1/2 top-[138px] flex min-h-[160px] w-[180px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-[30px] border border-dashed ${
+            placement === "espalda" ? "border-aqua/35" : "border-white/15"
+          } bg-white/[0.03] p-4`}
+        >
+          {placement === "espalda" ? (
+            <ArtworkPreview
+              alt="Diseno cargado en la espalda"
+              emptyLabel="Espalda lista para arte"
+              image={image}
+              offsetX={offsetX}
+              offsetY={offsetY}
+              scale={scale}
+            />
+          ) : (
+            <span className="text-center text-xs uppercase tracking-[0.18em] text-slate-400">
+              Espalda lista para arte
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -146,38 +141,50 @@ export default function CustomizerMockup({
   image,
   placement,
   garmentColor,
+  offsetX,
+  offsetY,
   scale,
-  opacity,
   fileName,
 }) {
-  const photoMockup = garmentColor === "#F5F7FA" ? photoMockups[placement] : null;
+  const photoMockup = garmentColor === PHOTO_MOCKUP_COLOR ? photoMockups[placement] : null;
 
   return (
-    <div className="panel surface-grid relative overflow-hidden p-6 sm:p-10">
-      <div className="absolute inset-x-10 top-8 h-32 rounded-full bg-aqua/10 blur-3xl" />
-      <div className="relative mx-auto max-w-[420px]">
-        <div className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+    <div className="panel surface-grid relative overflow-hidden p-5 sm:p-6">
+      <div className="absolute inset-x-12 top-6 h-20 rounded-full bg-aqua/12 blur-3xl" />
+      <div className="relative flex items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
           Vista activa: {placement}
         </div>
+        <p className="text-right text-xs uppercase tracking-[0.18em] text-slate-400">
+          {fileName ? fileName : "Sin archivo cargado"}
+        </p>
+      </div>
 
+      <div className="relative mt-5 aspect-[16/10] w-full overflow-hidden rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,_rgba(39,228,242,0.16),_transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))]">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:36px_36px] opacity-40" />
         {photoMockup ? (
-          <PhotoMockupView image={image} mockup={photoMockup} opacity={opacity} scale={scale} />
+          <PhotoMockupView
+            image={image}
+            mockup={photoMockup}
+            offsetX={offsetX}
+            offsetY={offsetY}
+            scale={scale}
+          />
         ) : (
           <FallbackMockup
             garmentColor={garmentColor}
             image={image}
-            opacity={opacity}
+            offsetX={offsetX}
+            offsetY={offsetY}
             placement={placement}
             scale={scale}
           />
         )}
-
-        <p className="mt-4 text-center text-sm text-slate-400">
-          {fileName
-            ? `Archivo cargado: ${fileName}`
-            : "Sube una imagen y mira una previsualizacion rapida sobre la prenda."}
-        </p>
       </div>
+
+      <p className="mt-4 text-sm text-slate-400">
+        Usa el panel lateral para mover y escalar el diseno dentro del area imprimible.
+      </p>
     </div>
   );
 }

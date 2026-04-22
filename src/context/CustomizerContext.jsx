@@ -1,12 +1,12 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
 const CustomizerContext = createContext(null);
+const maxOffset = 40;
 
 const initialState = {
   placement: "frente",
   garmentColor: "#F5F7FA",
   scale: 1,
-  opacity: 1,
   offsetX: 0,
   offsetY: 0,
   fileName: "",
@@ -16,6 +16,8 @@ const initialState = {
 export function CustomizerProvider({ children }) {
   const [state, setState] = useState(initialState);
 
+  const clampOffset = (value) => Math.max(-maxOffset, Math.min(maxOffset, Number(value) || 0));
+
   const setPlacement = (placement) => {
     setState((current) => ({ ...current, placement }));
   };
@@ -24,8 +26,12 @@ export function CustomizerProvider({ children }) {
     setState((current) => ({ ...current, garmentColor }));
   };
 
-  const setOpacity = (opacity) => {
-    setState((current) => ({ ...current, opacity }));
+  const setOffsetX = (offsetX) => {
+    setState((current) => ({ ...current, offsetX: clampOffset(offsetX) }));
+  };
+
+  const setOffsetY = (offsetY) => {
+    setState((current) => ({ ...current, offsetY: clampOffset(offsetY) }));
   };
 
   const zoomIn = () => {
@@ -75,7 +81,8 @@ export function CustomizerProvider({ children }) {
       ...state,
       setPlacement,
       setGarmentColor,
-      setOpacity,
+      setOffsetX,
+      setOffsetY,
       zoomIn,
       zoomOut,
       centerImage,
