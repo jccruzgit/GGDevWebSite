@@ -4,7 +4,7 @@ const CustomizerContext = createContext(null);
 
 const initialState = {
   placement: "frente",
-  garmentColor: "#111827",
+  garmentColor: "#F5F7FA",
   scale: 1,
   opacity: 1,
   offsetX: 0,
