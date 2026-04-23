@@ -1,4 +1,4 @@
-import { PHOTO_MOCKUP_COLOR, photoMockups } from "@/config/customizerMockups";
+import { getPhotoMockup } from "@/config/customizerMockups";
 
 function ArtworkPreview({ image, alt, emptyLabel, offsetX, offsetY, scale }) {
   return image ? (
@@ -99,7 +99,7 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
         >
           {placement === "frente" ? (
             <ArtworkPreview
-              alt="Diseno cargado"
+              alt="Diseño cargado"
               emptyLabel="Frente listo para arte"
               image={image}
               offsetX={offsetX}
@@ -119,7 +119,7 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
         >
           {placement === "espalda" ? (
             <ArtworkPreview
-              alt="Diseno cargado en la espalda"
+              alt="Diseño cargado en la espalda"
               emptyLabel="Espalda lista para arte"
               image={image}
               offsetX={offsetX}
@@ -146,7 +146,7 @@ export default function CustomizerMockup({
   scale,
   fileName,
 }) {
-  const photoMockup = garmentColor === PHOTO_MOCKUP_COLOR ? photoMockups[placement] : null;
+  const photoMockup = getPhotoMockup(garmentColor, placement);
 
   return (
     <div className="panel surface-grid relative overflow-hidden p-5 sm:p-6">
@@ -183,7 +183,7 @@ export default function CustomizerMockup({
       </div>
 
       <p className="mt-4 text-sm text-slate-400">
-        Usa el panel lateral para mover y escalar el diseno dentro del area imprimible.
+        Usa el panel lateral para mover y escalar el diseño dentro del área imprimible.
       </p>
     </div>
   );
