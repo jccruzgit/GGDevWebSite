@@ -33,6 +33,7 @@ export default function CustomizerPage() {
     setGarmentColor,
     setOffsetX,
     setOffsetY,
+    setOffsets,
     zoomIn,
     zoomOut,
     centerImage,
@@ -155,6 +156,7 @@ export default function CustomizerPage() {
             image={image}
             offsetX={offsetX}
             offsetY={offsetY}
+            onOffsetChange={setOffsets}
             placement={placement}
             scale={scale}
           />

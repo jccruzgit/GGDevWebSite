@@ -1,9 +1,67 @@
+import { useRef } from "react";
 import { getPhotoMockup } from "@/config/customizerMockups";
 
-function ArtworkPreview({ image, alt, emptyLabel, offsetX, offsetY, scale }) {
+function ArtworkPreview({
+  image,
+  alt,
+  emptyLabel,
+  offsetX,
+  offsetY,
+  onOffsetChange,
+  scale,
+}) {
+  const dragState = useRef(null);
+
+  const handlePointerDown = (event) => {
+    if (!image || !onOffsetChange) {
+      return;
+    }
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    dragState.current = {
+      height: bounds.height,
+      pointerId: event.pointerId,
+      startOffsetX: offsetX,
+      startOffsetY: offsetY,
+      startX: event.clientX,
+      startY: event.clientY,
+      width: bounds.width,
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const handlePointerMove = (event) => {
+    const currentDrag = dragState.current;
+
+    if (!currentDrag || currentDrag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const deltaX = ((event.clientX - currentDrag.startX) / currentDrag.width) * 100;
+    const deltaY = ((event.clientY - currentDrag.startY) / currentDrag.height) * 100;
+
+    onOffsetChange({
+      offsetX: currentDrag.startOffsetX + deltaX,
+      offsetY: currentDrag.startOffsetY + deltaY,
+    });
+  };
+
+  const handlePointerEnd = (event) => {
+    if (dragState.current?.pointerId === event.pointerId) {
+      dragState.current = null;
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
   return image ? (
     <div
-      className="flex h-full w-full items-center justify-center"
+      className="flex h-full w-full touch-none select-none items-center justify-center cursor-grab active:cursor-grabbing"
+      onPointerCancel={handlePointerEnd}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
       style={{
         transform: `translate(${offsetX}%, ${offsetY}%)`,
       }}
@@ -24,7 +82,7 @@ function ArtworkPreview({ image, alt, emptyLabel, offsetX, offsetY, scale }) {
   );
 }
 
-function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
+function PhotoMockupView({ image, mockup, offsetX, offsetY, onOffsetChange, scale }) {
   const printAreaStyle = {
     left: `${(mockup.printArea.x / mockup.width) * 100}%`,
     top: `${(mockup.printArea.y / mockup.height) * 100}%`,
@@ -55,6 +113,7 @@ function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
               image={image}
               offsetX={offsetX}
               offsetY={offsetY}
+              onOffsetChange={onOffsetChange}
               scale={scale}
             />
           </div>
@@ -75,7 +134,15 @@ function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
   );
 }
 
-function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scale }) {
+function FallbackMockup({
+  garmentColor,
+  image,
+  offsetX,
+  offsetY,
+  onOffsetChange,
+  placement,
+  scale,
+}) {
   const activePrintAreaClassName =
     "border-transparent bg-white/[0.01]";
   const emptyPrintAreaClassName =
@@ -112,6 +179,7 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
               image={image}
               offsetX={offsetX}
               offsetY={offsetY}
+              onOffsetChange={onOffsetChange}
               scale={scale}
             />
           ) : (
@@ -132,6 +200,7 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
               image={image}
               offsetX={offsetX}
               offsetY={offsetY}
+              onOffsetChange={onOffsetChange}
               scale={scale}
             />
           ) : (
@@ -151,6 +220,7 @@ export default function CustomizerMockup({
   garmentColor,
   offsetX,
   offsetY,
+  onOffsetChange,
   scale,
   fileName,
 }) {
@@ -176,6 +246,7 @@ export default function CustomizerMockup({
             mockup={photoMockup}
             offsetX={offsetX}
             offsetY={offsetY}
+            onOffsetChange={onOffsetChange}
             scale={scale}
           />
         ) : (
@@ -184,6 +255,7 @@ export default function CustomizerMockup({
             image={image}
             offsetX={offsetX}
             offsetY={offsetY}
+            onOffsetChange={onOffsetChange}
             placement={placement}
             scale={scale}
           />

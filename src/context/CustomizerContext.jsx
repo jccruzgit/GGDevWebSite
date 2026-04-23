@@ -16,7 +16,10 @@ const initialState = {
 export function CustomizerProvider({ children }) {
   const [state, setState] = useState(initialState);
 
-  const clampOffset = (value) => Math.max(-maxOffset, Math.min(maxOffset, Number(value) || 0));
+  const clampOffset = (value) => {
+    const clamped = Math.max(-maxOffset, Math.min(maxOffset, Number(value) || 0));
+    return Number(clamped.toFixed(1));
+  };
 
   const setPlacement = (placement) => {
     setState((current) => ({ ...current, placement }));
@@ -32,6 +35,14 @@ export function CustomizerProvider({ children }) {
 
   const setOffsetY = (offsetY) => {
     setState((current) => ({ ...current, offsetY: clampOffset(offsetY) }));
+  };
+
+  const setOffsets = ({ offsetX, offsetY }) => {
+    setState((current) => ({
+      ...current,
+      offsetX: clampOffset(offsetX),
+      offsetY: clampOffset(offsetY),
+    }));
   };
 
   const zoomIn = () => {
@@ -83,6 +94,7 @@ export function CustomizerProvider({ children }) {
       setGarmentColor,
       setOffsetX,
       setOffsetY,
+      setOffsets,
       zoomIn,
       zoomOut,
       centerImage,
