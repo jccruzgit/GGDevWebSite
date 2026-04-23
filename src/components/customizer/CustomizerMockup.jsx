@@ -31,6 +31,9 @@ function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
     width: `${(mockup.printArea.width / mockup.width) * 100}%`,
     height: `${(mockup.printArea.height / mockup.height) * 100}%`,
   };
+  const printAreaClassName = image
+    ? "absolute z-10 overflow-hidden rounded-[18px] border border-transparent"
+    : "absolute z-10 overflow-hidden rounded-[18px] border border-dashed border-white/15 bg-black/[0.08] p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]";
 
   return (
     <div className="relative flex h-full w-full items-center justify-center p-6 sm:p-8">
@@ -43,7 +46,7 @@ function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
         >
           <img alt={mockup.alt} className="h-auto w-full" src={mockup.src} />
           <div
-            className="absolute z-10 overflow-hidden rounded-[18px] border border-dashed border-aqua/35 bg-white/[0.03] p-4"
+            className={printAreaClassName}
             style={printAreaStyle}
           >
             <ArtworkPreview
@@ -73,6 +76,11 @@ function PhotoMockupView({ image, mockup, offsetX, offsetY, scale }) {
 }
 
 function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scale }) {
+  const activePrintAreaClassName =
+    "border-transparent bg-white/[0.01]";
+  const emptyPrintAreaClassName =
+    "border-white/15 bg-black/[0.08] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]";
+
   return (
     <div className="relative flex h-full w-full items-center justify-center p-6 sm:p-8">
       <div className="relative h-[420px] w-full max-w-[360px]">
@@ -94,8 +102,8 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
         />
         <div
           className={`absolute left-1/2 top-[138px] flex min-h-[160px] w-[180px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-[30px] border border-dashed ${
-            placement === "frente" ? "border-aqua/35" : "border-white/15"
-          } bg-white/[0.03] p-4`}
+            placement === "frente" && image ? activePrintAreaClassName : emptyPrintAreaClassName
+          } p-4`}
         >
           {placement === "frente" ? (
             <ArtworkPreview
@@ -114,8 +122,8 @@ function FallbackMockup({ garmentColor, image, offsetX, offsetY, placement, scal
         </div>
         <div
           className={`absolute left-1/2 top-[138px] flex min-h-[160px] w-[180px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-[30px] border border-dashed ${
-            placement === "espalda" ? "border-aqua/35" : "border-white/15"
-          } bg-white/[0.03] p-4`}
+            placement === "espalda" && image ? activePrintAreaClassName : emptyPrintAreaClassName
+          } p-4`}
         >
           {placement === "espalda" ? (
             <ArtworkPreview
