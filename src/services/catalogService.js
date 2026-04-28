@@ -187,13 +187,13 @@ export function normalizeSupabaseProduct(record) {
     slug: record.slug,
     name: record.name,
     category: record.category,
-    categoryLabel: productCategoryLabels[record.category] || record.category || "CatÃ¡logo",
+    categoryLabel: productCategoryLabels[record.category] || record.category || "Catálogo",
     price: Number(record.price) || 20,
     shortDescription:
-      record.short_description || "DiseÃ±o agregado desde el panel administrativo.",
+      record.short_description || "Diseño agregado desde el panel administrativo.",
     description:
       record.description ||
-      "Producto administrado desde Supabase y listo para mostrarse en catÃ¡logo.",
+      "Producto administrado desde Supabase y listo para mostrarse en catálogo.",
     availableColors: normalizeColors(record.available_colors),
     sizes: normalizeSizes(record.sizes),
     mainImage: mainImage || "",

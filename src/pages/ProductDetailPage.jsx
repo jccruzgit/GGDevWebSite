@@ -68,9 +68,9 @@ export default function ProductDetailPage() {
     return (
       <div className="shell pt-14">
         <div className="panel p-10 text-center">
-          <h1 className="text-3xl font-bold text-white">Cargando diseno</h1>
+          <h1 className="text-3xl font-bold text-white">Cargando diseño</h1>
           <p className="mt-4 text-slate-400">
-            Estamos buscando el producto en el catalogo para mostrarte el detalle correcto.
+            Estamos buscando el producto en el catálogo para mostrarte el detalle correcto.
           </p>
         </div>
       </div>
@@ -81,12 +81,12 @@ export default function ProductDetailPage() {
     return (
       <div className="shell pt-14">
         <div className="panel p-10 text-center">
-          <h1 className="text-3xl font-bold text-white">Ese diseno ya no esta disponible</h1>
+          <h1 className="text-3xl font-bold text-white">Ese diseño ya no está disponible</h1>
           <p className="mt-4 text-slate-400">
-            Vuelve al catalogo para explorar otros disenos o pide apoyo para una version similar.
+            Vuelve al catálogo para explorar otros diseños o pide apoyo para una versión similar.
           </p>
           <CTAButton className="mt-8" to="/catalogo">
-            Ir al catalogo
+            Ir al catálogo
           </CTAButton>
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function ProductDetailPage() {
     quantity:
       Number.isInteger(quantity) && quantity > 0
         ? ""
-        : "La cantidad debe ser un numero valido mayor que cero.",
+        : "La cantidad debe ser un número válido mayor que cero.",
     size: selectedSize ? "" : "Selecciona una talla para continuar.",
   };
 
@@ -114,11 +114,11 @@ export default function ProductDetailPage() {
   }
 
   if (productErrors.quantity) {
-    missingFields.push("una cantidad valida");
+    missingFields.push("una cantidad válida");
   }
 
   const productNotice = isProductOrderReady
-    ? "Tu mensaje incluira el diseno, talla, color, cantidad y notas para cerrar el pedido mas rapido."
+    ? "Tu mensaje incluirá el diseño, talla, color, cantidad y notas para cerrar el pedido más rápido."
     : `Selecciona ${formatMissingFields(missingFields)} para desbloquear el pedido por WhatsApp.`;
 
   const handleRequestAction = async ({ action, requestType, whatsappMessage }) => {
@@ -192,13 +192,13 @@ export default function ProductDetailPage() {
       action: "help",
       requestType: "product-help",
       whatsappMessage: buildSupportMessage({
-        intro: `Hola, necesito ayuda con el diseno ${product.name}.`,
+        intro: `Hola, necesito ayuda con el diseño ${product.name}.`,
         details: [
-          `Diseno: ${product.name}`,
+          `Diseño: ${product.name}`,
           `Talla: ${selectedSize || "Por definir"}`,
           `Color: ${selectedColor?.name || "Por definir"}`,
           `Cantidad: ${quantity}`,
-          `Notas: ${notes.trim() || "Necesito recomendacion para elegir la mejor opcion."}`,
+          `Notas: ${notes.trim() || "Necesito recomendación para elegir la mejor opción."}`,
         ],
         closing: "Quiero que me orienten antes de confirmar mi pedido.",
       }),
@@ -215,7 +215,7 @@ export default function ProductDetailPage() {
             <div className="panel p-10 text-center">
               <h2 className="text-2xl font-bold text-white">Imagen pendiente de carga</h2>
               <p className="mt-4 text-slate-400">
-                Este producto existe en el catalogo, pero todavia no tiene imagen principal publicada.
+                Este producto existe en el catálogo, pero todavía no tiene imagen principal publicada.
               </p>
             </div>
           )}
@@ -272,7 +272,7 @@ export default function ProductDetailPage() {
                 >
                   {pendingAction === "help"
                     ? "Guardando solicitud..."
-                    : "Necesito ayuda con este diseno"}
+                    : "Necesito ayuda con este diseño"}
                 </WhatsAppActionButton>
               </div>
 
@@ -290,11 +290,11 @@ export default function ProductDetailPage() {
 
       <TrustSection
         className="mt-16"
-        description={`Queremos que pedir ${product.name} se sienta claro desde el primer mensaje hasta la confirmacion final.`}
+        description={`Queremos que pedir ${product.name} se sienta claro desde el primer mensaje hasta la confirmación final.`}
         eyebrow="Confianza GGDev"
         items={productTrustItems}
-        note="Si no estas seguro del tamano o la ubicacion del diseno, te ayudamos antes de producir."
-        title="Compra con respaldo visual y acompanamiento real"
+        note="Si no estás seguro del tamaño o la ubicación del diseño, te ayudamos antes de producir."
+        title="Compra con respaldo visual y acompañamiento real"
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <WhatsAppActionButton
@@ -316,11 +316,11 @@ export default function ProductDetailPage() {
         <section className="mt-16">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading
-              description={`Mas opciones dentro de ${product.categoryLabel} para comparar estilo, color y presencia visual.`}
+              description={`Más opciones dentro de ${product.categoryLabel} para comparar estilo, color y presencia visual.`}
               eyebrow="Relacionados"
-              title="Sigue explorando esta linea"
+              title="Sigue explorando esta línea"
             />
-            <CTAButton to={`/catalogo?categoria=${product.category}`}>Ver mas de esta categoria</CTAButton>
+            <CTAButton to={`/catalogo?categoria=${product.category}`}>Ver más de esta categoría</CTAButton>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {relatedProducts.map((relatedProduct) => (

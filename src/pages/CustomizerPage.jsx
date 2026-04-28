@@ -58,8 +58,8 @@ export default function CustomizerPage() {
   const hasNotes = Boolean(notes.trim());
   const helperMessage =
     hasReference || hasNotes
-      ? "Tu mensaje saldra con color, lado del diseno, archivo cargado, posicion y notas para agilizar la conversacion."
-      : "Puedes seguir sin archivo. Te ayudaremos por WhatsApp a definir tamano, ubicacion y viabilidad del diseno.";
+      ? "Tu mensaje saldrá con color, lado del diseño, archivo cargado, posición y notas para agilizar la conversación."
+      : "Puedes seguir sin archivo. Te ayudaremos por WhatsApp a definir tamaño, ubicación y viabilidad del diseño.";
 
   const handleRequestAction = async ({ action, requestType, whatsappMessage }) => {
     setPendingAction(action);
@@ -94,7 +94,7 @@ export default function CustomizerPage() {
       if (savedRequest) {
         setRequestFeedback({
           message:
-            "Guardamos tu solicitud en el panel para darle seguimiento antes de cerrar la produccion.",
+            "Guardamos tu solicitud en el panel para darle seguimiento antes de cerrar la producción.",
           tone: "info",
         });
       }
@@ -134,17 +134,17 @@ export default function CustomizerPage() {
       whatsappMessage: buildSupportMessage({
         intro: "Hola, necesito ayuda para personalizar una camiseta de GGDev.",
         details: [
-          "Tipo de solicitud: Diseno personalizado",
+          "Tipo de solicitud: Diseño personalizado",
           `Color de prenda: ${selectedGarment.name}`,
-          `Lado del diseno: ${placement}`,
-          `Archivo cargado: ${fileName || "Aun no he subido una imagen"}`,
-          `Tamano aproximado en vista previa: ${Math.round(scale * 100)}%`,
-          `Posicion horizontal en vista previa: ${offsetX}%`,
-          `Posicion vertical en vista previa: ${offsetY}%`,
+          `Lado del diseño: ${placement}`,
+          `Archivo cargado: ${fileName || "Aún no he subido una imagen"}`,
+          `Tamaño aproximado en vista previa: ${Math.round(scale * 100)}%`,
+          `Posición horizontal en vista previa: ${offsetX}%`,
+          `Posición vertical en vista previa: ${offsetY}%`,
           `Notas: ${notes.trim() || "Necesito ayuda para organizar mi idea."}`,
         ],
         closing:
-          "Necesito ayuda para confirmar tamano, calidad del archivo y viabilidad del diseno.",
+          "Necesito ayuda para confirmar tamaño, calidad del archivo y viabilidad del diseño.",
       }),
     });
   };
@@ -153,19 +153,19 @@ export default function CustomizerPage() {
     <div className="shell pt-10">
       <section className="panel surface-grid p-8 sm:p-10">
         <SectionHeading
-          description="Sube tu imagen, ajusta tamano y posicion sobre la prenda, y envia tu idea para validar produccion antes de fabricarla."
+          description="Sube tu imagen, ajusta tamaño y posición sobre la prenda, y envía tu idea para validar producción antes de fabricarla."
           eyebrow="Personalizador MVP"
-          title="Disena tu camiseta en un espacio de trabajo mas claro"
+          title="Diseña tu camiseta en un espacio de trabajo más claro"
         />
       </section>
 
       <section className="mt-10 grid gap-8 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
         <div className="space-y-6">
           <UploadBox
-            description="Carga tu archivo y previsualizalo sobre la camiseta. PNG y JPG funcionan mejor para esta etapa."
+            description="Carga tu archivo y previsualízalo sobre la camiseta. PNG y JPG funcionan mejor para esta etapa."
             fileName={fileName}
             onFileSelect={setImageFromFile}
-            title="Sube tu diseno base"
+            title="Sube tu diseño base"
           />
 
           <CustomizerControls
@@ -183,7 +183,7 @@ export default function CustomizerPage() {
         <div className="space-y-6">
           <div className="grid gap-4 xl:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)]">
             <div className="panel-soft p-5">
-              <p className="text-sm font-semibold text-white">Vista del diseno</p>
+              <p className="text-sm font-semibold text-white">Vista del diseño</p>
               <div className="mt-4 inline-flex rounded-full border border-white/10 bg-white/5 p-1">
                 {["frente", "espalda"].map((side) => (
                   <button
@@ -232,11 +232,11 @@ export default function CustomizerPage() {
                 className="min-h-40 w-full rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
                 id="custom-notes"
                 onChange={(event) => setNotes(event.target.value)}
-                placeholder="Describe tamano aproximado, referencia visual, texto o cualquier detalle importante."
+                placeholder="Describe tamaño aproximado, referencia visual, texto o cualquier detalle importante."
                 value={notes}
               />
               <p className="mt-4 text-sm leading-7 text-slate-400">
-                Si aun no estas seguro de la calidad del archivo, podemos revisarlo contigo antes de
+                Si aún no estás seguro de la calidad del archivo, podemos revisarlo contigo antes de
                 producir.
               </p>
             </div>
@@ -245,7 +245,7 @@ export default function CustomizerPage() {
               <div>
                 <p className="text-sm font-semibold text-white">Siguiente paso</p>
                 <p className="mt-3 text-sm leading-7 text-slate-300">
-                  Cuando el preview se acerque a tu idea, envia la solicitud y revisamos tamano,
+                  Cuando el preview se acerque a tu idea, envía la solicitud y revisamos tamaño,
                   archivo y acabado final.
                 </p>
               </div>

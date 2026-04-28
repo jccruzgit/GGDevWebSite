@@ -86,8 +86,8 @@ export default function AdminRequestsPanel({
           </div>
           <h2 className="mt-5 text-2xl font-bold text-white">Solicitudes y leads</h2>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-400">
-            Aqui llegan las solicitudes de personalizacion, asesoria y pedidos iniciados desde el
-            sitio publico.
+            Aquí llegan las solicitudes de personalización, asesoría y pedidos iniciados desde el
+            sitio público.
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export default function AdminRequestsPanel({
             <p className="mt-2 text-2xl font-bold text-white">{counts.new}</p>
           </div>
           <div className="rounded-[22px] border border-amber-400/20 bg-amber-400/10 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-amber-100">Revision</p>
+            <p className="text-xs uppercase tracking-[0.24em] text-amber-100">Revisión</p>
             <p className="mt-2 text-2xl font-bold text-white">{counts.reviewing}</p>
           </div>
           <div className="rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 px-4 py-4">
@@ -126,7 +126,7 @@ export default function AdminRequestsPanel({
       {!loading && requests.length === 0 ? (
         <div className="mt-6 flex items-center gap-4 rounded-[24px] border border-white/10 bg-white/5 p-6 text-sm text-slate-300">
           <Inbox className="h-5 w-5 text-aqua" />
-          Aun no han entrado solicitudes desde el sitio.
+          Aún no han entrado solicitudes desde el sitio.
         </div>
       ) : null}
 

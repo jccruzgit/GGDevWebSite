@@ -23,7 +23,7 @@ export default function ProtectedAdminRoute() {
   if (loading) {
     return (
       <AccessPanel
-        description="Estamos validando tu sesion y cargando los permisos del panel."
+        description="Estamos validando tu sesión y cargando los permisos del panel."
         title="Verificando acceso"
       />
     );
@@ -38,7 +38,7 @@ export default function ProtectedAdminRoute() {
       <AccessPanel
         description={
           profileError ||
-          "Tu usuario existe, pero no tiene un rol valido para administrar el catalogo."
+          "Tu usuario existe, pero no tiene un rol válido para administrar el catálogo."
         }
         title="Sin permisos para entrar al admin"
       />

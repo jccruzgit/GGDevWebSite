@@ -33,7 +33,7 @@ export default function HomePage() {
                 variant="full"
               />
             </div>
-            <span className="eyebrow mt-6">Seleccion insignia GGDev</span>
+            <span className="eyebrow mt-6">Selección insignia GGDev</span>
             <h1 className="mt-6 text-5xl font-bold leading-[0.95] sm:text-6xl lg:text-7xl">
               Tu estilo,
               <span className="text-gradient"> nivel leyenda.</span>
@@ -44,7 +44,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CTAButton to="/catalogo">
-                Explorar catalogo
+                Explorar catálogo
                 <ArrowRight className="h-4 w-4" />
               </CTAButton>
               <CTAButton to="/personalizar" variant="secondary">
@@ -53,7 +53,7 @@ export default function HomePage() {
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               <div className="panel-soft p-4">
-                <p className="text-2xl font-bold text-white">+20 disenos</p>
+                <p className="text-2xl font-bold text-white">+20 diseños</p>
                 <p className="mt-1 text-sm text-slate-400">Disponibles</p>
               </div>
               <div className="panel-soft p-4">
@@ -74,25 +74,25 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      {heroProduct ? "Diseno destacado" : "Catalogo remoto"}
+                      {heroProduct ? "Diseño destacado" : "Catálogo remoto"}
                     </p>
                     <p className="mt-2 text-lg font-semibold text-white">
-                      {heroProduct?.name || "Sube tus disenos a Supabase"}
+                      {heroProduct?.name || "Sube tus diseños a Supabase"}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
                       {heroProduct
                         ? "Una camiseta con presencia limpia, contraste fuerte y un look pensado para destacar tanto en uso diario como en tus fotos."
-                        : "Cuando cargues productos reales desde el panel, aqui se mostraran automaticamente sin mockups locales de relleno."}
+                        : "Cuando cargues productos reales desde el panel, aquí se mostrarán automáticamente sin mockups locales de relleno."}
                     </p>
                   </div>
                   <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
                       Compra directa
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">Pide facil por WhatsApp</p>
+                    <p className="mt-2 text-lg font-semibold text-white">Pide fácil por WhatsApp</p>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Elige tu diseno, confirma talla y color, y cierra tu pedido con una atencion
-                      clara, rapida y directa.
+                      Elige tu diseño, confirma talla y color, y cierra tu pedido con una atención
+                      clara, rápida y directa.
                     </p>
                   </div>
                 </div>
@@ -118,10 +118,10 @@ export default function HomePage() {
                           Sin mockups locales
                         </p>
                         <p className="mt-4 text-2xl font-semibold text-white">
-                          El escaparate mostrara solo productos reales.
+                          El escaparate mostrará solo productos reales.
                         </p>
                         <p className="mt-4 text-sm leading-7 text-slate-300">
-                          Agrega disenos desde Supabase para poblar automaticamente el home, el catalogo y el detalle de producto.
+                          Agrega diseños desde Supabase para poblar automáticamente el home, el catálogo y el detalle de producto.
                         </p>
                       </div>
                     </div>
@@ -131,7 +131,7 @@ export default function HomePage() {
                       Acabado premium
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Disenos con gran presencia visual, buen contraste sobre la prenda y un
+                      Diseños con gran presencia visual, buen contraste sobre la prenda y un
                       acabado pensado para impresionar desde el primer vistazo.
                     </p>
                   </div>
@@ -144,9 +144,9 @@ export default function HomePage() {
 
       <section className="shell mt-24">
         <SectionHeading
-          description="Explora categorias pensadas para creadores, fans y personas que quieren una camiseta con identidad clara."
-          eyebrow="Categorias"
-          title="Tu proxima camiseta empieza con una idea que conecte contigo"
+          description="Explora categorías pensadas para creadores, fans y personas que quieren una camiseta con identidad clara."
+          eyebrow="Categorías"
+          title="Tu próxima camiseta empieza con una idea que conecte contigo"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
@@ -159,12 +159,12 @@ export default function HomePage() {
         <section className="shell mt-24">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading
-              description="Una seleccion lista para elegir sin complicaciones, con estilos que ya se ven bien sobre la prenda."
-              eyebrow="Disenos listos para pedir"
+              description="Una selección lista para elegir sin complicaciones, con estilos que ya se ven bien sobre la prenda."
+              eyebrow="Diseños listos para pedir"
               title="Empieza con una camiseta que ya se ve brutal"
             />
             <CTAButton to="/catalogo" variant="secondary">
-              Ver catalogo completo
+              Ver catálogo completo
             </CTAButton>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -183,7 +183,7 @@ export default function HomePage() {
 
       <section className="shell mt-16">
         <CommercialCTA
-          description="Si ya encontraste un diseno que te gusta, puedes explorarlo mejor, personalizar otra idea o pedirlo de una vez."
+          description="Si ya encontraste un diseño que te gusta, puedes explorarlo mejor, personalizar otra idea o pedirlo de una vez."
           eyebrow="Siguiente paso"
           title="No te quedes solo con la idea. Convierte tu estilo en una camiseta real."
         />
@@ -192,9 +192,9 @@ export default function HomePage() {
       <section className="shell mt-24">
         <SectionHeading
           align="center"
-          description="Queremos que pedir una camiseta personalizada se sienta claro, confiable y facil de recomendar."
-          eyebrow="Por que elegir GGDev"
-          title="Mas confianza, mejor guia y un proceso que realmente acompana"
+          description="Queremos que pedir una camiseta personalizada se sienta claro, confiable y fácil de recomendar."
+          eyebrow="Por qué elegir GGDev"
+          title="Más confianza, mejor guía y un proceso que realmente acompaña"
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           {commercialBenefits.map((benefit) => (
@@ -231,9 +231,9 @@ export default function HomePage() {
 
       <section className="shell mt-24">
         <CommercialCTA
-          description="Explora disenos, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atencion real."
+          description="Explora diseños, sube tu idea o abre WhatsApp para confirmar detalles, precio final y entrega con atención real."
           eyebrow="Cierre directo"
-          title="GGDev esta listo para ayudarte a pedir desde cualquier canal."
+          title="GGDev está listo para ayudarte a pedir desde cualquier canal."
           whatsappLabel="Pedir por WhatsApp"
         />
       </section>

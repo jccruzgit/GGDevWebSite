@@ -25,7 +25,7 @@ export function CatalogProvider({ children }) {
       setError("");
     } catch (nextError) {
       setRemoteProducts([]);
-      setError(nextError.message || "No se pudo cargar el catalogo remoto.");
+      setError(nextError.message || "No se pudo cargar el catálogo remoto.");
     } finally {
       setLoading(false);
     }

@@ -16,8 +16,8 @@ export default function ExampleGallery({ items }) {
   return (
     <section>
       <SectionHeading
-        description="Descubre algunas de las camisetas destacadas de la tienda, con estilos pensados para sobresalir en el dia a dia y en tus fotos."
-        eyebrow="Disenos destacados"
+        description="Descubre algunas de las camisetas destacadas de la tienda, con estilos pensados para sobresalir en el día a día y en tus fotos."
+        eyebrow="Diseños destacados"
         title="Camisetas con presencia y estilo propio"
       />
 

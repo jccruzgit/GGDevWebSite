@@ -102,7 +102,7 @@ export function AuthProvider({ children }) {
 
         setSession(null);
         setProfile(null);
-        setProfileError(nextError.message || "No se pudo recuperar la sesion.");
+        setProfileError(nextError.message || "No se pudo recuperar la sesión.");
         setLoading(false);
       });
 

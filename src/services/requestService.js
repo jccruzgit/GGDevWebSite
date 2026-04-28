@@ -7,8 +7,8 @@ import {
 } from "@/lib/supabase";
 
 export const requestTypeLabels = {
-  advisory: "Asesoria",
-  customizer: "Personalizacion",
+  advisory: "Asesoría",
+  customizer: "Personalización",
   "product-help": "Ayuda con producto",
   "product-order": "Pedido de producto",
 };
@@ -17,7 +17,7 @@ export const requestStatusLabels = {
   approved: "Aprobada",
   closed: "Cerrada",
   new: "Nueva",
-  reviewing: "En revision",
+  reviewing: "En revisión",
 };
 
 export const requestStatusOptions = Object.entries(requestStatusLabels).map(
@@ -153,7 +153,7 @@ export async function createPublicRequest({ designFile = null, request }) {
   }
 
   if (!requestTypeLabels[request?.requestType]) {
-    throw new Error("El tipo de solicitud no es valido.");
+    throw new Error("El tipo de solicitud no es válido.");
   }
 
   const client = getSupabaseClient();
@@ -205,7 +205,7 @@ export async function patchAdminRequestStatus(requestId, status) {
   }
 
   if (!requestStatusLabels[status]) {
-    throw new Error("El estado solicitado no es valido.");
+    throw new Error("El estado solicitado no es válido.");
   }
 
   const client = getSupabaseClient();
