@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "GGDev",
-  whatsappNumber: "+50370000000",
+  whatsappNumber: "+50364475175",
   whatsappLabel: "WhatsApp",
   instagram: "https://instagram.com/",
   tiktok: "https://tiktok.com/",

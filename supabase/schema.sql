@@ -32,6 +32,30 @@ create table if not exists public.products (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.requests (
+  id uuid primary key default gen_random_uuid(),
+  request_type text not null check (request_type in ('customizer', 'advisory', 'product-order', 'product-help')),
+  status text not null default 'new' check (status in ('new', 'reviewing', 'approved', 'closed')),
+  customer_name text,
+  customer_phone text,
+  subject text,
+  product_slug text,
+  product_name text,
+  garment_color text,
+  placement text,
+  size text,
+  quantity integer,
+  notes text,
+  design_file_name text,
+  design_file_path text,
+  preview_scale numeric(6,2),
+  preview_offset_x numeric(6,2),
+  preview_offset_y numeric(6,2),
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -54,6 +78,12 @@ before update on public.products
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_requests_updated_at on public.requests;
+create trigger set_requests_updated_at
+before update on public.requests
+for each row
+execute function public.set_updated_at();
+
 create or replace function public.has_any_role(allowed_roles text[])
 returns boolean
 language sql
@@ -70,6 +100,7 @@ $$;
 
 alter table public.profiles enable row level security;
 alter table public.products enable row level security;
+alter table public.requests enable row level security;
 
 drop policy if exists "profiles_read_own" on public.profiles;
 create policy "profiles_read_own"
@@ -114,8 +145,34 @@ for delete
 to authenticated
 using ((select public.has_any_role(array['owner', 'admin'])));
 
+drop policy if exists "requests_public_insert" on public.requests;
+create policy "requests_public_insert"
+on public.requests
+for insert
+to anon, authenticated
+with check (true);
+
+drop policy if exists "requests_admin_read_all" on public.requests;
+create policy "requests_admin_read_all"
+on public.requests
+for select
+to authenticated
+using ((select public.has_any_role(array['owner', 'admin'])));
+
+drop policy if exists "requests_admin_update" on public.requests;
+create policy "requests_admin_update"
+on public.requests
+for update
+to authenticated
+using ((select public.has_any_role(array['owner', 'admin'])))
+with check ((select public.has_any_role(array['owner', 'admin'])));
+
 insert into storage.buckets (id, name, public)
 values ('product-mockups', 'product-mockups', true)
+on conflict (id) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('request-assets', 'request-assets', true)
 on conflict (id) do nothing;
 
 drop policy if exists "product_mockups_public_read" on storage.objects;
@@ -156,5 +213,43 @@ for delete
 to authenticated
 using (
   bucket_id = 'product-mockups'
+  and (select public.has_any_role(array['owner', 'admin']))
+);
+
+drop policy if exists "request_assets_public_read" on storage.objects;
+create policy "request_assets_public_read"
+on storage.objects
+for select
+to public
+using (bucket_id = 'request-assets');
+
+drop policy if exists "request_assets_public_insert" on storage.objects;
+create policy "request_assets_public_insert"
+on storage.objects
+for insert
+to anon, authenticated
+with check (bucket_id = 'request-assets');
+
+drop policy if exists "request_assets_admin_update" on storage.objects;
+create policy "request_assets_admin_update"
+on storage.objects
+for update
+to authenticated
+using (
+  bucket_id = 'request-assets'
+  and (select public.has_any_role(array['owner', 'admin']))
+)
+with check (
+  bucket_id = 'request-assets'
+  and (select public.has_any_role(array['owner', 'admin']))
+);
+
+drop policy if exists "request_assets_admin_delete" on storage.objects;
+create policy "request_assets_admin_delete"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'request-assets'
   and (select public.has_any_role(array['owner', 'admin']))
 );

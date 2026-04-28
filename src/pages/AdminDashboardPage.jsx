@@ -10,6 +10,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import AdminRequestsPanel from "@/components/admin/AdminRequestsPanel";
 import ProductImage from "@/components/product/ProductImage";
 import UploadBox from "@/components/ui/UploadBox";
 import { useAuth } from "@/context/AuthContext";
@@ -22,6 +23,10 @@ import {
   slugifyProductName,
   updateAdminProduct,
 } from "@/services/catalogService";
+import {
+  fetchAdminRequests,
+  patchAdminRequestStatus,
+} from "@/services/requestService";
 import { getProductPrimaryImage } from "@/utils/productMedia";
 
 const DRAFT_STORAGE_KEY = "ggdev.admin.product-draft";
@@ -138,6 +143,9 @@ export default function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
+  const [requests, setRequests] = useState([]);
+  const [requestsLoading, setRequestsLoading] = useState(true);
+  const [requestsError, setRequestsError] = useState("");
   const [form, setForm] = useState(initialForm);
   const [baselineForm, setBaselineForm] = useState(initialForm);
   const [file, setFile] = useState(null);
@@ -153,6 +161,7 @@ export default function AdminDashboardPage() {
   const [draftRecovered, setDraftRecovered] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [actionProductId, setActionProductId] = useState("");
+  const [actionRequestId, setActionRequestId] = useState("");
   const [productsPage, setProductsPage] = useState(1);
 
   const isEditing = Boolean(editingProduct);
@@ -212,7 +221,27 @@ export default function AdminDashboardPage() {
       }
     };
 
+    const loadRequests = async () => {
+      setRequestsLoading(true);
+
+      try {
+        const nextRequests = await fetchAdminRequests();
+        if (!isMounted) return;
+        setRequests(nextRequests);
+        setRequestsError("");
+      } catch (error) {
+        if (!isMounted) return;
+        setRequests([]);
+        setRequestsError(error.message || "No se pudo cargar el listado de solicitudes.");
+      } finally {
+        if (isMounted) {
+          setRequestsLoading(false);
+        }
+      }
+    };
+
     void loadProducts();
+    void loadRequests();
 
     return () => {
       isMounted = false;
@@ -415,6 +444,22 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleRequestStatusChange = async (requestId, status) => {
+    setActionRequestId(requestId);
+    setRequestsError("");
+
+    try {
+      const updatedRequest = await patchAdminRequestStatus(requestId, status);
+      setRequests((current) =>
+        current.map((request) => (request.id === updatedRequest.id ? updatedRequest : request))
+      );
+    } catch (error) {
+      setRequestsError(error.message || "No se pudo actualizar el estado de la solicitud.");
+    } finally {
+      setActionRequestId("");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
@@ -531,6 +576,14 @@ export default function AdminDashboardPage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
       <section className="space-y-8">
+        <AdminRequestsPanel
+          actionRequestId={actionRequestId}
+          error={requestsError}
+          loading={requestsLoading}
+          onStatusChange={handleRequestStatusChange}
+          requests={requests}
+        />
+
         <div className="grid gap-4 md:grid-cols-3">
           <div className="panel-soft p-5">
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 text-aqua">

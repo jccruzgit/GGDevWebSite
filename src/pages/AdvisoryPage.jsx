@@ -5,6 +5,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
 import ResponsePromise from "@/components/advisory/ResponsePromise";
+import { createPublicRequest } from "@/services/requestService";
 import { buildAdvisoryMessage, openWhatsApp } from "@/utils/whatsapp";
 
 function getInputClassName(hasError) {
@@ -29,21 +30,26 @@ function formatMissingFields(fields) {
 
 export default function AdvisoryPage() {
   const [form, setForm] = useState({
+    message: "",
     name: "",
     subject: "",
-    message: "",
   });
   const [touched, setTouched] = useState({
+    message: false,
     name: false,
     subject: false,
-    message: false,
+  });
+  const [pendingAction, setPendingAction] = useState("");
+  const [requestFeedback, setRequestFeedback] = useState({
+    message: "",
+    tone: "info",
   });
 
   const formErrors = useMemo(
     () => ({
+      message: form.message.trim() ? "" : "Describe la duda o problema que quieres resolver.",
       name: form.name.trim() ? "" : "Escribe tu nombre para iniciar la conversacion.",
       subject: form.subject.trim() ? "" : "Define el asunto principal de tu consulta.",
-      message: form.message.trim() ? "" : "Describe la duda o problema que quieres resolver.",
     }),
     [form]
   );
@@ -64,8 +70,8 @@ export default function AdvisoryPage() {
   }
 
   const helperMessage = isFormValid
-    ? "Tu consulta llegará ordenada para que podamos responderte con contexto desde el primer mensaje."
-    : `Completa ${formatMissingFields(missingFields)} para abrir WhatsApp con tu solicitud de asesoría.`;
+    ? "Tu consulta llegara ordenada para que podamos responderte con contexto desde el primer mensaje."
+    : `Completa ${formatMissingFields(missingFields)} para abrir WhatsApp con tu solicitud de asesoria.`;
 
   const handleChange = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -75,31 +81,67 @@ export default function AdvisoryPage() {
     setTouched((current) => ({ ...current, [field]: true }));
   };
 
-  const handleOpenWhatsApp = () => {
+  const handleOpenWhatsApp = async (action = "advisory") => {
     if (!isFormValid) {
       setTouched({
+        message: true,
         name: true,
         subject: true,
-        message: true,
       });
       return;
     }
 
-    openWhatsApp(buildAdvisoryMessage(form));
+    setPendingAction(action);
+    setRequestFeedback({
+      message: "",
+      tone: "info",
+    });
+
+    try {
+      const savedRequest = await createPublicRequest({
+        request: {
+          customerName: form.name,
+          metadata: {
+            source: "advisory-page",
+          },
+          notes: form.message,
+          requestType: "advisory",
+          subject: form.subject,
+        },
+      });
+
+      if (savedRequest) {
+        setRequestFeedback({
+          message:
+            "Guardamos tu consulta en el panel para responderla con mejor seguimiento interno.",
+          tone: "info",
+        });
+      }
+    } catch (error) {
+      setRequestFeedback({
+        message:
+          error.message ||
+          "No se pudo guardar la consulta en el panel, pero abriremos WhatsApp para no frenar la asesoria.",
+        tone: "error",
+      });
+    } finally {
+      setPendingAction("");
+      openWhatsApp(buildAdvisoryMessage(form));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleOpenWhatsApp();
+    void handleOpenWhatsApp("submit");
   };
 
   return (
     <div className="shell pt-10">
       <section className="panel surface-grid p-8 sm:p-10">
         <SectionHeading
-          description="Te ayudamos a validar resolución, ubicación del arte, adaptación para impresión y claridad visual antes de producir."
-          eyebrow="Asesoría GGDev"
-          title="No dejes tu diseño al azar si quieres que la camiseta realmente se vea premium"
+          description="Te ayudamos a validar resolucion, ubicacion del arte, adaptacion para impresion y claridad visual antes de producir."
+          eyebrow="Asesoria GGDev"
+          title="No dejes tu diseno al azar si quieres que la camiseta realmente se vea premium"
         />
       </section>
 
@@ -109,10 +151,10 @@ export default function AdvisoryPage() {
 
       <section className="mt-10 grid gap-8 lg:grid-cols-[1fr_0.9fr]">
         <form className="panel space-y-6 p-8" onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-semibold text-white">Cuéntanos qué necesitas</h2>
+          <h2 className="text-2xl font-semibold text-white">Cuentanos que necesitas</h2>
           <p className="text-sm leading-7 text-slate-300">
-            Te orientamos con resolución de imagen, ubicación del diseño, adaptación para
-            impresión y revisión de calidad.
+            Te orientamos con resolucion de imagen, ubicacion del diseno, adaptacion para
+            impresion y revision de calidad.
           </p>
 
           <div>
@@ -164,7 +206,7 @@ export default function AdvisoryPage() {
               id="message"
               onBlur={handleBlur("message")}
               onChange={handleChange("message")}
-              placeholder="Cuéntanos qué quieres imprimir o qué duda necesitas resolver."
+              placeholder="Cuentanos que quieres imprimir o que duda necesitas resolver."
               value={form.message}
             />
             {touched.message && formErrors.message ? (
@@ -175,10 +217,15 @@ export default function AdvisoryPage() {
           </div>
 
           <div className="space-y-4">
-            <CTAButton className="w-full" disabled={!isFormValid} type="submit">
-              Enviar consulta por WhatsApp
+            <CTAButton className="w-full" disabled={!isFormValid || Boolean(pendingAction)} type="submit">
+              {pendingAction === "submit"
+                ? "Guardando consulta..."
+                : "Enviar consulta por WhatsApp"}
             </CTAButton>
             <InlineNotice tone={isFormValid ? "info" : "error"}>{helperMessage}</InlineNotice>
+            {requestFeedback.message ? (
+              <InlineNotice tone={requestFeedback.tone}>{requestFeedback.message}</InlineNotice>
+            ) : null}
             <WhatsAppResponseNote className="text-center sm:text-left" />
           </div>
         </form>
@@ -186,10 +233,10 @@ export default function AdvisoryPage() {
         <div className="space-y-6">
           <div className="panel p-8">
             <p className="eyebrow">Confianza GGDev</p>
-            <h2 className="mt-5 text-3xl font-bold text-white">Respuesta clara y acompañamiento real</h2>
+            <h2 className="mt-5 text-3xl font-bold text-white">Respuesta clara y acompanamiento real</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
-              Nuestro flujo final siempre termina en conversación directa contigo para confirmar
-              detalles, resolver dudas y aterrizar el diseño con criterio visual.
+              Nuestro flujo final siempre termina en conversacion directa contigo para confirmar
+              detalles, resolver dudas y aterrizar el diseno con criterio visual.
             </p>
             <div className="mt-6 rounded-[24px] border border-aqua/15 bg-aqua/8 p-5">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
@@ -197,7 +244,7 @@ export default function AdvisoryPage() {
               </p>
               <p className="mt-3 text-3xl font-bold text-white">Menos de 24 horas</p>
               <p className="mt-2 text-sm text-slate-300">
-                Ideal para pedidos, ajustes rápidos y consultas sobre calidad de archivo.
+                Ideal para pedidos, ajustes rapidos y consultas sobre calidad de archivo.
               </p>
             </div>
           </div>
@@ -205,11 +252,11 @@ export default function AdvisoryPage() {
           <div className="space-y-4">
             <WhatsAppActionButton
               className="w-full"
-              disabled={!isFormValid}
-              onClick={handleOpenWhatsApp}
+              disabled={!isFormValid || Boolean(pendingAction)}
+              onClick={() => void handleOpenWhatsApp("quick-open")}
               variant="secondary"
             >
-              Abrir WhatsApp ahora
+              {pendingAction === "quick-open" ? "Guardando consulta..." : "Abrir WhatsApp ahora"}
             </WhatsAppActionButton>
             <WhatsAppResponseNote className="text-center sm:text-left" />
           </div>

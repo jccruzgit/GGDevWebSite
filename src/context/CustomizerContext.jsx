@@ -9,6 +9,7 @@ const initialState = {
   scale: 1,
   offsetX: 0,
   offsetY: 0,
+  file: null,
   fileName: "",
   image: "",
 };
@@ -66,6 +67,7 @@ export function CustomizerProvider({ children }) {
   const resetCustomizer = () => {
     setState((current) => ({
       ...initialState,
+      file: current.file,
       image: current.image,
       fileName: current.fileName,
     }));
@@ -80,6 +82,7 @@ export function CustomizerProvider({ children }) {
     reader.onload = () => {
       setState((current) => ({
         ...current,
+        file,
         image: reader.result,
         fileName: file.name,
       }));

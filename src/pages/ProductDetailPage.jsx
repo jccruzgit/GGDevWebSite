@@ -14,6 +14,7 @@ import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
 import { useCatalog } from "@/context/CatalogContext";
 import { productTrustItems } from "@/data/commercial";
+import { createPublicRequest } from "@/services/requestService";
 import { formatCurrency } from "@/utils/format";
 import { getProductGalleryImages } from "@/utils/productMedia";
 import {
@@ -47,6 +48,11 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
+  const [pendingAction, setPendingAction] = useState("");
+  const [requestFeedback, setRequestFeedback] = useState({
+    message: "",
+    tone: "info",
+  });
 
   const productImages = useMemo(() => getProductGalleryImages(product), [product]);
   const hasProductImages = productImages.length > 0;
@@ -88,12 +94,12 @@ export default function ProductDetailPage() {
   }
 
   const productErrors = {
-    size: selectedSize ? "" : "Selecciona una talla para continuar.",
     color: selectedColor?.name ? "" : "Selecciona un color de prenda para continuar.",
     quantity:
       Number.isInteger(quantity) && quantity > 0
         ? ""
         : "La cantidad debe ser un numero valido mayor que cero.",
+    size: selectedSize ? "" : "Selecciona una talla para continuar.",
   };
 
   const isProductOrderReady = !Object.values(productErrors).some(Boolean);
@@ -115,25 +121,77 @@ export default function ProductDetailPage() {
     ? "Tu mensaje incluira el diseno, talla, color, cantidad y notas para cerrar el pedido mas rapido."
     : `Selecciona ${formatMissingFields(missingFields)} para desbloquear el pedido por WhatsApp.`;
 
+  const handleRequestAction = async ({ action, requestType, whatsappMessage }) => {
+    setPendingAction(action);
+    setRequestFeedback({
+      message: "",
+      tone: "info",
+    });
+
+    try {
+      const savedRequest = await createPublicRequest({
+        request: {
+          garmentColor: selectedColor?.name || "",
+          metadata: {
+            productId: product.id,
+            source: "product-detail-page",
+          },
+          notes,
+          productName: product.name,
+          productSlug: product.slug,
+          quantity,
+          requestType,
+          size: selectedSize,
+          subject:
+            action === "order"
+              ? `Pedido directo de ${product.name}`
+              : `Ayuda antes de pedir ${product.name}`,
+        },
+      });
+
+      if (savedRequest) {
+        setRequestFeedback({
+          message:
+            "Guardamos esta solicitud en el panel para dar seguimiento aunque el cierre siga por WhatsApp.",
+          tone: "info",
+        });
+      }
+    } catch (error) {
+      setRequestFeedback({
+        message:
+          error.message ||
+          "No se pudo guardar la solicitud en el panel, pero abriremos WhatsApp para continuar.",
+        tone: "error",
+      });
+    } finally {
+      setPendingAction("");
+      openWhatsApp(whatsappMessage);
+    }
+  };
+
   const handleOrderClick = () => {
     if (!isProductOrderReady) {
       return;
     }
 
-    openWhatsApp(
-      buildProductOrderMessage({
-        productName: product.name,
-        size: selectedSize,
+    void handleRequestAction({
+      action: "order",
+      requestType: "product-order",
+      whatsappMessage: buildProductOrderMessage({
         color: selectedColor?.name,
-        quantity,
         notes,
-      })
-    );
+        productName: product.name,
+        quantity,
+        size: selectedSize,
+      }),
+    });
   };
 
   const handleHelpClick = () => {
-    openWhatsApp(
-      buildSupportMessage({
+    void handleRequestAction({
+      action: "help",
+      requestType: "product-help",
+      whatsappMessage: buildSupportMessage({
         intro: `Hola, necesito ayuda con el diseno ${product.name}.`,
         details: [
           `Diseno: ${product.name}`,
@@ -143,8 +201,8 @@ export default function ProductDetailPage() {
           `Notas: ${notes.trim() || "Necesito recomendacion para elegir la mejor opcion."}`,
         ],
         closing: "Quiero que me orienten antes de confirmar mi pedido.",
-      })
-    );
+      }),
+    });
   };
 
   return (
@@ -201,23 +259,29 @@ export default function ProductDetailPage() {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <WhatsAppActionButton
                   className="w-full sm:flex-1"
-                  disabled={!isProductOrderReady}
+                  disabled={!isProductOrderReady || Boolean(pendingAction)}
                   onClick={handleOrderClick}
                 >
-                  Pedir por WhatsApp
+                  {pendingAction === "order" ? "Guardando solicitud..." : "Pedir por WhatsApp"}
                 </WhatsAppActionButton>
                 <WhatsAppActionButton
                   className="w-full sm:flex-1"
+                  disabled={Boolean(pendingAction)}
                   onClick={handleHelpClick}
                   variant="secondary"
                 >
-                  Necesito ayuda con este diseno
+                  {pendingAction === "help"
+                    ? "Guardando solicitud..."
+                    : "Necesito ayuda con este diseno"}
                 </WhatsAppActionButton>
               </div>
 
               <InlineNotice tone={isProductOrderReady ? "info" : "error"}>
                 {productNotice}
               </InlineNotice>
+              {requestFeedback.message ? (
+                <InlineNotice tone={requestFeedback.tone}>{requestFeedback.message}</InlineNotice>
+              ) : null}
               <WhatsAppResponseNote className="text-center sm:text-left" />
             </div>
           </div>
@@ -233,7 +297,12 @@ export default function ProductDetailPage() {
         title="Compra con respaldo visual y acompanamiento real"
       >
         <div className="flex flex-col gap-3 sm:flex-row">
-          <WhatsAppActionButton className="w-full sm:w-auto" onClick={handleHelpClick} variant="secondary">
+          <WhatsAppActionButton
+            className="w-full sm:w-auto"
+            disabled={Boolean(pendingAction)}
+            onClick={handleHelpClick}
+            variant="secondary"
+          >
             Quiero ayuda antes de pedir
           </WhatsAppActionButton>
           <CTAButton className="w-full sm:w-auto" to="/personalizar">

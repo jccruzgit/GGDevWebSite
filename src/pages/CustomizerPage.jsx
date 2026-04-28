@@ -8,6 +8,7 @@ import UploadBox from "@/components/ui/UploadBox";
 import WhatsAppActionButton from "@/components/ui/WhatsAppActionButton";
 import WhatsAppResponseNote from "@/components/ui/WhatsAppResponseNote";
 import { useCustomizer } from "@/context/CustomizerContext";
+import { createPublicRequest } from "@/services/requestService";
 import {
   buildCustomizerMessage,
   buildSupportMessage,
@@ -27,6 +28,7 @@ export default function CustomizerPage() {
     scale,
     offsetX,
     offsetY,
+    file,
     fileName,
     image,
     setPlacement,
@@ -41,6 +43,11 @@ export default function CustomizerPage() {
     setImageFromFile,
   } = useCustomizer();
   const [notes, setNotes] = useState("");
+  const [pendingAction, setPendingAction] = useState("");
+  const [requestFeedback, setRequestFeedback] = useState({
+    message: "",
+    tone: "info",
+  });
 
   const selectedGarment = useMemo(
     () => garmentOptions.find((item) => item.hex === garmentColor) || garmentOptions[0],
@@ -51,12 +58,64 @@ export default function CustomizerPage() {
   const hasNotes = Boolean(notes.trim());
   const helperMessage =
     hasReference || hasNotes
-      ? "Tu mensaje saldrá con color, lado del diseño, archivo cargado, posición y notas para agilizar la conversación."
-      : "Puedes seguir sin archivo. Te ayudaremos por WhatsApp a definir tamaño, ubicación y viabilidad del diseño.";
+      ? "Tu mensaje saldra con color, lado del diseno, archivo cargado, posicion y notas para agilizar la conversacion."
+      : "Puedes seguir sin archivo. Te ayudaremos por WhatsApp a definir tamano, ubicacion y viabilidad del diseno.";
+
+  const handleRequestAction = async ({ action, requestType, whatsappMessage }) => {
+    setPendingAction(action);
+    setRequestFeedback({
+      message: "",
+      tone: "info",
+    });
+
+    try {
+      const savedRequest = await createPublicRequest({
+        designFile: file,
+        request: {
+          designFileName: fileName,
+          garmentColor: selectedGarment.name,
+          metadata: {
+            hasReference,
+            source: "customizer-page",
+          },
+          notes,
+          placement,
+          previewOffsetX: offsetX,
+          previewOffsetY: offsetY,
+          previewScale: Math.round(scale * 100),
+          requestType,
+          subject:
+            action === "order"
+              ? "Solicitud de camiseta personalizada"
+              : "Ayuda para personalizar camiseta",
+        },
+      });
+
+      if (savedRequest) {
+        setRequestFeedback({
+          message:
+            "Guardamos tu solicitud en el panel para darle seguimiento antes de cerrar la produccion.",
+          tone: "info",
+        });
+      }
+    } catch (error) {
+      setRequestFeedback({
+        message:
+          error.message ||
+          "No se pudo guardar la solicitud en el panel, pero abriremos WhatsApp para continuar el pedido.",
+        tone: "error",
+      });
+    } finally {
+      setPendingAction("");
+      openWhatsApp(whatsappMessage);
+    }
+  };
 
   const handleOrderClick = () => {
-    openWhatsApp(
-      buildCustomizerMessage({
+    void handleRequestAction({
+      action: "order",
+      requestType: "customizer",
+      whatsappMessage: buildCustomizerMessage({
         placement,
         garmentColor: selectedGarment.name,
         fileName,
@@ -64,46 +123,49 @@ export default function CustomizerPage() {
         offsetX,
         offsetY,
         notes,
-      })
-    );
+      }),
+    });
   };
 
   const handleHelpClick = () => {
-    openWhatsApp(
-      buildSupportMessage({
+    void handleRequestAction({
+      action: "help",
+      requestType: "customizer",
+      whatsappMessage: buildSupportMessage({
         intro: "Hola, necesito ayuda para personalizar una camiseta de GGDev.",
         details: [
-          "Tipo de solicitud: Diseño personalizado",
+          "Tipo de solicitud: Diseno personalizado",
           `Color de prenda: ${selectedGarment.name}`,
-          `Lado del diseño: ${placement}`,
-          `Archivo cargado: ${fileName || "Aún no he subido una imagen"}`,
-          `Tamaño aproximado en vista previa: ${Math.round(scale * 100)}%`,
-          `Posición horizontal en vista previa: ${offsetX}%`,
-          `Posición vertical en vista previa: ${offsetY}%`,
+          `Lado del diseno: ${placement}`,
+          `Archivo cargado: ${fileName || "Aun no he subido una imagen"}`,
+          `Tamano aproximado en vista previa: ${Math.round(scale * 100)}%`,
+          `Posicion horizontal en vista previa: ${offsetX}%`,
+          `Posicion vertical en vista previa: ${offsetY}%`,
           `Notas: ${notes.trim() || "Necesito ayuda para organizar mi idea."}`,
         ],
-        closing: "Necesito ayuda para confirmar tamaño, calidad del archivo y viabilidad del diseño.",
-      })
-    );
+        closing:
+          "Necesito ayuda para confirmar tamano, calidad del archivo y viabilidad del diseno.",
+      }),
+    });
   };
 
   return (
     <div className="shell pt-10">
       <section className="panel surface-grid p-8 sm:p-10">
         <SectionHeading
-          description="Sube tu imagen, ajusta tamaño y posición sobre la prenda, y envía tu idea para validar producción antes de fabricarla."
+          description="Sube tu imagen, ajusta tamano y posicion sobre la prenda, y envia tu idea para validar produccion antes de fabricarla."
           eyebrow="Personalizador MVP"
-          title="Diseña tu camiseta en un espacio de trabajo más claro"
+          title="Disena tu camiseta en un espacio de trabajo mas claro"
         />
       </section>
 
       <section className="mt-10 grid gap-8 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
         <div className="space-y-6">
           <UploadBox
-            description="Carga tu archivo y previsualízalo sobre la camiseta. PNG y JPG funcionan mejor para esta etapa."
+            description="Carga tu archivo y previsualizalo sobre la camiseta. PNG y JPG funcionan mejor para esta etapa."
             fileName={fileName}
             onFileSelect={setImageFromFile}
-            title="Sube tu diseño base"
+            title="Sube tu diseno base"
           />
 
           <CustomizerControls
@@ -121,7 +183,7 @@ export default function CustomizerPage() {
         <div className="space-y-6">
           <div className="grid gap-4 xl:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)]">
             <div className="panel-soft p-5">
-              <p className="text-sm font-semibold text-white">Vista del diseño</p>
+              <p className="text-sm font-semibold text-white">Vista del diseno</p>
               <div className="mt-4 inline-flex rounded-full border border-white/10 bg-white/5 p-1">
                 {["frente", "espalda"].map((side) => (
                   <button
@@ -170,11 +232,11 @@ export default function CustomizerPage() {
                 className="min-h-40 w-full rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aqua/30 focus:outline-none"
                 id="custom-notes"
                 onChange={(event) => setNotes(event.target.value)}
-                placeholder="Describe tamaño aproximado, referencia visual, texto o cualquier detalle importante."
+                placeholder="Describe tamano aproximado, referencia visual, texto o cualquier detalle importante."
                 value={notes}
               />
               <p className="mt-4 text-sm leading-7 text-slate-400">
-                Si aún no estás seguro de la calidad del archivo, podemos revisarlo contigo antes de
+                Si aun no estas seguro de la calidad del archivo, podemos revisarlo contigo antes de
                 producir.
               </p>
             </div>
@@ -183,26 +245,38 @@ export default function CustomizerPage() {
               <div>
                 <p className="text-sm font-semibold text-white">Siguiente paso</p>
                 <p className="mt-3 text-sm leading-7 text-slate-300">
-                  Cuando el preview se acerque a tu idea, envía la solicitud y revisamos tamaño,
+                  Cuando el preview se acerque a tu idea, envia la solicitud y revisamos tamano,
                   archivo y acabado final.
                 </p>
               </div>
 
               <div className="mt-6 space-y-4">
                 <div className="flex flex-col gap-3">
-                  <WhatsAppActionButton className="w-full" onClick={handleOrderClick}>
-                    Enviar solicitud por WhatsApp
+                  <WhatsAppActionButton
+                    className="w-full"
+                    disabled={Boolean(pendingAction)}
+                    onClick={handleOrderClick}
+                  >
+                    {pendingAction === "order"
+                      ? "Guardando solicitud..."
+                      : "Enviar solicitud por WhatsApp"}
                   </WhatsAppActionButton>
                   <WhatsAppActionButton
                     className="w-full"
+                    disabled={Boolean(pendingAction)}
                     onClick={handleHelpClick}
                     variant="secondary"
                   >
-                    Solicitar ayuda para personalizar
+                    {pendingAction === "help"
+                      ? "Guardando solicitud..."
+                      : "Solicitar ayuda para personalizar"}
                   </WhatsAppActionButton>
                 </div>
 
                 <InlineNotice>{helperMessage}</InlineNotice>
+                {requestFeedback.message ? (
+                  <InlineNotice tone={requestFeedback.tone}>{requestFeedback.message}</InlineNotice>
+                ) : null}
                 <WhatsAppResponseNote className="text-center sm:text-left" />
               </div>
             </div>
