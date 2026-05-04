@@ -5,6 +5,37 @@ import {
   requestStatusOptions,
 } from "@/services/requestService";
 
+const requestSummaryCards = [
+  {
+    key: "total",
+    label: "Total",
+    valueKey: "total",
+    className: "border-white/10 bg-white/5",
+    labelClassName: "text-slate-400",
+  },
+  {
+    key: "new",
+    label: "Nuevas",
+    valueKey: "new",
+    className: "border-sky-400/20 bg-sky-400/10",
+    labelClassName: "text-sky-100",
+  },
+  {
+    key: "reviewing",
+    label: "Revision",
+    valueKey: "reviewing",
+    className: "border-amber-400/20 bg-amber-400/10",
+    labelClassName: "text-amber-100",
+  },
+  {
+    key: "approved",
+    label: "Aprobadas",
+    valueKey: "approved",
+    className: "border-emerald-400/20 bg-emerald-400/10",
+    labelClassName: "text-emerald-100",
+  },
+];
+
 function formatRequestDate(value) {
   if (!value) {
     return "Sin fecha";
@@ -48,7 +79,7 @@ function buildRequestSubtitle(request) {
     segments.push(request.subject);
   }
 
-  return segments.join(" · ");
+  return segments.join(" - ");
 }
 
 export default function AdminRequestsPanel({
@@ -79,35 +110,32 @@ export default function AdminRequestsPanel({
 
   return (
     <section className="panel p-6 sm:p-8">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-6 2xl:flex-row 2xl:items-end 2xl:justify-between">
         <div>
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-slate-950">
             <MessagesSquare className="h-5 w-5" />
           </div>
           <h2 className="mt-5 text-2xl font-bold text-white">Solicitudes y leads</h2>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-400">
-            Aquí llegan las solicitudes de personalización, asesoría y pedidos iniciados desde el
-            sitio público.
+            Aqui llegan las solicitudes de personalizacion, asesoria y pedidos iniciados desde el
+            sitio publico.
           </p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-4">
-          <div className="rounded-[22px] border border-white/10 bg-white/5 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total</p>
-            <p className="mt-2 text-2xl font-bold text-white">{counts.total}</p>
-          </div>
-          <div className="rounded-[22px] border border-sky-400/20 bg-sky-400/10 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-sky-100">Nuevas</p>
-            <p className="mt-2 text-2xl font-bold text-white">{counts.new}</p>
-          </div>
-          <div className="rounded-[22px] border border-amber-400/20 bg-amber-400/10 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-amber-100">Revisión</p>
-            <p className="mt-2 text-2xl font-bold text-white">{counts.reviewing}</p>
-          </div>
-          <div className="rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-emerald-100">Aprobadas</p>
-            <p className="mt-2 text-2xl font-bold text-white">{counts.approved}</p>
-          </div>
+        <div className="grid w-full gap-3 sm:grid-cols-2 xl:grid-cols-4 2xl:w-auto">
+          {requestSummaryCards.map((card) => (
+            <div
+              key={card.key}
+              className={`min-h-[104px] rounded-[22px] border px-4 py-4 ${card.className}`}
+            >
+              <p className={`text-[11px] uppercase tracking-[0.18em] ${card.labelClassName}`}>
+                {card.label}
+              </p>
+              <p className="mt-3 text-3xl font-bold leading-none text-white">
+                {counts[card.valueKey]}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -126,7 +154,7 @@ export default function AdminRequestsPanel({
       {!loading && requests.length === 0 ? (
         <div className="mt-6 flex items-center gap-4 rounded-[24px] border border-white/10 bg-white/5 p-6 text-sm text-slate-300">
           <Inbox className="h-5 w-5 text-aqua" />
-          Aún no han entrado solicitudes desde el sitio.
+          Aun no han entrado solicitudes desde el sitio.
         </div>
       ) : null}
 

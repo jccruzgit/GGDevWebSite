@@ -27,6 +27,25 @@ export const requestStatusOptions = Object.entries(requestStatusLabels).map(
   })
 );
 
+function isMissingRequestsTableError(error) {
+  const message = error?.message || "";
+  return (
+    error?.code === "PGRST205" ||
+    message.includes("schema cache") ||
+    message.includes("public.requests")
+  );
+}
+
+function normalizeRequestServiceError(error) {
+  if (isMissingRequestsTableError(error)) {
+    return new Error(
+      "La tabla de solicitudes no existe todavia en Supabase. Ejecuta `supabase/schema.sql` en tu proyecto o configura `VITE_SUPABASE_REQUESTS_TABLE` con el nombre correcto."
+    );
+  }
+
+  return error instanceof Error ? error : new Error("No se pudo procesar la solicitud.");
+}
+
 function normalizeText(value) {
   return typeof value === "string" ? value.trim() : "";
 }
@@ -117,7 +136,7 @@ async function uploadRequestDesignFile({ file, requestId, requestType }) {
   });
 
   if (error) {
-    throw error;
+    throw normalizeRequestServiceError(error);
   }
 
   return path;
@@ -175,7 +194,7 @@ export async function createPublicRequest({ designFile = null, request }) {
     .single();
 
   if (error) {
-    throw error;
+    throw normalizeRequestServiceError(error);
   }
 
   return normalizeRequest(data);
@@ -193,7 +212,7 @@ export async function fetchAdminRequests() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    throw error;
+    throw normalizeRequestServiceError(error);
   }
 
   return (data || []).map(normalizeRequest);
@@ -217,7 +236,7 @@ export async function patchAdminRequestStatus(requestId, status) {
     .single();
 
   if (error) {
-    throw error;
+    throw normalizeRequestServiceError(error);
   }
 
   return normalizeRequest(data);

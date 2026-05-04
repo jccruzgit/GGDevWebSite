@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GGDev">
+  <defs>
+    <linearGradient id="ggdev-gradient" x1="10%" x2="90%" y1="10%" y2="90%">
+      <stop offset="0%" stop-color="#7CF8D2" />
+      <stop offset="100%" stop-color="#3AA6FF" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#081426" />
+  <path
+    fill="url(#ggdev-gradient)"
+    d="M19 18h13c6.1 0 10 3.6 10 9.3 0 5.5-3.7 9.2-9.3 9.2h-5.5V31h4.8c2.2 0 3.6-1.3 3.6-3.5S34.3 24 31.9 24H25v16h-6V18Zm26 22h-6.5L31 18h6.6l4.7 14.9L47 18h6.4L45 40Z"
+  />
+</svg>
