@@ -110,7 +110,7 @@ export default function AdminRequestsPanel({
 
   return (
     <section className="panel p-6 sm:p-8">
-      <div className="flex flex-col gap-6 2xl:flex-row 2xl:items-end 2xl:justify-between">
+      <div className="flex flex-col gap-6">
         <div>
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-slate-950">
             <MessagesSquare className="h-5 w-5" />
@@ -122,13 +122,15 @@ export default function AdminRequestsPanel({
           </p>
         </div>
 
-        <div className="grid w-full gap-3 sm:grid-cols-2 xl:grid-cols-4 2xl:w-auto">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {requestSummaryCards.map((card) => (
             <div
               key={card.key}
-              className={`min-h-[104px] rounded-[22px] border px-4 py-4 ${card.className}`}
+              className={`min-w-0 rounded-[22px] border px-4 py-4 text-center ${card.className}`}
             >
-              <p className={`text-[11px] uppercase tracking-[0.18em] ${card.labelClassName}`}>
+              <p
+                className={`text-[10px] font-semibold uppercase leading-4 tracking-[0.12em] sm:text-[11px] ${card.labelClassName}`}
+              >
                 {card.label}
               </p>
               <p className="mt-3 text-3xl font-bold leading-none text-white">
