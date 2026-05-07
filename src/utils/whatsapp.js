@@ -114,6 +114,43 @@ export function buildCustomizerMessage({
   ]);
 }
 
+export function buildCustomizerOrderMessage({
+  customerName,
+  phone,
+  size,
+  color,
+  quantity,
+  comments,
+  placement,
+  fileName,
+  scale,
+  offsetX,
+  offsetY,
+}) {
+  return joinSections([
+    "Hola, quiero solicitar una camiseta personalizada de GGDev.",
+    joinLines([
+      `Cliente: ${normalizeText(customerName) || "No indicado"}`,
+      `Telefono o WhatsApp: ${normalizeText(phone) || "No indicado"}`,
+      `Talla: ${normalizeText(size) || "Por definir"}`,
+      `Color de camiseta: ${normalizeText(color) || "Por definir"}`,
+      `Cantidad: ${formatQuantity(quantity)}`,
+    ]),
+    joinLines([
+      "Resumen del diseno personalizado:",
+      `Lado del diseno: ${sentenceCase(placement) || "Por definir"}`,
+      normalizeText(fileName)
+        ? `Archivo cargado: ${normalizeText(fileName)}`
+        : "Archivo cargado: Aun no he subido una imagen.",
+      Number.isFinite(scale) ? `Tamano aproximado en vista previa: ${Math.round(scale * 100)}%` : "",
+      Number.isFinite(offsetX) ? `Posicion horizontal en vista previa: ${offsetX}%` : "",
+      Number.isFinite(offsetY) ? `Posicion vertical en vista previa: ${offsetY}%` : "",
+      `Comentarios adicionales: ${normalizeText(comments) || "Sin comentarios adicionales."}`,
+    ]),
+    "Quiero confirmar disponibilidad, tiempo de produccion y siguientes pasos para concretar el pedido.",
+  ]);
+}
+
 export function buildAdvisoryMessage({ name, subject, message }) {
   return joinSections([
     "Hola, necesito asesoría con mi diseño.",
