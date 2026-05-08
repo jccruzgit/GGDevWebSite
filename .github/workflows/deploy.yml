@@ -14,6 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      VITE_SITE_BASE_PATH: /
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       VITE_SUPABASE_PRODUCTS_TABLE: products
