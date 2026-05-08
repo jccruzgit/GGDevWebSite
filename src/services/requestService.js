@@ -187,17 +187,17 @@ export async function createPublicRequest({ designFile = null, request }) {
     request,
     requestId,
   });
-  const { data, error } = await client
-    .from(supabaseRequestsTable)
-    .insert(payload)
-    .select("*")
-    .single();
+  const { error } = await client.from(supabaseRequestsTable).insert(payload);
 
   if (error) {
     throw normalizeRequestServiceError(error);
   }
 
-  return normalizeRequest(data);
+  return normalizeRequest({
+    ...payload,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  });
 }
 
 export async function fetchAdminRequests() {
