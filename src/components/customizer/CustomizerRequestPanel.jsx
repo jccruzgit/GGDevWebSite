@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
 import CTAButton from "@/components/ui/CTAButton";
-import ColorSelector from "@/components/ui/ColorSelector";
 import InlineNotice from "@/components/ui/InlineNotice";
 import QuantitySelector from "@/components/ui/QuantitySelector";
 import SizeSelector from "@/components/ui/SizeSelector";
@@ -47,7 +46,6 @@ export default function CustomizerRequestPanel({
   offsetY,
   placement,
   scale,
-  setGarmentColor,
 }) {
   const [form, setForm] = useState({
     customerName: "",
@@ -397,12 +395,19 @@ export default function CustomizerRequestPanel({
           </div>
         </div>
 
-        <ColorSelector
-          colors={garmentOptions}
-          label="Color de camiseta"
-          onChange={(option) => setGarmentColor(option.hex)}
-          selectedColor={garmentColor}
-        />
+        <div className="rounded-[24px] border border-white/10 bg-white/5 px-4 py-4">
+          <p className="text-sm font-semibold text-white">Color de camiseta</p>
+          <div className="mt-3 inline-flex items-center gap-3 rounded-full border border-aqua/20 bg-aqua/10 px-4 py-2 text-sm text-white">
+            <span
+              className="h-4 w-4 rounded-full border border-white/15"
+              style={{ backgroundColor: garmentColor }}
+            />
+            {selectedGarment.name}
+          </div>
+          <p className="mt-3 text-xs leading-6 text-slate-400">
+            Puedes cambiar este color arriba, en el selector del preview.
+          </p>
+        </div>
 
         <div>
           <label className="mb-3 block text-sm font-semibold text-white" htmlFor="customizer-comments">

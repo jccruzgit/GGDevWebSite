@@ -1,6 +1,7 @@
 import CustomizerControls from "@/components/customizer/CustomizerControls";
 import CustomizerMockup from "@/components/customizer/CustomizerMockup";
 import CustomizerRequestPanel from "@/components/customizer/CustomizerRequestPanel";
+import ColorSelector from "@/components/ui/ColorSelector";
 import SectionHeading from "@/components/ui/SectionHeading";
 import UploadBox from "@/components/ui/UploadBox";
 import { useCustomizer } from "@/context/CustomizerContext";
@@ -87,11 +88,12 @@ export default function CustomizerPage() {
             </div>
 
             <div className="panel-soft p-5">
-              <p className="text-sm font-semibold text-white">Pedido conectado al preview</p>
-              <p className="mt-3 text-sm leading-7 text-slate-300">
-                La solicitud usa exactamente el lado, color, escala y posicion que dejes listos en
-                esta pantalla.
-              </p>
+              <ColorSelector
+                colors={garmentOptions}
+                label="Color de la prenda"
+                onChange={(color) => setGarmentColor(color.hex)}
+                selectedColor={garmentColor}
+              />
             </div>
           </div>
 
@@ -116,7 +118,6 @@ export default function CustomizerPage() {
             offsetY={offsetY}
             placement={placement}
             scale={scale}
-            setGarmentColor={setGarmentColor}
           />
         </div>
       </section>
