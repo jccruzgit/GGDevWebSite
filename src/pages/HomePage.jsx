@@ -1,13 +1,13 @@
 import { ArrowRight } from "lucide-react";
+import ProductCard from "@/components/catalog/ProductCard";
 import BrandLogo from "@/components/common/BrandLogo";
 import BenefitCard from "@/components/home/BenefitCard";
 import CategoryCard from "@/components/home/CategoryCard";
 import CommercialCTA from "@/components/home/CommercialCTA";
 import ExampleGallery from "@/components/home/ExampleGallery";
+import HeroShowcasePanel from "@/components/home/HeroShowcasePanel";
 import ProcessSection from "@/components/home/ProcessSection";
 import TestimonialCard from "@/components/home/TestimonialCard";
-import ProductCard from "@/components/catalog/ProductCard";
-import ProductImage from "@/components/product/ProductImage";
 import CTAButton from "@/components/ui/CTAButton";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCatalog } from "@/context/CatalogContext";
@@ -17,7 +17,6 @@ import { testimonials } from "@/data/testimonials";
 
 export default function HomePage() {
   const { featuredProducts, showcaseProducts } = useCatalog();
-  const heroProduct = featuredProducts[0] || showcaseProducts[0];
   const hasFeaturedProducts = featuredProducts.length > 0;
   const hasShowcaseProducts = showcaseProducts.length > 0;
 
@@ -68,76 +67,7 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            <div className="panel surface-grid relative overflow-hidden p-6 sm:p-8">
-              <div className="absolute left-1/2 top-10 h-44 w-44 -translate-x-1/2 rounded-full bg-aqua/16 blur-3xl" />
-              <div className="grid gap-4 sm:grid-cols-[0.78fr_1fr]">
-                <div className="space-y-4">
-                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      {heroProduct ? "Diseño destacado" : "Catálogo remoto"}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-white">
-                      {heroProduct?.name || "Sube tus diseños a Supabase"}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
-                      {heroProduct
-                        ? "Una camiseta con presencia limpia, contraste fuerte y un look pensado para destacar tanto en uso diario como en tus fotos."
-                        : "Cuando cargues productos reales desde el panel, aquí se mostrarán automáticamente sin mockups locales de relleno."}
-                    </p>
-                  </div>
-                  <div className="rounded-[28px] border border-aqua/15 bg-aqua/8 p-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Compra directa
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-white">Pide fácil por WhatsApp</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Elige tu diseño, confirma talla y color, y cierra tu pedido con una atención
-                      clara, rápida y directa.
-                    </p>
-                  </div>
-                </div>
-                <div className="relative rounded-[34px] border border-white/10 bg-gradient-to-b from-surface-3 to-surface-2 p-5 shadow-glow">
-                  {heroProduct ? (
-                    <div className="rounded-[28px] border border-white/10 bg-night/50 p-3">
-                      <div className="overflow-hidden rounded-[24px]">
-                        <ProductImage
-                          alt="Previsualizacion premium GGDev"
-                          className="h-[420px]"
-                          fit="contain"
-                          image={heroProduct.mainImage}
-                          imageClassName="p-4"
-                          name={heroProduct.name}
-                          surfaceClassName="bg-slate-100"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex h-[420px] items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-night/50 p-8 text-center">
-                      <div className="max-w-sm">
-                        <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                          Sin mockups locales
-                        </p>
-                        <p className="mt-4 text-2xl font-semibold text-white">
-                          El escaparate mostrará solo productos reales.
-                        </p>
-                        <p className="mt-4 text-sm leading-7 text-slate-300">
-                          Agrega diseños desde Supabase para poblar automáticamente el home, el catálogo y el detalle de producto.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute -bottom-6 -left-8 w-[220px] rounded-[28px] border border-white/10 bg-night/90 p-4 backdrop-blur-xl">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
-                      Acabado premium
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-200">
-                      Diseños con gran presencia visual, buen contraste sobre la prenda y un
-                      acabado pensado para impresionar desde el primer vistazo.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroShowcasePanel products={showcaseProducts} />
           </div>
         </div>
       </section>
