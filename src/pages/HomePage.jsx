@@ -16,7 +16,7 @@ import { commercialBenefits, commercialSteps } from "@/data/commercial";
 import { testimonials } from "@/data/testimonials";
 
 export default function HomePage() {
-  const { featuredProducts, showcaseProducts } = useCatalog();
+  const { activeProducts, featuredProducts, showcaseProducts } = useCatalog();
   const hasFeaturedProducts = featuredProducts.length > 0;
   const hasShowcaseProducts = showcaseProducts.length > 0;
 
@@ -67,7 +67,7 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            <HeroShowcasePanel products={showcaseProducts} />
+            <HeroShowcasePanel products={activeProducts} />
           </div>
         </div>
       </section>
