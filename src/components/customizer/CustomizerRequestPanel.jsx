@@ -314,8 +314,8 @@ export default function CustomizerRequestPanel({
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-      <form className="panel-soft space-y-6 p-6" onSubmit={handleSubmit}>
+    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px] xl:gap-6">
+      <form className="panel-soft space-y-6 p-5 sm:p-6" onSubmit={handleSubmit}>
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-aqua">
             Solicitud real
@@ -327,7 +327,7 @@ export default function CustomizerRequestPanel({
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label
               className="mb-2 block text-sm font-semibold text-white"
@@ -376,7 +376,7 @@ export default function CustomizerRequestPanel({
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
           <div>
             <SizeSelector onChange={handleSizeChange} selectedSize={form.size} sizes={shirtSizes} />
             {touched.size && formErrors.size ? (
@@ -435,10 +435,10 @@ export default function CustomizerRequestPanel({
         </div>
       </form>
 
-      <div className="panel-soft flex flex-col justify-between p-6">
+      <div className="panel-soft flex flex-col justify-between p-5 sm:p-6">
         <div>
           <p className="text-sm font-semibold text-white">Resumen listo para enviar</p>
-          <div className="mt-4 space-y-3 text-sm text-slate-300">
+          <div className="mt-4 grid gap-3 text-sm text-slate-300 sm:grid-cols-2 xl:grid-cols-1">
             <div className="rounded-[20px] border border-white/10 bg-white/5 px-4 py-3">
               <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Archivo</p>
               <p className="mt-2 font-medium text-white">{fileName || "Sin archivo cargado"}</p>
