@@ -6,6 +6,24 @@ export const PHOTO_MOCKUP_COLORS = {
   white: "#F5F7FA",
 };
 
+const photoMockupColorEntries = [
+  {
+    aliases: ["black", "negro", "negro eclipse", PHOTO_MOCKUP_COLORS.black],
+    hex: PHOTO_MOCKUP_COLORS.black,
+    key: "black",
+  },
+  {
+    aliases: ["navy", "blue", "azul", "azul midnight", PHOTO_MOCKUP_COLORS.navy],
+    hex: PHOTO_MOCKUP_COLORS.navy,
+    key: "navy",
+  },
+  {
+    aliases: ["white", "blanco", "blanco polar", PHOTO_MOCKUP_COLORS.white],
+    hex: PHOTO_MOCKUP_COLORS.white,
+    key: "white",
+  },
+];
+
 const baseMockup = {
   width: 1600,
   height: 2000,
@@ -112,6 +130,45 @@ export const photoMockupsByColor = {
   },
 };
 
+function normalizeColorToken(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+export function resolvePhotoMockupColor(value) {
+  if (!value) {
+    return null;
+  }
+
+  if (typeof value === "object") {
+    const explicitMockupColor = resolvePhotoMockupColor(
+      value.mockupColor || value.mockupKey || value.mockupHex
+    );
+
+    if (explicitMockupColor) {
+      return explicitMockupColor;
+    }
+
+    return resolvePhotoMockupColor(value.hex || value.name || "");
+  }
+
+  const normalizedValue = normalizeColorToken(value);
+  const matchedEntry = photoMockupColorEntries.find(
+    (entry) =>
+      entry.key === normalizedValue ||
+      entry.hex.toLowerCase() === normalizedValue ||
+      entry.aliases.some((alias) => normalizeColorToken(alias) === normalizedValue)
+  );
+
+  return matchedEntry?.hex || null;
+}
+
 export function getPhotoMockup(garmentColor, placement) {
-  return photoMockupsByColor[garmentColor]?.[placement] || null;
+  const resolvedColor = resolvePhotoMockupColor(garmentColor);
+
+  return photoMockupsByColor[resolvedColor]?.[placement] || null;
 }

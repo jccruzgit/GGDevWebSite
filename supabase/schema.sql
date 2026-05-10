@@ -25,12 +25,16 @@ create table if not exists public.products (
   sizes text[] not null default array['S', 'M', 'L', 'XL', '2XL'],
   available_colors jsonb not null default
     '[{"name":"Negro eclipse","hex":"#111827"},{"name":"Blanco polar","hex":"#F5F7FA"},{"name":"Azul midnight","hex":"#13213B"}]'::jsonb,
+  mockup_config jsonb not null default '{}'::jsonb,
   main_image_path text,
   secondary_image_paths text[] not null default '{}',
   created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.products
+  add column if not exists mockup_config jsonb not null default '{}'::jsonb;
 
 create table if not exists public.requests (
   id uuid primary key default gen_random_uuid(),

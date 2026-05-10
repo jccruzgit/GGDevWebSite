@@ -1,15 +1,57 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductImage from "@/components/product/ProductImage";
+import ProductMockupPreview from "@/components/product/ProductMockupPreview";
 
-export default function ProductGallery({ images, activeIndex, onChange }) {
-  const hasMultipleImages = images.length > 1;
+function GalleryItemView({ item, thumbnail = false }) {
+  if (!item) {
+    return null;
+  }
+
+  if (item.kind === "mockup") {
+    return (
+      <ProductMockupPreview
+        alt={item.alt}
+        className={thumbnail ? "p-2" : "p-6 sm:p-8"}
+        designImageUrl={item.mockupConfig.designImageUrl}
+        designSize={item.mockupConfig.designSize}
+        fallbackImageUrl={item.mockupConfig.fallbackImageUrl}
+        frameClassName={thumbnail ? "max-w-[132px]" : "max-w-[420px]"}
+        garmentColor={item.garmentColor}
+        imageAlt={item.alt}
+        offsetX={item.mockupConfig.offsetX}
+        offsetY={item.mockupConfig.offsetY}
+        overlayOnTop={false}
+        placement={item.mockupConfig.placement}
+        printArea={item.mockupConfig.printArea}
+        rotation={item.mockupConfig.rotation}
+        scale={item.mockupConfig.scale}
+      />
+    );
+  }
+
+  return (
+    <ProductImage
+      alt={item.alt}
+      className={thumbnail ? "h-28" : "h-[430px] sm:h-[540px]"}
+      fit="contain"
+      image={item.image}
+      imageClassName={thumbnail ? "p-2" : "p-6"}
+      name="GGDev"
+      surfaceClassName="bg-slate-100"
+    />
+  );
+}
+
+export default function ProductGallery({ activeIndex, items = [], onChange }) {
+  const activeItem = items[activeIndex] || items[0] || null;
+  const hasMultipleImages = items.length > 1;
 
   const goToPrevious = () => {
     if (!hasMultipleImages) {
       return;
     }
 
-    onChange(activeIndex === 0 ? images.length - 1 : activeIndex - 1);
+    onChange(activeIndex === 0 ? items.length - 1 : activeIndex - 1);
   };
 
   const goToNext = () => {
@@ -17,21 +59,15 @@ export default function ProductGallery({ images, activeIndex, onChange }) {
       return;
     }
 
-    onChange(activeIndex === images.length - 1 ? 0 : activeIndex + 1);
+    onChange(activeIndex === items.length - 1 ? 0 : activeIndex + 1);
   };
 
   return (
     <div className="space-y-4">
       <div className="panel relative overflow-hidden">
-        <ProductImage
-          alt="Vista del diseño"
-          className="h-[430px] sm:h-[540px]"
-          fit="contain"
-          image={images[activeIndex]}
-          imageClassName="p-6"
-          name="GGDev"
-          surfaceClassName="bg-slate-100"
-        />
+        <div className="h-[430px] sm:h-[540px]">
+          <GalleryItemView item={activeItem} />
+        </div>
 
         {hasMultipleImages ? (
           <>
@@ -57,9 +93,9 @@ export default function ProductGallery({ images, activeIndex, onChange }) {
 
       {hasMultipleImages ? (
         <div className="flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-3 md:overflow-visible">
-          {images.map((image, index) => (
+          {items.map((item, index) => (
             <button
-              key={index}
+              key={item.id || index}
               aria-label={`Ver imagen ${index + 1}`}
               className={`min-w-[110px] overflow-hidden rounded-[24px] border md:min-w-0 ${
                 activeIndex === index
@@ -69,15 +105,7 @@ export default function ProductGallery({ images, activeIndex, onChange }) {
               onClick={() => onChange(index)}
               type="button"
             >
-              <ProductImage
-                alt=""
-                className="h-28"
-                fit="contain"
-                image={image}
-                imageClassName="p-2"
-                name="GGDev"
-                surfaceClassName="bg-slate-100"
-              />
+              <GalleryItemView item={item} thumbnail />
             </button>
           ))}
         </div>

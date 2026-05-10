@@ -64,6 +64,7 @@ function buildProductPayload({ currentImagePath = null, product, userId }) {
     available_colors: normalizeColors(product.availableColors),
     main_image_path: currentImagePath,
     secondary_image_paths: Array.isArray(product.secondaryImagePaths) ? product.secondaryImagePaths : [],
+    ...(product.mockupConfig !== undefined ? { mockup_config: product.mockupConfig } : {}),
     created_by: userId || null,
   };
 }
@@ -202,6 +203,9 @@ export function normalizeSupabaseProduct(record) {
     secondaryImagePaths: Array.isArray(record.secondary_image_paths)
       ? record.secondary_image_paths
       : [],
+    mockupConfig: record.mockup_config && typeof record.mockup_config === "object"
+      ? record.mockup_config
+      : null,
     tag: record.tag || "",
     featured: Boolean(record.featured),
     active: record.active !== false,

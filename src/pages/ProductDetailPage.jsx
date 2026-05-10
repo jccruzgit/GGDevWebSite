@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductCard from "@/components/catalog/ProductCard";
 import ProductGallery from "@/components/product/ProductGallery";
@@ -16,7 +16,7 @@ import { useCatalog } from "@/context/CatalogContext";
 import { productTrustItems } from "@/data/commercial";
 import { createPublicRequest } from "@/services/requestService";
 import { formatCurrency } from "@/utils/format";
-import { getProductGalleryImages } from "@/utils/productMedia";
+import { getProductGalleryItems } from "@/utils/productMedia";
 import {
   buildProductOrderMessage,
   buildSupportMessage,
@@ -54,8 +54,24 @@ export default function ProductDetailPage() {
     tone: "info",
   });
 
-  const productImages = useMemo(() => getProductGalleryImages(product), [product]);
-  const hasProductImages = productImages.length > 0;
+  const previewColor = selectedColor || product?.availableColors?.[0] || null;
+  const productGalleryItems = useMemo(() => {
+    const galleryItems = getProductGalleryItems(product);
+
+    if (!previewColor) {
+      return galleryItems;
+    }
+
+    return galleryItems.map((item) =>
+      item.kind === "mockup"
+        ? {
+            ...item,
+            garmentColor: previewColor,
+          }
+        : item
+    );
+  }, [previewColor, product]);
+  const hasProductGalleryItems = productGalleryItems.length > 0;
   const relatedProducts = useMemo(
     () =>
       activeProducts
@@ -63,6 +79,25 @@ export default function ProductDetailPage() {
         .slice(0, 3),
     [activeProducts, product]
   );
+
+  useEffect(() => {
+    setActiveImage((currentIndex) =>
+      productGalleryItems.length === 0 ? 0 : Math.min(currentIndex, productGalleryItems.length - 1)
+    );
+  }, [productGalleryItems.length]);
+
+  useEffect(() => {
+    setActiveImage(0);
+    setSelectedColor(null);
+    setSelectedSize("");
+    setQuantity(1);
+    setNotes("");
+    setPendingAction("");
+    setRequestFeedback({
+      message: "",
+      tone: "info",
+    });
+  }, [product?.id]);
 
   if (!product && loading) {
     return (
@@ -205,12 +240,24 @@ export default function ProductDetailPage() {
     });
   };
 
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+
+    if (productGalleryItems[0]?.kind === "mockup") {
+      setActiveImage(0);
+    }
+  };
+
   return (
     <div className="shell pt-10">
       <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
         <div className="space-y-6">
-          {hasProductImages ? (
-            <ProductGallery activeIndex={activeImage} images={productImages} onChange={setActiveImage} />
+          {hasProductGalleryItems ? (
+            <ProductGallery
+              activeIndex={activeImage}
+              items={productGalleryItems}
+              onChange={setActiveImage}
+            />
           ) : (
             <div className="panel p-10 text-center">
               <h2 className="text-2xl font-bold text-white">Imagen pendiente de carga</h2>
@@ -232,7 +279,7 @@ export default function ProductDetailPage() {
           <div className="panel-soft space-y-6 p-6">
             <ColorSelector
               colors={product.availableColors}
-              onChange={setSelectedColor}
+              onChange={handleColorChange}
               selectedColor={selectedColor?.hex}
             />
             <SizeSelector
