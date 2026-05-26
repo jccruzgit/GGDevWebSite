@@ -3,6 +3,18 @@ import ProductImage from "@/components/product/ProductImage";
 
 const ROTATION_INTERVAL_MS = 5200;
 const FADE_DURATION_MS = 320;
+const TITLE_CLAMP_STYLE = {
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 2,
+  display: "-webkit-box",
+  overflow: "hidden",
+};
+const BODY_CLAMP_STYLE = {
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 3,
+  display: "-webkit-box",
+  overflow: "hidden",
+};
 
 function buildFallbackCopy(hasProducts) {
   if (hasProducts) {
@@ -82,19 +94,22 @@ export default function HeroShowcasePanel({ products = [] }) {
     <div className="panel surface-grid relative overflow-hidden p-5 sm:p-6 lg:p-7">
       <div className="absolute left-1/2 top-8 h-36 w-36 -translate-x-1/2 rounded-full bg-aqua/16 blur-3xl" />
       <div className="grid gap-4 lg:grid-cols-[0.72fr_1fr] lg:gap-5">
-        <div className="space-y-4">
-          <div className="rounded-[24px] border border-white/10 bg-white/5 p-4 sm:p-5">
+        <div className="grid content-start gap-4 lg:grid-rows-[minmax(0,1fr)_auto]">
+          <div className="flex min-h-[250px] flex-col rounded-[24px] border border-white/10 bg-white/5 p-4 sm:p-5">
             <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
               {activeProduct?.categoryLabel || copy.kicker}
             </p>
-            <p className="mt-2 text-lg font-semibold text-white">
+            <p
+              className="mt-2 min-h-[3.5rem] text-lg font-semibold leading-7 text-white"
+              style={TITLE_CLAMP_STYLE}
+            >
               {activeProduct?.name || copy.title}
             </p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
+            <p className="mt-2 min-h-[4.5rem] text-sm leading-6 text-slate-300" style={BODY_CLAMP_STYLE}>
               {activeProduct?.shortDescription || copy.body}
             </p>
             {developersProducts.length > 1 ? (
-              <div className="mt-4 flex gap-2">
+              <div className="mt-auto flex gap-2 pt-4">
                 {developersProducts.map((product, index) => (
                   <span
                     key={product.id}
