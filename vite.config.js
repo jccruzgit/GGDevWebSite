@@ -2,6 +2,8 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 function normalizeBasePath(value, fallback = "/GGDevWebSite/") {
   const basePath = (value || fallback).trim();
 
@@ -21,7 +23,7 @@ export default defineConfig(({ mode }) => {
     // GitHub Pages sigue usando /GGDevWebSite/ por defecto.
     // Cuando migres a dominio propio en la raiz, usa VITE_SITE_BASE_PATH=/.
     base,
-    plugins: [react()],
+    plugins: [react(), cloudflare()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
